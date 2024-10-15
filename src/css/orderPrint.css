@@ -1,0 +1,61 @@
+
+
+.print-area {
+  background-color: white;
+}
+
+
+
+
+.printData th, .printData td {
+  white-space: nowrap;
+  border: 1px solid #ddd; /* 境界線 */
+  padding: 8px;           /* セルの内側に余白 */
+  text-align: left;       /* テキストを左揃え */
+}
+
+.printData th {
+  background-color: #f2f2f2; /* ヘッダーの背景色 */
+  font-weight: bold;         /* ヘッダーの太字 */
+}
+
+.printData tr:nth-child(even) {
+  background-color: #f9f9f9; /* 偶数行の背景色を変更 */
+}
+
+
+
+.P-vender {
+  width: 85px;
+  text-overflow: ellipsis;
+}
+
+.P-code {
+  width: 80px;
+}
+
+.P-name {
+  width: 320px;
+  text-overflow: ellipsis;
+}
+
+.P-detail {
+  width: 80px;
+}
+
+.P-number {
+  width: 60px;
+}
+
+.P-personal {
+  width: 100px;
+}
+
+.P-remarks {
+  width: 120px;
+}
+
+.chack-cell {
+  width: 30px;
+}
+
