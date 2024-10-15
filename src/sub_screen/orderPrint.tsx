@@ -35,7 +35,7 @@ export default function PrintPage({ setCurrentPage }: SettingProps) {
               <div className="print-header">
                 <div>{Date}</div>
               </div>
-              <th className="print-storename">{storename}</th>
+              <th className="print-storename" colSpan="9" >{storename}</th>
             </tr>
             <tr>
               <th>業者</th>
