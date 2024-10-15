@@ -9,6 +9,7 @@
 
 .print-storename {
   column-span: 9;
+  text-align: center;
 }
 
 .printData th, .printData td {
