@@ -28,12 +28,13 @@ export default function PrintPage({ setCurrentPage }: SettingProps) {
   },[]);
   return (
     <div className="print-area">
-      <div className="print-header">
-        <div>{Date}</div>
-        <h2>{storename}</h2>
-      </div>
+      
       <div className="printData">
         <table className="printData">
+          <div className="print-header">
+            <div>{Date}</div>
+            <h2>{storename}</h2>
+          </div>
           <thead>
             <tr>
               <th>業者</th>
