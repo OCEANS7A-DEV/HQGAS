@@ -11,3 +11,8 @@ npm run build && clasp push
 
 clasp deploy --deploymentId AKfycbz8PJHwhgHUBf3gka4hifxA6zkCzZypyGfB-8_luSSA-zeYhb4UeKW1ktXG9ZX0F_vO
 
+コードを変更したら
+1, commit
+2, push
+3, npm run build
+4, npm run deploy
