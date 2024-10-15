@@ -22,7 +22,7 @@
   text-align: left;       /* テキストを左揃え */
 }
 
-.printData th {
+.print-table-header th {
   background-color: #f2f2f2; /* ヘッダーの背景色 */
   font-weight: bold;         /* ヘッダーの太字 */
 }
