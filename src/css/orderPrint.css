@@ -7,8 +7,10 @@
 .print-header {
 }
 
+.storename {
+  background-color: #f9f9f9;
+}
 .print-storename {
-  column-span: 9;
   text-align: center;
 }
 

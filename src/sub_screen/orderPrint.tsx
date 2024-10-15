@@ -32,7 +32,7 @@ export default function PrintPage({ setCurrentPage }: SettingProps) {
         <table className="printData">
           <thead>
             <tr>{Date}</tr>
-            <tr>
+            <tr className="storename">
               <th className="print-storename" colSpan="9" >{storename}</th>
             </tr>
             <tr>
