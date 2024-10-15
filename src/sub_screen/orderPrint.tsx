@@ -35,7 +35,7 @@ export default function PrintPage({ setCurrentPage }: SettingProps) {
             <tr className="storename">
               <th className="print-storename" colSpan="9" >{storename}</th>
             </tr>
-            <tr>
+            <tr className="print-table-header">
               <th>業者</th>
               <th>商品コード</th>
               <th>商品名</th>
