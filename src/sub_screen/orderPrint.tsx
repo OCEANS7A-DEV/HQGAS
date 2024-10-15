@@ -20,11 +20,14 @@ export default function PrintPage({ setCurrentPage }: SettingProps) {
   const [data, setData] = useState([]);
   const [Date, setDate] = useState<string>('');
   const [storename, setStore] = useState<string>('');
+  const [pagenumber, setpagenumber] = useState<number>(0);
   useEffect(() => {
     const PrintData = JSON.parse(sessionStorage.getItem('Printdata'));
     setData(PrintData)
     setDate(NowDate());
-    setStore(sessionStorage.getItem('Printname'))
+    setStore(sessionStorage.getItem('Printname'));
+    const pages = PrintData.length / 26;
+    console.log(pages);
   },[]);
   return (
     <div className="print-area">
