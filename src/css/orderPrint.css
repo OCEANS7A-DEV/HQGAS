@@ -6,9 +6,7 @@
 
 .print-header {
   display: flex;
-  
 }
-
 
 .printData th, .printData td {
   white-space: nowrap;
