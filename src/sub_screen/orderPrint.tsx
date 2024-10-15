@@ -30,11 +30,13 @@ export default function PrintPage({ setCurrentPage }: SettingProps) {
     <div className="print-area">
       <div className="printData">
         <table className="printData">
-          <div className="print-header">
-            <div>{Date}</div>
-            <h2>{storename}</h2>
-          </div>
           <thead>
+            <tr>
+              <div className="print-header">
+                <div>{Date}</div>
+                <h2>{storename}</h2>
+              </div>
+            </tr>
             <tr>
               <th>業者</th>
               <th>商品コード</th>
