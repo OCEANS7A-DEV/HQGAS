@@ -28,7 +28,6 @@ export default function PrintPage({ setCurrentPage }: SettingProps) {
   },[]);
   return (
     <div className="print-area">
-      
       <div className="printData">
         <table className="printData">
           <div className="print-header">
