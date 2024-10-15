@@ -12,7 +12,9 @@ import PrintPage from './sub_screen/orderPrint.tsx';
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState('ReceivingPage');
+  const [printData, setPrintData] = useState([]);
   const [storename, setStorename] = useState<string>('');
+  const [dataPages, setdataPages] = useState<number>(0);
   const nodeRef = useRef(null);
   useEffect(() => {
     localStorageSet();
@@ -25,11 +27,11 @@ export default function App() {
       case 'ReceivingPage':
         return <ReceivingPage/>
       case 'HQPage':
-        return <HQPage setCurrentPage={setCurrentPage}/>;
+        return <HQPage setCurrentPage={setCurrentPage} setPrintData={setPrintData} setStorename={setStorename} setdataPages={setdataPages}/>;
       case 'QRPage':
         return <QR />;
       case 'Printpage':
-        return <PrintPage setCurrentPage={setCurrentPage}/>;
+        return <PrintPage setCurrentPage={setCurrentPage} printData={printData} storename={storename} dataPages={dataPages}/>;
       default:
         return null;
     }

@@ -3,10 +3,14 @@ import { ProcessConfirmationGet, OrderDeadline, orderGet } from '../backend/Serv
 import '../css/process_check.css';
 import DeadLineDialog from './DeadLineDialog.tsx';
 import { PrintDataSet } from '../backend/WebStorage.ts';
+const sleep = (time) => new Promise((resolve) => setTimeout(resolve, time));
 
 
 interface SettingProps {
   setCurrentPage: (page: string) => void;
+  setPrintData: (data: any) => void;
+  setStorename: (name: string) => void;
+  setdataPages: (pagenum: number) => void;
 }
 
 function findStore(storeList, targetStore) {
@@ -23,7 +27,7 @@ const CurrentDate = () => {
 }
 const DateNow = CurrentDate();
 
-export default function HQPage({ setCurrentPage }: SettingProps) {
+export default function HQPage({ setCurrentPage, setPrintData, setStorename, setdataPages }: SettingProps) {
   const [checkresult, setCheckResult] = useState([]); // 処理結果を管理する状態
   const [isDialogOpen, setDialogOpen] = useState(false);
   const message = `今回の店舗からの注文を${DateNow}で締め切りますか？`;
@@ -95,13 +99,21 @@ export default function HQPage({ setCurrentPage }: SettingProps) {
   const handletest = async () => {
     const storeprintname = '西条東';
     const orderData = await orderGet();
-    console.log(orderData);
-    console.log(checkresult);
     var printData = orderData.filter(row => row[1] == storeprintname);
-    await PrintDataSet(printData, storeprintname);
-    console.log('1')
+    const pages = Math.ceil(printData.length / 26);
+    const EmptyRow = ['','','','','','','','','','','','']
+    const restrows = (pages * 26) - printData.length;
+    for (let i = 0; i < restrows; i++) {
+      printData.push(EmptyRow);
+    }
+    const dataPages = printData.length / 26;
+    const dataSettings = async () => {
+      setdataPages(dataPages)
+      setPrintData(printData);
+      setStorename(storeprintname);
+    };
+    await dataSettings();
     await setCurrentPage('Printpage');
-    console.log('2')
   };
   
   const allPrint = async () => {
@@ -109,9 +121,34 @@ export default function HQPage({ setCurrentPage }: SettingProps) {
     for (let i = 0; i < checkresult.length; i++){
       if (checkresult[i].process == '未印刷') {
         var printData = orderData.filter(row => row[1] == checkresult[i].storeName);
-        PrintDataSet(printData);
-        setCurrentPage('Printpage');
-        return
+        const pages = Math.ceil(printData.length / 26);
+        console.log(pages)
+        const EmptyRow = ['','','','','','','','','','','','']
+        const restrows = (pages * 26) - printData.length;
+
+        for (let i = 0; i < restrows; i++) {
+          printData.push(EmptyRow);
+        }
+        const dataPages = printData.length / 26;
+        console.log(dataPages);
+        const dataSettings = async () => {
+          setdataPages(dataPages)
+          setPrintData(printData);
+          setStorename(checkresult[i].storeName);
+        };
+        console.log(printData);
+        await dataSettings();
+        await setCurrentPage('Printpage');
+        await sleep(500);
+        await new Promise<void>((resolve) => {
+          const onAfterPrint = () => {
+            window.removeEventListener('afterprint', onAfterPrint);
+            resolve();
+          };
+          window.addEventListener('afterprint', onAfterPrint);
+          window.print();
+        });
+        await sleep(500);
       }
     }
   };

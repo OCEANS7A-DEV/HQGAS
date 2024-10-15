@@ -4,6 +4,9 @@ import '../css/orderPrint.css';
 
 interface SettingProps {
   setCurrentPage: (page: string) => void;
+  printData: any;
+  storename: string;
+  dataPages: number;
 }
 
 const NowDate = () => {
@@ -16,19 +19,18 @@ const NowDate = () => {
 
 
 
-export default function PrintPage({ setCurrentPage }: SettingProps) {
-  const [data, setData] = useState([]);
-  const [Date, setDate] = useState<string>('');
-  const [storename, setStore] = useState<string>('');
-  const [pagenumber, setpagenumber] = useState<number>(0);
-  useEffect(() => {
-    const PrintData = JSON.parse(sessionStorage.getItem('Printdata'));
-    setData(PrintData)
-    setDate(NowDate());
-    setStore(sessionStorage.getItem('Printname'));
-    const pages = PrintData.length / 26;
-    console.log(pages);
-  },[]);
+export default function PrintPage({ setCurrentPage, printData, storename, dataPages }: SettingProps) {
+  const Date = NowDate();
+  const sleep = (time) => new Promise((resolve) => setTimeout(resolve, time));
+
+  // useEffect(() => {
+  //   (async() => {
+  //     await sleep(500);
+  //     await window.print();
+  //   })()
+  // },[]);
+
+
   return (
     <div className="print-area">
       <div className="printData">
@@ -55,7 +57,17 @@ export default function PrintPage({ setCurrentPage }: SettingProps) {
             </tr>
           </thead>
           <tbody>
-            {data.map((row,index) => (
+          {printData.map((row, index) => (
+            <>
+              {(index % 26 === 0 && index > 1) && (
+                <>
+                  <tr key={`condition-${index}`}>
+                    <td colSpan="9" className="special-row">
+                      {index/26}/{dataPages}
+                    </td>
+                  </tr>
+                </>
+              )}
               <tr key={index}>
                 <td className="P-vender">{row[2]}</td>
                 <td className="P-code">{row[3]}</td>
@@ -67,7 +79,15 @@ export default function PrintPage({ setCurrentPage }: SettingProps) {
                 <td className="chack-cell"></td>
                 <td className="chack-cell"></td>
               </tr>
-            ))}
+            </>
+          ))}
+          <>
+            <tr key="last-condition">
+              <td colSpan="9" className="special-row">
+                {dataPages}/{dataPages}
+              </td>
+            </tr>
+          </>
           </tbody>
         </table>
       </div>
