@@ -11,6 +11,7 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
   },
+
   "dependencies": {
     "jaconv": "^1.0.4",
     "jsqr": "^1.4.0",
