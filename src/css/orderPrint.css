@@ -8,9 +8,12 @@
 }
 
 .storename {
+  margin-top: 5px;
+  margin-bottom: 5px;
   background-color: white;
   text-align: center;
 }
+
 .print-storename {
   background-color: white;
   text-align: center;
