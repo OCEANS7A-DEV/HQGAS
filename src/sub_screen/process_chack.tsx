@@ -68,6 +68,7 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
       var storeData = findStore(processData, storeList[i]);
       var completedCount = 0;
       var pendingCount = 0;
+      var receivingCount
       if (storeData) {
         var Process = processData[i + 1].process;
         for (let i = 0; i < Process.length; i++) {
@@ -75,14 +76,18 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
             completedCount += 1;
           }else if (Process[i] === 'pending') {
             pendingCount += 1;
+          }else if (Process[i] === 'receiving'){
+            receivingCount += 1;
           }
         }
-        if (completedCount === 0 && pendingCount >= 1) {
+        if (completedCount === 0 && pendingCount >= 1 && receivingCount === 0) {
           checkresult.push({ storeName: storename, process: "未印刷"});
-        }else if (pendingCount === 0 && completedCount >= 1) {
+        }else if (pendingCount === 0 && completedCount >= 1 && receivingCount === 0) {
           checkresult.push({ storeName: storename, process: "印刷済"});
-        }else if (completedCount >= 1 && pendingCount >= 1) {
+        }else if (completedCount >= 1 && pendingCount >= 1 && receivingCount === 0) {
           checkresult.push({ storeName: storename, process: "一部未印刷"});
+        }else if (receivingCount >= 1 && completedCount === 0 && pendingCount === 0){
+          checkresult.push({ storeName: storename, process: "入庫済"});
         }
       } else {
         checkresult.push({ storeName: storename, process: "未注文"});
