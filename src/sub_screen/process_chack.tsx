@@ -71,11 +71,11 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
       if (storeData) {
         var Process = processData[i + 1].process;
         for (let i = 0; i < Process.length; i++) {
-          if (Process[i] === 'completed') {
+          if (Process[i] === '印刷済') {
             completedCount += 1;
-          }else if (Process[i] === 'pending') {
+          }else if (Process[i] === '未印刷') {
             pendingCount += 1;
-          }else if (Process[i] === 'receiving'){
+          }else if (Process[i] === '入庫済'){
             receivingCount += 1;
           }
         }
