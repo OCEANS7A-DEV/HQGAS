@@ -100,6 +100,8 @@
   text-align: right;
 }
 
-/* @page {
-  margin: 0;
-} */
+@media print {
+  body {
+    zoom: 1;
+  }
+}

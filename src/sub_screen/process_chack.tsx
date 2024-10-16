@@ -43,6 +43,7 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
   const [selectOptions, setSelectOptions] = useState<SelectOption[]>([]);
   const message = `今回の店舗からの注文を${DateNow}で締め切りますか？`;
   const resetmessage = '在庫一覧の現物数のデータをすべて空にします\nよろしいですか？';
+  const rowNum = 27;
 
   const PrintProcessList = async () => {
     const result = await ProcessConfirmationGet();
@@ -125,13 +126,13 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
     const storeprintname = storeSelect.value;
     const orderData = await orderGet();
     var printData = orderData.filter(row => row[1] == storeprintname);
-    const pages = Math.ceil(printData.length / 26);
+    const pages = Math.ceil(printData.length / rowNum);
     const EmptyRow = ['','','','','','','','','','','','']
-    const restrows = (pages * 26) - printData.length;
+    const restrows = (pages * rowNum) - printData.length;
     for (let i = 0; i < restrows; i++) {
       printData.push(EmptyRow);
     }
-    const dataPages = printData.length / 26;
+    const dataPages = printData.length / rowNum;
     const dataSettings = async () => {
       setdataPages(dataPages)
       setPrintData(printData);
@@ -158,15 +159,15 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
     for (let i = 0; i < checkresult.length; i++){
       if (checkresult[i].process == '未印刷') {
         var printData = orderData.filter(row => row[1] == checkresult[i].storeName);
-        const pages = Math.ceil(printData.length / 26);
+        const pages = Math.ceil(printData.length / rowNum);
         console.log(pages)
         const EmptyRow = ['','','','','','','','','','','','']
-        const restrows = (pages * 26) - printData.length;
+        const restrows = (pages * rowNum) - printData.length;
 
         for (let i = 0; i < restrows; i++) {
           printData.push(EmptyRow);
         }
-        const dataPages = printData.length / 26;
+        const dataPages = printData.length / rowNum;
         console.log(dataPages);
         const dataSettings = async () => {
           setdataPages(dataPages)

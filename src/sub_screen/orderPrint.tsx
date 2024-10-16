@@ -59,11 +59,11 @@ export default function PrintPage({ setCurrentPage, printData, storename, dataPa
           <tbody>
           {printData.map((row, index) => (
             <>
-              {(index % 26 === 0 && index > 1) && (
+              {(index % 27 === 0 && index > 1) && (
                 <>
                   <tr key={`condition-${index}`}>
                     <td colSpan="9" className="special-row">
-                      {index/26}/{dataPages}
+                      {index/27}/{dataPages}
                     </td>
                   </tr>
                 </>
