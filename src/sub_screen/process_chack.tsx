@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { ProcessConfirmationGet, OrderDeadline, orderGet, GASProcessUpdate } from '../backend/Server_end.ts';
+import { ProcessConfirmationGet, OrderDeadline, orderGet, GASProcessUpdate, QuantityReset } from '../backend/Server_end.ts';
 import { localStoreSet, PrintDataSet, SelectlocalStoreSet } from '../backend/WebStorage.ts'
 import Select from 'react-select';
 import '../css/process_check.css';
 import DeadLineDialog from './DeadLineDialog.tsx';
+import QuantityResetDialog from './QuantityResetDialog.tsx';
 const sleep = (time) => new Promise((resolve) => setTimeout(resolve, time));
 
 
@@ -37,9 +38,11 @@ const DateNow = CurrentDate();
 export default function HQPage({ setCurrentPage, setPrintData, setStorename, setdataPages }: SettingProps) {
   const [checkresult, setCheckResult] = useState([]); // 処理結果を管理する状態
   const [isDialogOpen, setDialogOpen] = useState(false);
+  const [isQuantityDialogOpen, setQuantityDialogOpen] = useState(false);
   const [storeSelect, setStoreSelect] = useState<SelectOption | null>(null);
   const [selectOptions, setSelectOptions] = useState<SelectOption[]>([]);
   const message = `今回の店舗からの注文を${DateNow}で締め切りますか？`;
+  const resetmessage = '在庫一覧の現物数のデータをすべて空にします\nよろしいですか？';
 
   const PrintProcessList = async () => {
     const result = await ProcessConfirmationGet();
@@ -136,6 +139,7 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
     };
     await dataSettings();
     await setCurrentPage('Printpage');
+    await sleep(500);
     await new Promise<void>((resolve) => {
       const onAfterPrint = () => {
         window.removeEventListener('afterprint', onAfterPrint);
@@ -189,7 +193,24 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
     PrintProcessList();
   };
 
+  const resetConfirm = () => {
+    setQuantityDialogOpen(true);
+  };
 
+  const handleResetConfirm = () => {
+    actualQuantityReset();
+    alert('リセットが完了しました');
+    setQuantityDialogOpen(false);
+  };
+
+  const handleResetCancel = () => {
+    alert('キャンセルされました');
+    setQuantityDialogOpen(false);
+  };
+
+  const actualQuantityReset = async () => {
+    QuantityReset('在庫一覧');
+  };
 
   return (
     <div className='check_window'>
@@ -246,6 +267,16 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
         <a className="buttonUnderline" type="button" onClick={allPrint}>
           全未印刷
         </a>
+        <a className="buttonUnderline" type="button" onClick={resetConfirm}>
+          全現物数リセット
+        </a>
+        <QuantityResetDialog
+          title="確認"
+          message={resetmessage}
+          onConfirm={handleResetConfirm}
+          onCancel={handleResetCancel}
+          isOpen={isQuantityDialogOpen}
+        />
       </div>
     </div>
   );
