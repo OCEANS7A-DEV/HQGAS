@@ -146,7 +146,9 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
     });
     GASProcessUpdate('店舗へ',storeprintname);
     setCurrentPage('HQPage');
+    PrintProcessList();
   };
+
   const allPrint = async () => {
     const orderData = await orderGet();
     for (let i = 0; i < checkresult.length; i++){
@@ -184,6 +186,7 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
       }
     }
     setCurrentPage('HQPage');
+    PrintProcessList();
   };
 
 
