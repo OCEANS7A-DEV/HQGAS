@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ProcessConfirmationGet, OrderDeadline, orderGet, GASProcessUpdate } from '../backend/Server_end.ts';
-import { localStoreSet, PrintDataSet } from '../backend/WebStorage.ts'
+import { localStoreSet, PrintDataSet, SelectlocalStoreSet } from '../backend/WebStorage.ts'
 import Select from 'react-select';
 import '../css/process_check.css';
 import DeadLineDialog from './DeadLineDialog.tsx';
@@ -90,10 +90,10 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
   useEffect(() => {
     PrintProcessList();
     const getLocalStorageSize = async () => {
-      const cachedData = localStorage.getItem('storeData');
+      const cachedData = localStorage.getItem('SelectstoreData');
       setSelectOptions(JSON.parse(cachedData));
-      await localStoreSet(cachedData);
-      const cachedData2 = localStorage.getItem('storeData');
+      await SelectlocalStoreSet(cachedData);
+      const cachedData2 = localStorage.getItem('SelectstoreData');
       setSelectOptions(JSON.parse(cachedData2));
     }
     getLocalStorageSize()
@@ -119,7 +119,7 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
   };
 
   const handletest = async () => {
-    const storeprintname = '西条東';
+    const storeprintname = storeSelect.value;
     const orderData = await orderGet();
     var printData = orderData.filter(row => row[1] == storeprintname);
     const pages = Math.ceil(printData.length / 26);
@@ -136,6 +136,16 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
     };
     await dataSettings();
     await setCurrentPage('Printpage');
+    await new Promise<void>((resolve) => {
+      const onAfterPrint = () => {
+        window.removeEventListener('afterprint', onAfterPrint);
+        resolve();
+      };
+      window.addEventListener('afterprint', onAfterPrint);
+      window.print();
+    });
+    GASProcessUpdate('店舗へ',storeprintname);
+    setCurrentPage('HQPage');
   };
   
   const allPrint = async () => {
@@ -170,9 +180,11 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
           window.addEventListener('afterprint', onAfterPrint);
           window.print();
         });
+        GASProcessUpdate('店舗へ',checkresult[i].storeName);
         await sleep(500);
       }
     }
+    setCurrentPage('HQPage');
   };
 
 
@@ -216,7 +228,7 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
         />
       </div>
       <div className="order-print">
-        <div className="store-select">
+        <div>
           <Select
             className="store-select"
             placeholder="店舗選択"
@@ -227,7 +239,7 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
           />
         </div>
         <a className="buttonUnderline" type="button" onClick={handletest}>
-          発注取得
+          個別印刷
         </a>
         <a className="buttonUnderline" type="button" onClick={allPrint}>
           全未印刷

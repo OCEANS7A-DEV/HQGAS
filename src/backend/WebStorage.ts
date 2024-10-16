@@ -3,11 +3,10 @@ import * as jaconv from 'jaconv';
 
 
 export default function main(){}
-
-// export const localStoreSet = async () => {
-//   const storeData = await ListGet();
-//   localStorage.setItem('storeData', JSON.stringify(storeData))
-// }
+export const localStoreSet = async () => {
+  const storeData = await ListGet();
+  localStorage.setItem('storeData', JSON.stringify(storeData))
+}
 
 export const localStorageSet = async (
 ) => {
@@ -48,12 +47,12 @@ export const searchStr = async (searchword: string) => {
   return result;
 };
 
-export const localStoreSet = async () => {
+export const SelectlocalStoreSet = async () => {
   const storeData = await ListGet();
   const options = storeData.map((store: string, index: number) => ({
     value: store,
     label: store,
     id: index,
   }));
-  localStorage.setItem('storeData', JSON.stringify(options))
+  localStorage.setItem('SelectstoreData', JSON.stringify(options))
 }

@@ -1,4 +1,5 @@
-const URL_STRING = "https://script.google.com/macros/s/AKfycbz8PJHwhgHUBf3gka4hifxA6zkCzZypyGfB-8_luSSA-zeYhb4UeKW1ktXG9ZX0F_vO/exec";
+//const URL_STRING = "https://script.google.com/macros/s/AKfycbz8PJHwhgHUBf3gka4hifxA6zkCzZypyGfB-8_luSSA-zeYhb4UeKW1ktXG9ZX0F_vO/exec";
+const URL_STRING = "https://script.google.com/macros/s/AKfycbznkMazxV3wlmS66uEHcOSRkI_SBQkdfT_MfMzJnvueFkSwDxGFiLlmFtq-MfMM6ldL/exec";
 export default async function main() {};
 
 export const InventorySearch = async(
@@ -203,6 +204,8 @@ export const GASProcessUpdate = async (
   sheet: string,
   StoreName: string,
 ) => {
+  // console.log(sheet)
+  // console.log(StoreName)
   try {
     const response = await fetch(
       URL_STRING,
@@ -220,9 +223,9 @@ export const GASProcessUpdate = async (
         }),
       },
     );
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
+    // if (!response.ok) {
+    //   throw new Error(`HTTP error! status: ${response.status}`);
+    // }
   } catch (error) {
     console.error('Error:', error);
     throw error;

@@ -4,6 +4,10 @@
   display: flex;
 }
 
+.store-select {
+  width: 150px;
+}
+
 
 .check {
   overflow-y: auto;
