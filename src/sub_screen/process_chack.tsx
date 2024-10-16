@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { ProcessConfirmationGet, OrderDeadline, orderGet } from '../backend/Server_end.ts';
+import { ProcessConfirmationGet, OrderDeadline, orderGet, GASProcessUpdate } from '../backend/Server_end.ts';
+import { localStoreSet, PrintDataSet } from '../backend/WebStorage.ts'
+import Select from 'react-select';
 import '../css/process_check.css';
 import DeadLineDialog from './DeadLineDialog.tsx';
-import { PrintDataSet } from '../backend/WebStorage.ts';
 const sleep = (time) => new Promise((resolve) => setTimeout(resolve, time));
 
 
@@ -11,6 +12,12 @@ interface SettingProps {
   setPrintData: (data: any) => void;
   setStorename: (name: string) => void;
   setdataPages: (pagenum: number) => void;
+}
+
+interface SelectOption {
+  value: string;
+  label: string;
+  id: number;
 }
 
 function findStore(storeList, targetStore) {
@@ -30,6 +37,8 @@ const DateNow = CurrentDate();
 export default function HQPage({ setCurrentPage, setPrintData, setStorename, setdataPages }: SettingProps) {
   const [checkresult, setCheckResult] = useState([]); // 処理結果を管理する状態
   const [isDialogOpen, setDialogOpen] = useState(false);
+  const [storeSelect, setStoreSelect] = useState<SelectOption | null>(null);
+  const [selectOptions, setSelectOptions] = useState<SelectOption[]>([]);
   const message = `今回の店舗からの注文を${DateNow}で締め切りますか？`;
 
   const PrintProcessList = async () => {
@@ -77,9 +86,22 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
     }
     setCheckResult(checkresult);
   };
+
   useEffect(() => {
     PrintProcessList();
+    const getLocalStorageSize = async () => {
+      const cachedData = localStorage.getItem('storeData');
+      setSelectOptions(JSON.parse(cachedData));
+      await localStoreSet(cachedData);
+      const cachedData2 = localStorage.getItem('storeData');
+      setSelectOptions(JSON.parse(cachedData2));
+    }
+    getLocalStorageSize()
   },[])
+
+  const handleStoreChange = (selectedOption: SelectOption | null) => {
+    setStoreSelect(selectedOption);
+  };
 
   const handleOpenDialog = () => {
     setDialogOpen(true);
@@ -194,6 +216,16 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
         />
       </div>
       <div className="order-print">
+        <div className="store-select">
+          <Select
+            className="store-select"
+            placeholder="店舗選択"
+            isSearchable={false}
+            value={storeSelect}
+            onChange={handleStoreChange}
+            options={selectOptions}
+          />
+        </div>
         <a className="buttonUnderline" type="button" onClick={handletest}>
           発注取得
         </a>

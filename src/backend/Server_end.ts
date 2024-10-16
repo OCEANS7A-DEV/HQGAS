@@ -198,3 +198,33 @@ export const orderGet = async (
     throw error;
   }
 };
+
+export const GASProcessUpdate = async (
+  sheet: string,
+  StoreName: string,
+) => {
+  try {
+    const response = await fetch(
+      URL_STRING,
+      {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          "Content-Type" : "application/x-www-form-urlencoded",
+        },
+        body: JSON.stringify({
+          action: 'processUpdate',
+          sub_action: 'post',
+          sheetName: sheet,
+          storename: StoreName,
+        }),
+      },
+    );
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    throw error;
+  }
+};

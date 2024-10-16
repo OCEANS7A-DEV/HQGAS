@@ -12,12 +12,12 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
   },
-
   "dependencies": {
     "jaconv": "^1.0.4",
     "jsqr": "^1.4.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-select": "^5.8.1",
     "react-transition-group": "^4.4.5",
     "react-webcam": "^7.2.0"
   },
