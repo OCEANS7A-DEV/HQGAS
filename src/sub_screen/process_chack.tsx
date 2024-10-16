@@ -267,7 +267,7 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
         <a className="buttonUnderline" type="button" onClick={allPrint}>
           全未印刷
         </a>
-        <a className="buttonUnderline" type="button" onClick={resetConfirm}>
+        {/* <a className="buttonUnderline" type="button" onClick={resetConfirm}>
           全現物数リセット
         </a>
         <QuantityResetDialog
@@ -276,7 +276,7 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
           onConfirm={handleResetConfirm}
           onCancel={handleResetCancel}
           isOpen={isQuantityDialogOpen}
-        />
+        /> */}
       </div>
     </div>
   );
