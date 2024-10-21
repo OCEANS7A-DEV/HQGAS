@@ -41,6 +41,7 @@ export const GASPostInsert = async (
   sheet: string,
   datail: any,
 ) => {
+  console.log(datail)
   try {
     const response = await fetch(
       URL_STRING,

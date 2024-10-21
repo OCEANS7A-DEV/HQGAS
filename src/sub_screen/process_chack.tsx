@@ -52,7 +52,7 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
     const storeProcessMap = {};
     result.forEach(item => {
       const store = item[1];
-      const process = item[11];
+      const process = item[12];
       if (!storeProcessMap[store]) {
         storeProcessMap[store] = [];
       }
