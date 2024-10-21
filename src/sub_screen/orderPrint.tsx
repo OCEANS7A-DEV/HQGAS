@@ -74,8 +74,8 @@ export default function PrintPage({ setCurrentPage, printData, storename, dataPa
                 <td className="P-name">{row[4]}</td>
                 <td className="P-detail">{row[5]}</td>
                 <td className="P-number">{row[6]}</td>
-                <td className="P-personal">{row[9]}</td>
-                <td className="P-remarks">{row[10]}</td>
+                <td className="P-personal">{row[10]}</td>
+                <td className="P-remarks">{row[11]}</td>
                 <td className="chack-cell"></td>
                 <td className="chack-cell"></td>
               </tr>

@@ -205,6 +205,8 @@ export const GASProcessUpdate = async (
   sheet: string,
   StoreName: string,
 ) => {
+  console.log(sheet)
+  console.log(StoreName)
   try {
     const response = await fetch(
       URL_STRING,
