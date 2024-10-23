@@ -48,6 +48,7 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
   const PrintProcessList = async () => {
     const result = await ProcessConfirmationGet();
     const storeList = JSON.parse(localStorage.getItem('storeData'));
+    
     const processData = [];
     const storeProcessMap = {};
     result.forEach(item => {
@@ -59,7 +60,7 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
       storeProcessMap[store].push(process);
     });
     for (let store in storeProcessMap) {
-      processData.push({ storeName: store, process: storeProcessMap[store] });
+      processData.push({ storeName: store, process: storeProcessMap[store][0] });
     }
     const checkresult = [];
     for (let i = 0; i < storeList.length; i++) {
@@ -69,13 +70,13 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
       var pendingCount = 0;
       var receivingCount = 0;
       if (storeData) {
-        var Process = processData[i + 1].process;
+        var Process = processData[i].process;
         for (let i = 0; i < Process.length; i++) {
-          if (Process[i] === '印刷済') {
+          if (Process == '印刷済') {
             completedCount += 1;
-          }else if (Process[i] === '未印刷') {
+          }else if (Process == '未印刷') {
             pendingCount += 1;
-          }else if (Process[i] === '入庫済'){
+          }else if (Process == '入庫済'){
             receivingCount += 1;
           }
         }
