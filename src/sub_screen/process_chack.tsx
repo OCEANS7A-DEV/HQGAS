@@ -48,7 +48,7 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
   const PrintProcessList = async () => {
     const result = await ProcessConfirmationGet();
     const storeList = JSON.parse(localStorage.getItem('storeData'));
-    
+    console.log(result)
     const processData = [];
     const storeProcessMap = {};
     result.forEach(item => {
@@ -60,6 +60,7 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
       storeProcessMap[store].push(process);
     });
     for (let store in storeProcessMap) {
+      console.log(storeProcessMap)
       processData.push({ storeName: store, process: storeProcessMap[store][0] });
     }
     const checkresult = [];
@@ -72,6 +73,8 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
       var nonOrderCount = 0;
       if (storeData) {
         var Process = processData[i].process;
+        //console.log(storeData)
+        console.log(processData[i])
         for (let i = 0; i < Process.length; i++) {
           if (Process == '印刷済') {
             completedCount += 1;
