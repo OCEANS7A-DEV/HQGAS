@@ -48,7 +48,7 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
   const PrintProcessList = async () => {
     const result = await ProcessConfirmationGet();
     const storeList = JSON.parse(localStorage.getItem('storeData'));
-    console.log(result)
+    //console.log(result)
     const processData = [];
     const storeProcessMap = {};
     result.forEach(item => {
@@ -60,22 +60,34 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
       storeProcessMap[store].push(process);
     });
     for (let store in storeProcessMap) {
-      console.log(storeProcessMap)
+      //console.log(storeProcessMap)
       processData.push({ storeName: store, process: storeProcessMap[store][0] });
     }
     const checkresult = [];
     for (let i = 0; i < storeList.length; i++) {
+      var storeData = [];
       var storename = storeList[i];
-      var storeData = findStore(processData, storeList[i]);
+      var datajudgement = storeProcessMap[storename];
+      console.log(storeProcessMap[storename])
+      if (datajudgement !== void 0) {
+        storeData = storeProcessMap[storename];
+      }else{
+        storeData = [];
+      }
+      
       var completedCount = 0;
       var pendingCount = 0;
       var receivingCount = 0;
       var nonOrderCount = 0;
-      if (storeData) {
-        var Process = processData[i].process;
-        //console.log(storeData)
-        console.log(processData[i])
-        for (let i = 0; i < Process.length; i++) {
+      //console.log(storeData)
+      
+      if (storeData.length > 0) {
+        console.log(storeData.length)
+        for (let i = 0; i < storeData.length; i++) {
+          console.log(i)
+          console.log(storename)
+          console.log(storeData[i])
+          var Process = storeData[i];
           if (Process == '印刷済') {
             completedCount += 1;
           }else if (Process == '未印刷') {
@@ -86,15 +98,16 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
             nonOrderCount += 1;
           }
         }
+        console.log(storeData,pendingCount,receivingCount,nonOrderCount)
         if (completedCount === 0 && pendingCount === 0 && receivingCount === 0 && nonOrderCount >= 1) {
           checkresult.push({ storeName: storename, process: "注文無"});
-        }else if (completedCount === 0 && pendingCount >= 1 && receivingCount === 0) {
+        }else if (completedCount === 0 && pendingCount >= 1 && receivingCount === 0 && nonOrderCount >= 0) {
           checkresult.push({ storeName: storename, process: "未印刷"});
-        }else if (pendingCount === 0 && completedCount >= 1 && receivingCount === 0) {
+        }else if (pendingCount === 0 && completedCount >= 1 && receivingCount === 0 && nonOrderCount >= 0) {
           checkresult.push({ storeName: storename, process: "印刷済"});
-        }else if (completedCount >= 1 && pendingCount >= 1 && receivingCount === 0) {
+        }else if (completedCount >= 1 && pendingCount >= 1 && receivingCount === 0 && nonOrderCount >= 0) {
           checkresult.push({ storeName: storename, process: "一部未印刷"});
-        }else if (receivingCount >= 1){
+        }else if (receivingCount >= 1 && nonOrderCount >= 0){
           checkresult.push({ storeName: storename, process: "入庫済"});
         }
       } else {
