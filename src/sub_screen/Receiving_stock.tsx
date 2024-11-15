@@ -26,7 +26,6 @@ const productSearch = (code: number) => {
 };
 
 
-
 const fieldDataList = ['業者', '商品コード', '商品名', '数量', '商品単価'];
 
 export default function ReceivingPage() {
