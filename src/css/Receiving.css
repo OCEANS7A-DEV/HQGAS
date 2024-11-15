@@ -133,6 +133,18 @@
   width: 200px;
 }
 
+.insertDate{
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: center;
+}
+
+.insert_date{
+  height: 30px;
+  margin: 5px;
+}
+
 
 
 a {

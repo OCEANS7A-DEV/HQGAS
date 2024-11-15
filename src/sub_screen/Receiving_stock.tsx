@@ -46,6 +46,7 @@ export default function ReceivingPage() {
     const [isDialogOpen, setDialogOpen] = useState(false);
     const message = "入庫内容は以下の通りです\n以下の内容でよろしければOKをクリックしてください\n内容の変更がある場合にはキャンセルをクリックしてください";
 
+    const [Date, setDate] = useState<string>('');
 
   const handleChange = (
     index: number,
@@ -112,7 +113,7 @@ export default function ReceivingPage() {
 
 
   const insertPost = async () => {
-    await GASPostInsert('insert', '本部入庫', formData);
+    await GASPostInsert('insert', '本部入庫', formData, Date);
   };
 
   const removeForm = (index: number) => {
@@ -176,9 +177,22 @@ export default function ReceivingPage() {
     setDialogOpen(false);
   };
 
+  const handleChangeDate = (event: ChangeEvent<HTMLInputElement>) => {
+    setDate(event.target.value)
+  };
+
+
   return (
     <div className="window_area">
-      <h2 className='store_name'></h2>
+      <div className="insertDate">
+        <h2>入庫日付</h2>
+        <input
+        type="date"
+        className="insert_date"
+        value={Date}
+        onChange={(e) => handleChangeDate(e)}
+      />
+      </div>
       <div className='form_area'>
           <WordSearch className="searcharea"/>
         <div className='in-area'>

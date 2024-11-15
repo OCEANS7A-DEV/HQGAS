@@ -40,8 +40,8 @@ export const GASPostInsert = async (
   actionName: string,
   sheet: string,
   datail: any,
+  date: any,
 ) => {
-  console.log(datail)
   try {
     const response = await fetch(
       URL_STRING,
@@ -56,6 +56,7 @@ export const GASPostInsert = async (
           sub_action: 'post',
           sheetName: sheet,
           data: datail,
+          insertdate: date,
         }),
       },
     );
