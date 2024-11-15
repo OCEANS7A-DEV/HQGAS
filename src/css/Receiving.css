@@ -92,6 +92,7 @@
 .insert_name,
 .insert_quantity,
 .insert_Select,
+.insert_price,
 .personal,
 .remarks {
   margin-right: 10px; /* フィールド間のスペースを調整 */
@@ -110,10 +111,13 @@
 }
 
 .insert_name {
-  width: 200px;
+  width: 300px;
 }
 
 .insert_quantity {
+  width: 60px;
+}
+.insert_price{
   width: 100px;
 }
 
@@ -196,4 +200,12 @@ a {
     transform: scaleX(1);
     transform-origin: left top;
   }
+}
+
+.insert_code, .insert_quantity, .insert_price{
+  text-align: right;
+}
+
+::placeholder {
+  text-align: left;
 }

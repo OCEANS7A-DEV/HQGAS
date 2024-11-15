@@ -240,7 +240,7 @@ export default function ReceivingPage() {
               type="text"
               pattern="^[0-9]+$"
               placeholder="商品単価"
-              className="insert_quantity"
+              className="insert_price"
               inputMode="numeric"
               value={data.商品単価}
               onChange={(e) => numberchange(index, '商品単価', e)}

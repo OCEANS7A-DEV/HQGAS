@@ -17,6 +17,12 @@ export default function WordSearch() {
     setTableData(result); // 結果を状態にセット
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key == 'Enter'){
+      productReSearch();
+    }
+  };
+
   return (
     <div className="WordSearch-area">
       <div className="search-input">
@@ -25,6 +31,7 @@ export default function WordSearch() {
           value={SWord}
           onChange={handlewordchange}
           placeholder="検索ワードを入力"
+          onKeyDown={(e) => handleKeyDown(e)}
         />
         <a className="buttonUnderlineS" type="button" onClick={productReSearch}>
           検索
