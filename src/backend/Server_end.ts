@@ -1,5 +1,7 @@
 //const URL_STRING = "https://script.google.com/macros/s/AKfycbz8PJHwhgHUBf3gka4hifxA6zkCzZypyGfB-8_luSSA-zeYhb4UeKW1ktXG9ZX0F_vO/exec";
 const URL_STRING = "https://script.google.com/macros/s/AKfycbznkMazxV3wlmS66uEHcOSRkI_SBQkdfT_MfMzJnvueFkSwDxGFiLlmFtq-MfMM6ldL/exec";
+const Get_URL = 'https://script.google.com/macros/s/AKfycbwdZ3lhe2QH2BChceXrTsxzGAkUd9EgZ2AZ7pWXWlMJvwtOtOcjXDTOXUmdBRJgCs25/exec';
+
 export default async function main() {};
 
 export const InventorySearch = async(
@@ -73,15 +75,11 @@ export const stockList = async(
 ) => {
   try {
     const response = await fetch(
-      URL_STRING,
+      Get_URL,
       {
         method: 'POST',
-        headers: {
-          "Content-Type" : "application/x-www-form-urlencoded",
-        },
         body: JSON.stringify({
-          action: 'stockList',
-          sub_action: 'get',
+          action: 'allData',
           sheetName: '在庫一覧',
         })
       },
@@ -90,11 +88,8 @@ export const stockList = async(
       throw new Error(`HTTP error! status: ${response.status}`)
     }
     const result = await response.json();
-    if (result.length > 1) {
-      return result;
-    }else{
-      return null;
-    }
+    return result;
+
   }catch(e){
     return (e);
   }
