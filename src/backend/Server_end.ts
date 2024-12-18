@@ -71,6 +71,37 @@ export const GASPostInsert = async (
   }
 };
 
+export const ServiceInsert = async (
+  actionName: string,
+  sheet: string,
+  datail: any,
+) => {
+  try {
+    const response = await fetch(
+      URL_STRING,
+      {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          "Content-Type" : "application/x-www-form-urlencoded",
+        },
+        body: JSON.stringify({
+          action: actionName,
+          sub_action: 'post',
+          sheetName: sheet,
+          data: datail,
+        }),
+      },
+    );
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    throw error;
+  }
+};
+
 export const stockList = async(
 ) => {
   try {

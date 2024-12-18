@@ -1,10 +1,11 @@
 import React, { useState, useRef, ChangeEvent } from 'react';
 import ConfirmDialog from './orderDialog';
-import { InventorySearch, GASPostInsert } from '../backend/Server_end.ts';
+import { ServiceInsert } from '../backend/Server_end.ts';
 import WordSearch from './ProductSearchWord';
 import '../css/Receiving.css';
 
 interface InsertData {
+  業者: string,
   商品コード: string;
   商品名: string;
   数量: string;
@@ -29,6 +30,7 @@ const fieldDataList = ['業者', '商品コード', '商品名', '数量', '商�
 export default function ServicePage() {
     const initialRowCount = 20;
     const initialFormData = Array.from({ length: initialRowCount }, () => ({
+      業者: '',
       商品コード: '',
       商品名: '',
       数量: '',
@@ -57,6 +59,7 @@ export default function ServicePage() {
     const newFormData = [...formData];
     for (let i = 0; i < 19; i++) {
       newFormData.push({
+        業者: '',
         商品コード: '',
         商品名: '',
         数量: '',
@@ -106,12 +109,22 @@ export default function ServicePage() {
 
 
   const insertPost = async () => {
-    await GASPostInsert('insert', 'サービス品', formData, Date);
+    const resultData = []
+    for (let i = 0; i < formData.length; i++){
+      if (formData[i].商品コード !== ""){
+        resultData.push([Date, formData[i].業者, formData[i].商品コード, formData[i].商品名, formData[i].数量])
+      }
+    }
+
+    console.log(resultData);
+    //return
+    ServiceInsert('insertService', 'サービス品入庫', resultData);
   };
 
   const removeForm = (index: number) => {
     const newFormData = formData.filter((_, i) => i !== index);
     newFormData.push({
+      業者: '',
       商品コード: '',
       商品名: '',
       数量: '',
@@ -189,6 +202,13 @@ export default function ServicePage() {
         <div className='in-area'>
           {formData.map((data, index) => (
           <div key={index} className="insert_area">
+            <input
+              type="text"
+              placeholder="業者"
+              className="insert_vendor"
+              value={data.業者}
+              onChange={(e) => handleChange(index, '業者', e)}
+            />
             <input
               title="入力は半角のみです"
               type="tel"
