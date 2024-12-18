@@ -8,6 +8,7 @@ import TopBanner from './sub_screen/banner.tsx';
 import { localStorageSet, localStoreSet } from './backend/WebStorage.ts';
 import QR from './sub_screen/QR.tsx';
 import PrintPage from './sub_screen/orderPrint.tsx';
+import ServicePage from './sub_screen/service_items.tsx';
 
 
 export default function App() {
@@ -26,6 +27,8 @@ export default function App() {
     switch (page) {
       case 'ReceivingPage':
         return <ReceivingPage/>
+      case 'ServicePage':
+        return <ServicePage/>
       case 'HQPage':
         return <HQPage setCurrentPage={setCurrentPage} setPrintData={setPrintData} setStorename={setStorename} setdataPages={setdataPages}/>;
       case 'QRPage':

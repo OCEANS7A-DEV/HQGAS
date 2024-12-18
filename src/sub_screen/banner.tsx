@@ -40,6 +40,9 @@ export default function TopBanner({ setCurrentPage }: SettingProps) {
         <a className="buttonUnderline" id="main_back" type="button" onClick={() => clickpage('ReceivingPage')}>
           入庫処理
         </a>
+        <a className="buttonUnderline" id="main_back" type="button" onClick={() => clickpage('ServicePage')}>
+          サービス品入庫
+        </a>
         <a className="buttonUnderline" id="main_back" type="button" onClick={() => clickpage('HQPage')}>
           納品書作成
         </a>
