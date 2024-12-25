@@ -18,6 +18,7 @@ const QRBuild = () => {
 
   // QRコード作成ボタンを押したときの処理
   const handleGenerateQR = () => {
+    //console.log(selectedRows)
     setDialogOpen(true)
   };
 

@@ -41,22 +41,20 @@ export default function App() {
   };
 
   return (
-    <div className="App">
-      <TransitionGroup component={null}>
-        <div>{currentPage !== 'Printpage' && <TopBanner setCurrentPage={setCurrentPage} />}</div>
-        <CSSTransition
-          key={currentPage}
-          timeout={{ enter: 500, exit: 300 }}
-          classNames="fade"
-          nodeRef={nodeRef}
-          unmountOnExit
-        >
-          <div ref={nodeRef} className="page">
-            {getPageComponent(currentPage)}
-          </div>
-        </CSSTransition>
-      </TransitionGroup>
-    </div>
+    <TransitionGroup component={null}>
+      <div>{currentPage !== 'Printpage' && <TopBanner setCurrentPage={setCurrentPage} />}</div>
+      <CSSTransition
+        key={currentPage}
+        timeout={{ enter: 500, exit: 300 }}
+        classNames="fade"
+        nodeRef={nodeRef}
+        unmountOnExit
+      >
+        <div ref={nodeRef} className="page">
+          {getPageComponent(currentPage)}
+        </div>
+      </CSSTransition>
+    </TransitionGroup>
   );
 }
 
