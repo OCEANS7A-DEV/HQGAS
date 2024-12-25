@@ -17,7 +17,8 @@ interface ConfirmDialogProps {
 const ConfirmDialog: React.FC<ConfirmDialogProps> = ({ title, message, Data, onConfirm, isOpen }) => {
   if (!isOpen) return null;
 
-  const printRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const reactToPrintFn = useReactToPrint({ contentRef });
 
   const [imageURL, setImageURL] = useState('');
   const JSONCodes = () => {
@@ -27,20 +28,17 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({ title, message, Data, onC
     for (let i = 0; i < Data.length; i++){
       resultdata.push(Data[i][1])
     }
-    const QRURL = `https://api.qrserver.com/v1/create-qr-code/?data=${resultdata}&size=300x300`
+    const QRURL = `https://api.qrserver.com/v1/create-qr-code/?data=${resultdata}&size=200x200`
     return QRURL;
   };
   
-  const QRPrint = useReactToPrint({
-    contentRef: () => printRef.current,
-  });
 
   useEffect(() => {
     const setURLString = JSONCodes();
     setImageURL(setURLString);
   },[])
 
-  return ReactDOM.createPortal(
+  return (
     <div className="order-confirm-dialog-overlay-QR">
       <div className="order-confirm-dialog">
         <div className="QR-confirm">
@@ -56,7 +54,7 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({ title, message, Data, onC
             </p>
           </div>
           {/* テーブルを表示 */}
-          <div className="QR-Area" ref={printRef}>
+          <div className="QR-Area" ref={contentRef}>
             <img src={imageURL} alt="QRコード" />
           </div>
           <div className='order-confirm-dialog-button'>
@@ -69,15 +67,14 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({ title, message, Data, onC
             <a
               className="buttonUnderlineSt"
               type="button"
-              onClick={() => QRPrint()}  // ボタンクリックでQRコード生成
+              onClick={() => reactToPrintFn()}  // ボタンクリックでQRコード生成
             >
               印刷
             </a>
           </div>
         </div>
       </div>
-    </div>,
-    document.body
+    </div>
   );
 };
 

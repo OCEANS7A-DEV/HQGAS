@@ -10,9 +10,12 @@ import QRBuild from './sub_screen/QR.tsx';
 import PrintPage from './sub_screen/orderPrint.tsx';
 import ServicePage from './sub_screen/service_items.tsx';
 
+import TEST from './sub_screen/Print.tsx';
+
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState('ReceivingPage');
+  //const [currentPage, setCurrentPage] = useState('TEST');
   const [printData, setPrintData] = useState([]);
   const [storename, setStorename] = useState<string>('');
   const [dataPages, setdataPages] = useState<number>(0);
@@ -35,6 +38,8 @@ export default function App() {
         return <QRBuild />;
       case 'Printpage':
         return <PrintPage setCurrentPage={setCurrentPage} printData={printData} storename={storename} dataPages={dataPages}/>;
+      case 'TEST':
+        return <TEST/>;
       default:
         return null;
     }
