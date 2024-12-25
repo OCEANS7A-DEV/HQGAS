@@ -32,7 +32,6 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({ title, message, Data, onC
     return QRURL;
   };
   
-
   useEffect(() => {
     const setURLString = JSONCodes();
     setImageURL(setURLString);
