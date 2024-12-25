@@ -37,6 +37,9 @@ export default function TopBanner({ setCurrentPage }: SettingProps) {
   return (
     <div>
       <div className='banner-area'>
+        <a className="buttonUnderline" id="main_back" type="button" onClick={() => clickpage('QRBuildPage')}>
+          QRコード作成
+        </a>
         <a className="buttonUnderline" id="main_back" type="button" onClick={() => clickpage('ReceivingPage')}>
           入庫処理
         </a>

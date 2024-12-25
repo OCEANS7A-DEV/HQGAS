@@ -1,32 +1,61 @@
 import React, { useRef, useEffect, useState } from 'react';
-const QR = () => {
+import '../css/QRBuild.css'
+
+const QRBuild = () => {
+  const [data, setData] = useState([]);
+  const [QRData, setQRData] = useState([]);
+  
+  const QRDATA = (e, data) => {
+    //if(e.chackbox.checked){}
+    console.log(e.checkbox)
+  };
 
   useEffect(() => {
-    const handleMessage = (event) => {
-      // event.originで安全に発信元を確認することができます
-      if (event.origin !== 'https://script.google.com/macros/s/AKfycbwA4v7uWv585N8p3sUifQI1bKnLTSLQg79raDAVDgr1UEeAtgBdHQ7VxbCljONBwXTk2Q/exec') return;
-
-      console.log('Received message from iframe:', event.data);
-    };
-
-    window.addEventListener('message', handleMessage);
-
-    return () => {
-      window.removeEventListener('message', handleMessage);
-    };
+    const setdata = JSON.parse(localStorage.getItem('data'));
+    setData(setdata);
   }, []);
 
   return (
     <div>
-      <iframe
-        src="https://script.google.com/macros/s/AKfycbwA4v7uWv585N8p3sUifQI1bKnLTSLQg79raDAVDgr1UEeAtgBdHQ7VxbCljONBwXTk2Q/exec"
-        title="External Page"
-        width="100%"
-        height="500px"
-        style={{ border: 'none' }}
-      />
+      <div className="QRBuildTableArea">
+        <div className="QRContent">
+          <div>
+            <h2>QR作成</h2>
+          </div>
+          <div>
+            <table className="data-table-head">
+              <thead>
+                <tr>
+                  <th className="chackbox">選択</th>
+                  <th className="qr-vendor">業者名</th>
+                  <th className="qr-code">商品コード</th>
+                  <th className="qr-name">商品名</th>
+                  <th className="qr-price">商品単価</th>
+                </tr>
+              </thead>
+              <tbody>
+                {
+                  data.map((row, index) => (
+                    <tr key={index}>
+                      <td className="chackbox"><input type="checkbox" onClick={(e) => QRDATA(e,row)}></input></td>
+                      <td className="qr-vendor-td">{row[0]}</td>
+                      <td className="qr-code-td">{row[1]}</td>
+                      <td className="qr-name-td">{row[2]}</td>
+                      <td className="qr-price-td">{row[3]}</td>
+                    </tr>
+                  ))
+                }
+              </tbody>
+            </table>
+          </div>
+          <div className="QRButton">
+            <a className="buttonUnderlineSt" type="button" onClick={console.log(QRData)}>QRコード作成</a>
+          </div>
+        </div>
+      </div>
     </div>
+    
   );
 };
 
-export default QR;
+export default QRBuild;

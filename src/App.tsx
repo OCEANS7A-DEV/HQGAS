@@ -6,7 +6,7 @@ import HQPage from './sub_screen/process_chack.tsx';
 import ReceivingPage from './sub_screen/Receiving_stock.tsx';
 import TopBanner from './sub_screen/banner.tsx';
 import { localStorageSet, localStoreSet } from './backend/WebStorage.ts';
-import QR from './sub_screen/QR.tsx';
+import QRBuild from './sub_screen/QR.tsx';
 import PrintPage from './sub_screen/orderPrint.tsx';
 import ServicePage from './sub_screen/service_items.tsx';
 
@@ -31,8 +31,8 @@ export default function App() {
         return <ServicePage/>
       case 'HQPage':
         return <HQPage setCurrentPage={setCurrentPage} setPrintData={setPrintData} setStorename={setStorename} setdataPages={setdataPages}/>;
-      case 'QRPage':
-        return <QR />;
+      case 'QRBuildPage':
+        return <QRBuild />;
       case 'Printpage':
         return <PrintPage setCurrentPage={setCurrentPage} printData={printData} storename={storename} dataPages={dataPages}/>;
       default:
