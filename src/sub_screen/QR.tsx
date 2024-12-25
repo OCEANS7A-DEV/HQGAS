@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import '../css/QRBuild.css';
+import ConfirmDialog from './QR_Dialog';
 
 const QRBuild = () => {
   const [data, setData] = useState([]);
   const [selectedRows, setSelectedRows] = useState<string[]>([]);  // 選択した行の管理
+  const [isDialogOpen, setDialogOpen] = useState(false);
 
   // チェックボックスが変更されたときの処理
   const handleCheckboxChange = (e, row) => {
@@ -16,8 +18,11 @@ const QRBuild = () => {
 
   // QRコード作成ボタンを押したときの処理
   const handleGenerateQR = () => {
-    console.log('選択された行のデータ:', selectedRows);
-    // QRコード生成処理や別のロジックを追加
+    setDialogOpen(true)
+  };
+
+  const handleConfirm = () => {
+    setDialogOpen(false);
   };
 
   // ローカルストレージからデータを取得
@@ -37,7 +42,7 @@ const QRBuild = () => {
             <table className="data-table-head">
               <thead>
                 <tr>
-                  <th className="checkbox">選択</th>
+                  <th className="qr-checkbox">選択</th>
                   <th className="qr-vendor">業者名</th>
                   <th className="qr-code">商品コード</th>
                   <th className="qr-name">商品名</th>
@@ -48,7 +53,7 @@ const QRBuild = () => {
                 {
                   data.map((row, index) => (
                     <tr key={index}>
-                      <td className="checkbox">
+                      <td className="qr-checkbox-td">
                         <input
                           type="checkbox"
                           onChange={(e) => handleCheckboxChange(e, row)}
@@ -73,6 +78,13 @@ const QRBuild = () => {
               QRコード作成
             </a>
           </div>
+          <ConfirmDialog
+            title="生成QR"
+            message="QRコードの生成が完了しました"
+            Data={selectedRows}
+            onConfirm={handleConfirm}
+            isOpen={isDialogOpen}
+          />
         </div>
       </div>
     </div>
