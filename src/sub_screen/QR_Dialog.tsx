@@ -29,7 +29,9 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({ title, message, Data, onC
     for (let i = 0; i < Data.length; i++){
       resultdata.push(Data[i][1])
     }
-    const QRURL = `https://api.qrserver.com/v1/create-qr-code/?data=${resultdata}&size=100x100`; // 100x100サイズでぴったり
+    console.log(resultdata)
+    console.log(JSON.stringify(resultdata))
+    const QRURL = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(JSON.stringify(resultdata))}&size=100x100`; // 100x100サイズでぴったり
     return QRURL;
   };
   
