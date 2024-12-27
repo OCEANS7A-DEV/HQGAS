@@ -12,9 +12,10 @@ interface ConfirmDialogProps {
   onConfirm: () => void;
   onCancel: () => void;
   isOpen: boolean;
+  submessage: Array<any>;
 }
 
-const ConfirmDialog: React.FC<ConfirmDialogProps> = ({ title, message, Data, onConfirm, isOpen }) => {
+const ConfirmDialog: React.FC<ConfirmDialogProps> = ({ title, message, Data, onConfirm, isOpen, submessage }) => {
   if (!isOpen) return null;
 
   const contentRef = useRef<HTMLDivElement>(null);
@@ -54,19 +55,30 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({ title, message, Data, onC
           </div>
           {/* テーブルを表示 */}
           <div className="QR-Area" ref={contentRef}>
-            <img src={imageURL} alt="QRコード" />
+            <div>
+              <img src={imageURL} alt="QRコード" />
+            </div>
+            <div>
+              <a>＜商品内容＞</a>
+            </div>
+            {submessage.map((item, index) => (
+              <span key={index}>
+                {item}
+                <br />
+              </span>
+            ))}
           </div>
           <div className='order-confirm-dialog-button'>
             <a
               className="buttonUnderlineSt"
               type="button"
-              onClick={onConfirm}  // ボタンクリックでQRコード生成
+              onClick={onConfirm}
             >OK
             </a>
             <a
               className="buttonUnderlineSt"
               type="button"
-              onClick={() => reactToPrintFn()}  // ボタンクリックでQRコード生成
+              onClick={() => reactToPrintFn()}
             >
               印刷
             </a>
