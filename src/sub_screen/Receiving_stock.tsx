@@ -110,6 +110,17 @@ export default function ReceivingPage() {
     setFormData(newFormData);
   };
 
+  const numberCodechange = async (
+    index: number,
+    field: keyof InsertData,
+    event: ChangeEvent<HTMLInputElement>,
+  ) => {
+    const CodeValue = event.target.value.replace(/[^0-9A-Za-z\-]/g, '');
+    const newFormData = [...formData];
+    newFormData[index][field] = CodeValue;
+    setFormData(newFormData);
+  };
+
 
   const insertPost = async () => {
     await GASPostInsert('insert', '本部入庫', formData, Date);
@@ -212,7 +223,7 @@ export default function ReceivingPage() {
               className="insert_code"
               value={data.商品コード}
               ref={(el) => (codeRefs.current[index] = el)}
-              onChange={(e) => numberchange(index, '商品コード', e)}
+              onChange={(e) => numberCodechange(index, '商品コード', e)}
               onKeyDown={(e) => handleKeyDown(index, e, '商品コード')}
               onBlur={() => handleBlur(index, '商品コード')}
               inputMode="numeric"
