@@ -150,7 +150,21 @@ export default function ReceivingPage() {
 
 
   const insertPost = async () => {
-    await GASPostInsert('insert', '本部入庫', formData, Date);
+    const filterData = formData.filter(row => row.商品コード !== "");
+    const formResult = [];
+    for (let i = 0; i < filterData.length; i++){
+      let setData = [
+        Date,
+        filterData[i].業者.value,
+        filterData[i].商品コード,
+        filterData[i].商品名,
+        filterData[i].数量,
+        filterData[i].商品単価,
+        '=SUM(INDIRECT("E"&ROW()) * INDIRECT("F"&ROW()))'
+      ]
+      formResult.push(setData);
+    }
+    await GASPostInsert('insert', '本部入庫', formResult);
   };
 
   const removeForm = (index: number) => {
