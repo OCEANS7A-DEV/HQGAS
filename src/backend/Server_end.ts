@@ -124,7 +124,9 @@ export const stockList = async(
   }
 };
 
-export const ProcessConfirmationGet = async () => {
+export const ProcessConfirmationGet = async (
+  date: any,
+) => {
   try {
     const response = await fetch(
       URL_STRING,
@@ -144,7 +146,23 @@ export const ProcessConfirmationGet = async () => {
       throw new Error(`HTTP error! status: ${response.status}`)
     }
     const result = await response.json();
-    return result;
+    const filteredData = result
+      .slice(1) // ヘッダー行を除外
+      .filter(row => {
+        const utcDate = new Date(row[0]); // UTC 時間で Date オブジェクトを作成
+
+        // 日本時間に変換
+        const japanTime = new Date(utcDate.getTime() + 9 * 60 * 60 * 1000); // UTC+9 時間を加算
+
+        // yyyy-mm-dd 形式に変換
+        const formattedJapanDate = japanTime.toISOString().split('T')[0];
+
+        // 'date' との比較
+        return formattedJapanDate === date;
+      });
+
+    console.log(filteredData);
+    return filteredData; // フィルタリング結果を返す
   }catch(e){
     return (e);
   }

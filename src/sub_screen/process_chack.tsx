@@ -18,7 +18,6 @@ interface SettingProps {
 interface SelectOption {
   value: string;
   label: string;
-  id: number;
 }
 
 function findStore(storeList, targetStore) {
@@ -44,9 +43,17 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
   const message = `今回の店舗からの注文を${DateNow}で締め切りますか？`;
   const resetmessage = '在庫一覧の現物数のデータをすべて空にします\nよろしいですか？';
   const rowNum = 27;
+  const [getDate, setGetDate] = useState('');
+
+
+  const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setGetDate(event.target.value);
+  };
 
   const PrintProcessList = async () => {
-    const result = await ProcessConfirmationGet();
+    const result = await ProcessConfirmationGet(getDate);
+    sessionStorage.setItem('ordersdata',JSON.stringify(result));
+    //console.log(result)
     const storeList = JSON.parse(localStorage.getItem('storeData'));
     //console.log(result)
     const processData = [];
@@ -68,7 +75,7 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
       var storeData = [];
       var storename = storeList[i];
       var datajudgement = storeProcessMap[storename];
-      console.log(storeProcessMap[storename])
+      //console.log(storeProcessMap[storename])
       if (datajudgement !== void 0) {
         storeData = storeProcessMap[storename];
       }else{
@@ -82,11 +89,11 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
       //console.log(storeData)
       
       if (storeData.length > 0) {
-        console.log(storeData.length)
+        //console.log(storeData.length)
         for (let i = 0; i < storeData.length; i++) {
-          console.log(i)
-          console.log(storename)
-          console.log(storeData[i])
+          //console.log(i)
+          // console.log(storename)
+          // console.log(storeData[i])
           var Process = storeData[i];
           if (Process == '印刷済') {
             completedCount += 1;
@@ -98,7 +105,7 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
             nonOrderCount += 1;
           }
         }
-        console.log(storeData,pendingCount,receivingCount,nonOrderCount)
+        //console.log(storeData,pendingCount,receivingCount,nonOrderCount)
         if (completedCount === 0 && pendingCount === 0 && receivingCount === 0 && nonOrderCount >= 1) {
           checkresult.push({ storeName: storename, process: "注文無"});
         }else if (completedCount === 0 && pendingCount >= 1 && receivingCount === 0 && nonOrderCount >= 0) {
@@ -118,12 +125,21 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
   };
 
   useEffect(() => {
-    PrintProcessList();
+    //PrintProcessList();
     const getLocalStorageSize = async () => {
-      const cachedData = localStorage.getItem('SelectstoreData');
-      setSelectOptions(JSON.parse(cachedData));
+      const cachedData = await JSON.parse(localStorage.getItem('storeData'));
+      const storedatalist: SelectOption[] = [];
+      for (let i = 0; i < cachedData.length; i++){
+        storedatalist.push(
+          {
+            value: cachedData[i][0],
+            label: cachedData[i][0],
+          }
+        )
+      }
+      setSelectOptions(storedatalist);
       await SelectlocalStoreSet(cachedData);
-      const cachedData2 = localStorage.getItem('SelectstoreData');
+      const cachedData2 = localStorage.getItem('storeData');
       setSelectOptions(JSON.parse(cachedData2));
     }
     getLocalStorageSize()
@@ -150,7 +166,7 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
 
   const handletest = async () => {
     const storeprintname = storeSelect.value;
-    const orderData = await orderGet();
+    const orderData = await JSON.parse(sessionStorage.getItem('ordersdata'));
     var printData = orderData.filter(row => row[1] == storeprintname);
     const pages = Math.ceil(printData.length / rowNum);
     const EmptyRow = ['','','','','','','','','','','','']
@@ -176,12 +192,12 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
       window.print();
     });
     GASProcessUpdate('店舗へ',storeprintname);
-    setCurrentPage('HQPage');
-    PrintProcessList();
+    //setCurrentPage('HQPage');
+    //PrintProcessList();
   };
 
   const allPrint = async () => {
-    const orderData = await orderGet();
+    const orderData = await JSON.parse(sessionStorage.getItem('ordersdata'));
     for (let i = 0; i < checkresult.length; i++){
       if (checkresult[i].process == '未印刷') {
         var printData = orderData.filter(row => row[1] == checkresult[i].storeName);
@@ -243,7 +259,14 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
     <div className='check_window'>
       <div className="check_area">
         <div>
-          <button type="button" onClick={PrintProcessList}>確認と更新</button>
+          <button type="button" onClick={PrintProcessList}>取得</button>
+          <input
+            type="date"
+            className="insert_order_date"
+            max="9999-12-31"
+            value={getDate}
+            onChange={(e) => {handleDateChange(e)}}
+          />
         </div>
         {/* テーブルを表示 */}
         <div className="check">

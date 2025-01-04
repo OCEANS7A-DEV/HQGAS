@@ -42,7 +42,7 @@ export default function PrintPage({ setCurrentPage, printData, storename, dataPa
               </th>
             </tr>
             <tr className="storename">
-              <th className="print-storename" colSpan="9">{storename}</th>
+              <th className="print-storename" colSpan="10">{storename}</th>
             </tr>
             <tr className="print-table-header">
               <th>業者</th>
@@ -50,6 +50,7 @@ export default function PrintPage({ setCurrentPage, printData, storename, dataPa
               <th>商品名</th>
               <th>商品詳細</th>
               <th>数量</th>
+              <th>単価</th>
               <th>個人購入</th>
               <th>備考</th>
               <th>確認</th>
@@ -74,6 +75,7 @@ export default function PrintPage({ setCurrentPage, printData, storename, dataPa
                 <td className="P-name">{row[4]}</td>
                 <td className="P-detail">{row[5]}</td>
                 <td className="P-number">{row[6]}</td>
+                <td className="P-price">{row[8].toLocaleString('ja-JP')}</td>
                 <td className="P-personal">{row[10]}</td>
                 <td className="P-remarks">{row[11]}</td>
                 <td className="chack-cell"></td>
@@ -83,7 +85,7 @@ export default function PrintPage({ setCurrentPage, printData, storename, dataPa
           ))}
           <>
             <tr key="last-condition">
-              <td colSpan="9" className="special-row">
+              <td colSpan="10" className="special-row">
                 {dataPages}/{dataPages}
               </td>
             </tr>
