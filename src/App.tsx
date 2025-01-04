@@ -5,7 +5,7 @@ import React, { useRef } from 'react';
 import HQPage from './sub_screen/process_chack.tsx';
 import ReceivingPage from './sub_screen/Receiving_stock.tsx';
 import TopBanner from './sub_screen/banner.tsx';
-import { localStorageSet, localStoreSet } from './backend/WebStorage.ts';
+import { localStorageSet, localStoreSet, localVendorSet } from './backend/WebStorage.ts';
 import QRBuild from './sub_screen/QR.tsx';
 import PrintPage from './sub_screen/orderPrint.tsx';
 import ServicePage from './sub_screen/service_items.tsx';
@@ -23,6 +23,7 @@ export default function App() {
   useEffect(() => {
     localStorageSet();
     localStoreSet();
+    localVendorSet();
   },[]);
 
 

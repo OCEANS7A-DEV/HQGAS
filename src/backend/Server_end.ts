@@ -152,18 +152,17 @@ export const ProcessConfirmationGet = async () => {
   }
 };
 
-export const ListGet = async () => {
+export const ListGet = async (Range: string) => {// Rangeは例'A2:B'のような形
   try {
-    const response = await fetch(URL_STRING, {
+    const response = await fetch(Get_URL, {
       method: 'POST',
       headers: {
         "Content-Type" : "application/x-www-form-urlencoded",
       },
       body: JSON.stringify({
         sheetName: 'その他一覧',
-        action: 'storeGet',
-        select: '店舗一覧',
-        sub_action: 'get',
+        action: 'ListGet',
+        ranges: Range,
       })
     });
     if (!response.ok) {

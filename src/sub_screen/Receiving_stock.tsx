@@ -1,15 +1,22 @@
-import React, { useState, useRef, ChangeEvent } from 'react';
+import React, { useState, useRef, ChangeEvent, useEffect } from 'react';
+import Select from 'react-select';
 import ConfirmDialog from './orderDialog';
 import { InventorySearch, GASPostInsert } from '../backend/Server_end.ts';
 import WordSearch from './ProductSearchWord';
 import '../css/Receiving.css';
 
 interface InsertData {
-  業者: string;
+  業者: { value: string; label: string }[];
   商品コード: string;
   商品名: string;
   数量: string;
   商品単価: string;
+  VendorList: { value: string; label: string }[];
+}
+
+interface SelectOption {
+  value: string;
+  label: string;
 }
 
 interface InventoryDataType {
@@ -26,16 +33,33 @@ const productSearch = (code: number) => {
 };
 
 
+const VendorList: SelectOption[] = [];
+
+const VendorListGet = async () => {
+  const list = await JSON.parse(localStorage.getItem('vendorData') ?? '');
+  for (let i = 0; i < list.length; i++){
+    VendorList.push(
+      {
+        value: list[i][0],
+        label: list[i][0]
+      }
+    );
+  };
+  //console.log(VendorList)
+};
+
+
 const fieldDataList = ['業者', '商品コード', '商品名', '数量', '商品単価'];
 
 export default function ReceivingPage() {
     const initialRowCount = 20;
     const initialFormData = Array.from({ length: initialRowCount }, () => ({
-      業者: '',
+      業者: [],
       商品コード: '',
       商品名: '',
       数量: '',
-      商品単価: ''
+      商品単価: '',
+      VendorList: []
     }));
   const [formData, setFormData] = useState<InsertData[]>(initialFormData);
   const [productData, setProductData] = useState<InventoryDataType[]>([
@@ -61,11 +85,12 @@ export default function ReceivingPage() {
     const newFormData = [...formData];
     for (let i = 0; i < 19; i++) {
       newFormData.push({
-        業者: '',
+        業者: [],
         商品コード: '',
         商品名: '',
         数量: '',
-        商品単価: ''
+        商品単価: '',
+        VendorList: []
       });
     }
     setFormData(newFormData);
@@ -79,6 +104,7 @@ export default function ReceivingPage() {
     const newFormData = [...formData];
     const updateFormData = (ResultData: any) => {
       if (ResultData !== null) {
+        //console.log(ResultData)
         newFormData[index] = {
           ...newFormData[index],
           ...ResultData.slice(0, 3).reduce((obj, item, i) => ({
@@ -86,6 +112,7 @@ export default function ReceivingPage() {
             [fieldDataList[i]]: item,
           }), {}),
           商品単価: ResultData[3],
+          業者: { value: ResultData[0], label: ResultData[0] },
         };
       }
     };
@@ -129,11 +156,12 @@ export default function ReceivingPage() {
   const removeForm = (index: number) => {
     const newFormData = formData.filter((_, i) => i !== index);
     newFormData.push({
-      業者: '',
+      業者: [],
       商品コード: '',
       商品名: '',
       数量: '',
-      商品単価: ''
+      商品単価: '',
+      VendorList: []
     });
     setFormData(newFormData);
     codeRefs.current.splice(index, 1);
@@ -191,6 +219,10 @@ export default function ReceivingPage() {
     setDate(event.target.value)
   };
 
+  useEffect(() => {
+    VendorListGet();
+  },[])
+
 
   return (
     <div className="window_area">
@@ -204,17 +236,33 @@ export default function ReceivingPage() {
       />
       </div>
       <div className='form_area'>
-          <WordSearch className="searcharea"/>
+        <WordSearch className="searcharea"/>
         <div className='in-area'>
           {formData.map((data, index) => (
           <div key={index} className="insert_area">
-            <input
+            <Select
+              className="insert_Select"
+              key={index}
+              options={VendorList}
+              value={data.業者}
+              isSearchable={true}
+              onChange={(VendorList) => {
+                const newusedFormData = [...formData];
+                newusedFormData[index].業者 = VendorList;
+                setFormData(newusedFormData);
+                newusedFormData[index].menuIsOpen = false;
+              }}
+              menuPlacement="auto"
+              menuPortalTarget={document.body}
+              placeholder="業者を選択"
+            />
+            {/* <input
               type="text"
               placeholder="業者"
               className="insert_vendor"
               value={data.業者}
               onChange={(e) => handleChange(index, '業者', e)}
-            />
+            /> */}
             <input
               title="入力は半角のみです"
               type="tel"
