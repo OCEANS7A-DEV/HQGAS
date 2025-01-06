@@ -9,6 +9,7 @@ import { localStorageSet, localStoreSet, localVendorSet } from './backend/WebSto
 import QRBuild from './sub_screen/QR.tsx';
 import PrintPage from './sub_screen/orderPrint.tsx';
 import ServicePage from './sub_screen/service_items.tsx';
+import TaiyoPrint from './sub_screen/taiyoPrint.tsx';
 
 import TEST from './sub_screen/Print.tsx';
 
@@ -41,6 +42,8 @@ export default function App() {
         return <PrintPage setCurrentPage={setCurrentPage} printData={printData} storename={storename} dataPages={dataPages}/>;
       case 'TEST':
         return <TEST/>;
+      case 'TaiyoPrint':
+        return <TaiyoPrint setCurrentPage={setCurrentPage} printData={printData} dataPages={dataPages}/>;
       default:
         return null;
     }
@@ -48,7 +51,7 @@ export default function App() {
 
   return (
     <TransitionGroup component={null}>
-      <div>{currentPage !== 'Printpage' && <TopBanner setCurrentPage={setCurrentPage} />}</div>
+      <div>{currentPage !== 'Printpage' || currentPage !== 'TaiyoPrint' && <TopBanner setCurrentPage={setCurrentPage} />}</div>
       <CSSTransition
         key={currentPage}
         timeout={{ enter: 500, exit: 300 }}

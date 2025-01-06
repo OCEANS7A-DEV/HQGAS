@@ -53,7 +53,7 @@ export const searchStr = async (searchword: string) => {
 };
 
 export const SelectlocalStoreSet = async () => {
-  const storeData = await ListGet();
+  const storeData = await ListGet('A2:A');
   const options = storeData.map((store: string, index: number) => ({
     value: store,
     label: store,

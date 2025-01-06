@@ -1,0 +1,112 @@
+.taiyobackGround {
+  background-color: white;
+  width: 210mm;
+  height: 297mm;
+}
+
+
+.taiyotop {
+  text-align: center;
+}
+.taiyoH1 {
+  margin: 0;
+}
+
+.sub_top {
+  width: 100%;
+  display: flex;
+}
+
+.taiyo-Data {
+  margin: auto;
+}
+
+.sub_top2{
+  flex: 1;
+}
+
+.taiyo-tableArea {
+  display: flex;
+  width: 100%;
+}
+.taiyo-table {
+  flex: 1;
+  border-collapse: collapse;
+  margin: 10px 20px;
+}
+
+.taiyo-table-header th, .taiyo-table td {
+  overflow: hidden;
+  height: 23px;
+  white-space: nowrap;
+  border: 1px solid black; /* 境界線 */
+  padding: 6px;           /* セルの内側に余白 */
+  /* text-align: left; */
+}
+
+.taiyo-table-header th {
+  font-size: 12px;
+  background-color: #f2f2f2; /* ヘッダーの背景色 */
+  font-weight: bold;         /* ヘッダーの太字 */
+}
+
+.taiyoData tr:nth-child(even) {
+  background-color: #f9f9f9; /* 偶数行の背景色を変更 */
+}
+
+
+
+.taiyo-number {
+  width: 80px;
+}
+
+.taiyo-name {
+  flex: 1;
+}
+
+.taiyo-num {
+  width: 50px;
+}
+
+.taiyo-Dnum, .taiyo-Snum, .taiyo-bikou {
+  width: 80px;
+}
+
+.taiyo-number-data, .taiyo-name-data {
+  text-align: left;
+}
+.taiyo-num-data 
+.special-row {
+  text-align: center;
+  border: none;
+}
+
+.saronname {
+  border: none;
+  padding: 10px;
+  font-size: 20px;
+}
+
+.saronData {
+  letter-spacing: 0.2em;
+  width: 600px;
+}
+
+
+.sarontitle {
+  width: 100px;
+}
+
+
+
+
+@media print {
+  @page {
+    margin: 0; /* ページの余白をゼロに設定 */
+  }
+  body {
+    zoom: 1;
+    margin: 0; /* ページ全体の余白をゼロに設定 */
+    padding: 0;
+  }
+}

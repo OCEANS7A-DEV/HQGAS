@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ProcessConfirmationGet, OrderDeadline, orderGet, GASProcessUpdate, QuantityReset } from '../backend/Server_end.ts';
+import { ProcessConfirmationGet, OrderDeadline, orderGet, GASProcessUpdate, QuantityReset, shortageGet } from '../backend/Server_end.ts';
 import { localStoreSet, PrintDataSet, SelectlocalStoreSet } from '../backend/WebStorage.ts'
 import Select from 'react-select';
 import '../css/process_check.css';
@@ -19,6 +19,22 @@ interface SelectOption {
   value: string;
   label: string;
 }
+
+
+const VendorList: SelectOption[] = [];
+
+const VendorListGet = async () => {
+  const list = await JSON.parse(localStorage.getItem('vendorData') ?? '');
+  for (let i = 0; i < list.length; i++){
+    VendorList.push(
+      {
+        value: list[i][0],
+        label: list[i][0]
+      }
+    );
+  };
+};
+
 
 function findStore(storeList, targetStore) {
   return storeList.find(item => item.storeName === targetStore);
@@ -44,6 +60,7 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
   const resetmessage = '在庫一覧の現物数のデータをすべて空にします\nよろしいですか？';
   const rowNum = 27;
   const [getDate, setGetDate] = useState('');
+  const [vendorSelect, setVendorSelect] = useState<SelectOption | null>(null);
 
 
   const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,9 +70,7 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
   const PrintProcessList = async () => {
     const result = await ProcessConfirmationGet(getDate);
     sessionStorage.setItem('ordersdata',JSON.stringify(result));
-    //console.log(result)
     const storeList = JSON.parse(localStorage.getItem('storeData'));
-    //console.log(result)
     const processData = [];
     const storeProcessMap = {};
     result.forEach(item => {
@@ -67,7 +82,6 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
       storeProcessMap[store].push(process);
     });
     for (let store in storeProcessMap) {
-      //console.log(storeProcessMap)
       processData.push({ storeName: store, process: storeProcessMap[store][0] });
     }
     const checkresult = [];
@@ -75,7 +89,6 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
       var storeData = [];
       var storename = storeList[i];
       var datajudgement = storeProcessMap[storename];
-      //console.log(storeProcessMap[storename])
       if (datajudgement !== void 0) {
         storeData = storeProcessMap[storename];
       }else{
@@ -86,14 +99,9 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
       var pendingCount = 0;
       var receivingCount = 0;
       var nonOrderCount = 0;
-      //console.log(storeData)
       
       if (storeData.length > 0) {
-        //console.log(storeData.length)
         for (let i = 0; i < storeData.length; i++) {
-          //console.log(i)
-          // console.log(storename)
-          // console.log(storeData[i])
           var Process = storeData[i];
           if (Process == '印刷済') {
             completedCount += 1;
@@ -105,7 +113,6 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
             nonOrderCount += 1;
           }
         }
-        //console.log(storeData,pendingCount,receivingCount,nonOrderCount)
         if (completedCount === 0 && pendingCount === 0 && receivingCount === 0 && nonOrderCount >= 1) {
           checkresult.push({ storeName: storename, process: "注文無"});
         }else if (completedCount === 0 && pendingCount >= 1 && receivingCount === 0 && nonOrderCount >= 0) {
@@ -143,10 +150,14 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
       setSelectOptions(JSON.parse(cachedData2));
     }
     getLocalStorageSize()
+    VendorListGet();
   },[])
 
   const handleStoreChange = (selectedOption: SelectOption | null) => {
     setStoreSelect(selectedOption);
+  };
+  const handleVendorChange = (selectedOption: SelectOption | null) => {
+    setVendorSelect(selectedOption);
   };
 
   const handleOpenDialog = () => {
@@ -192,8 +203,6 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
       window.print();
     });
     GASProcessUpdate('店舗へ',storeprintname);
-    //setCurrentPage('HQPage');
-    //PrintProcessList();
   };
 
   const allPrint = async () => {
@@ -202,7 +211,6 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
       if (checkresult[i].process == '未印刷') {
         var printData = orderData.filter(row => row[1] == checkresult[i].storeName);
         const pages = Math.ceil(printData.length / rowNum);
-        console.log(pages)
         const EmptyRow = ['','','','','','','','','','','','']
         const restrows = (pages * rowNum) - printData.length;
 
@@ -210,13 +218,11 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
           printData.push(EmptyRow);
         }
         const dataPages = printData.length / rowNum;
-        console.log(dataPages);
         const dataSettings = async () => {
           setdataPages(dataPages)
           setPrintData(printData);
           setStorename(checkresult[i].storeName);
         };
-        console.log(printData);
         await dataSettings();
         await setCurrentPage('Printpage');
         await sleep(500);
@@ -235,6 +241,12 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
     setCurrentPage('HQPage');
     PrintProcessList();
   };
+
+  const VendorPrint = async () => {
+    const resultData = await shortageGet();
+    const filterData = resultData.filter(row => row[9] < 0)
+    console.log(filterData)
+  }
 
   const resetConfirm = () => {
     setQuantityDialogOpen(true);
@@ -317,16 +329,23 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
         <a className="buttonUnderline" type="button" onClick={allPrint}>
           全未印刷
         </a>
-        {/* <a className="buttonUnderline" type="button" onClick={resetConfirm}>
-          全現物数リセット
+      </div>
+      <div>
+        <div>
+          <Select
+            className="store-select"
+            placeholder="業者選択"
+            isSearchable={false}
+            value={vendorSelect}
+            onChange={handleVendorChange}
+            options={VendorList}
+            menuPlacement="auto"
+            menuPortalTarget={document.body}
+          />
+        </div>
+        <a className="buttonUnderline" type="button" onClick={VendorPrint}>
+          業者発注印刷
         </a>
-        <QuantityResetDialog
-          title="確認"
-          message={resetmessage}
-          onConfirm={handleResetConfirm}
-          onCancel={handleResetCancel}
-          isOpen={isQuantityDialogOpen}
-        /> */}
       </div>
     </div>
   );

@@ -47,7 +47,10 @@ export default function TopBanner({ setCurrentPage }: SettingProps) {
           サービス品入庫
         </a>
         <a className="buttonUnderline" id="main_back" type="button" onClick={() => clickpage('HQPage')}>
-          納品書作成
+          印刷関係
+        </a>
+        <a className="buttonUnderline" id="main_back" type="button" onClick={() => clickpage('TaiyoPrint')}>
+          print
         </a>
       </div>
     </div>

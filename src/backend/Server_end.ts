@@ -36,8 +36,6 @@ export const InventorySearch = async(
   }
 };
 
-
-
 export const GASPostInsert = async (
   actionName: string,
   sheet: string,
@@ -291,6 +289,30 @@ export const QuantityReset = async (
         }),
       },
     );
+  } catch (error) {
+    console.error('Error:', error);
+    throw error;
+  }
+};
+
+export const shortageGet = async () => {
+  try {
+    const response = await fetch(Get_URL, {
+      method: 'POST',
+      headers: {
+        "Content-Type" : "application/x-www-form-urlencoded",
+      },
+      body: JSON.stringify({
+        sheetName: '在庫一覧',
+        action: 'allDataNum',
+      })
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const result = await response.json();
+    //console.log(result)
+    return result;
   } catch (error) {
     console.error('Error:', error);
     throw error;
