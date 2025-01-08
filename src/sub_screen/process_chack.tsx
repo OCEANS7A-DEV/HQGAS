@@ -270,7 +270,6 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
 
   const VendorPrint = async () => {
     if (!addressSelect || !vendorSelect) {
-      console.log('データ無し')
       toast.error('業者の選択、もしくは配送先の選択がされていません。')
       return
     }
