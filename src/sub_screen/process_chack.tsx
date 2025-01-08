@@ -5,6 +5,8 @@ import Select from 'react-select';
 import '../css/process_check.css';
 import DeadLineDialog from './DeadLineDialog.tsx';
 import QuantityResetDialog from './QuantityResetDialog.tsx';
+import toast from 'react-hot-toast';
+
 const sleep = (time) => new Promise((resolve) => setTimeout(resolve, time));
 
 
@@ -24,9 +26,26 @@ interface SelectOption {
 const VendorList: SelectOption[] = [];
 
 const VendorListGet = async () => {
+  VendorList.length = 0
   const list = await JSON.parse(localStorage.getItem('vendorData') ?? '');
   for (let i = 0; i < list.length; i++){
     VendorList.push(
+      {
+        value: list[i][0],
+        label: list[i][0]
+      }
+    );
+  };
+};
+
+const AddressList: SelectOption[] = [];
+const OceanListGet = async () => {
+  AddressList.length = 0
+  const alllist = await JSON.parse(sessionStorage.getItem('EtcData') ?? '');
+  const list = alllist.filter(row => row[7] === 'オーシャン');
+  //console.log(list)
+  for (let i = 0; i < list.length; i++){
+    AddressList.push(
       {
         value: list[i][0],
         label: list[i][0]
@@ -60,6 +79,7 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
   const resetmessage = '在庫一覧の現物数のデータをすべて空にします\nよろしいですか？';
   const rowNum = 27;
   const [getDate, setGetDate] = useState('');
+  const [addressSelect, setAdoressSelect] = useState<SelectOption | null>(null);
   const [vendorSelect, setVendorSelect] = useState<SelectOption | null>(null);
 
 
@@ -149,15 +169,21 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
       const cachedData2 = localStorage.getItem('storeData');
       setSelectOptions(JSON.parse(cachedData2));
     }
-    getLocalStorageSize()
+    getLocalStorageSize();
     VendorListGet();
+    OceanListGet();
   },[])
 
   const handleStoreChange = (selectedOption: SelectOption | null) => {
     setStoreSelect(selectedOption);
   };
+
   const handleVendorChange = (selectedOption: SelectOption | null) => {
     setVendorSelect(selectedOption);
+  };
+
+  const handleAddressChange = (selectedOption: SelectOption | null) => {
+    setAdoressSelect(selectedOption);
   };
 
   const handleOpenDialog = () => {
@@ -243,9 +269,20 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
   };
 
   const VendorPrint = async () => {
+    if (!addressSelect || !vendorSelect) {
+      console.log('データ無し')
+      toast.error('業者の選択、もしくは配送先の選択がされていません。')
+      return
+    }
     const resultData = await shortageGet();
-    const filterData = resultData.filter(row => row[9] < 0)
-    console.log(filterData)
+    const filterData = resultData.filter(row => row[9] < 0 && row[0] == vendorSelect.value)
+    sessionStorage.setItem('shortageSet', filterData)
+    await sessionStorage.setItem('AddressSet', addressSelect.value)
+    
+    if (vendorSelect.value == '大洋商会') {
+      setCurrentPage('TaiyoPrint');
+    }
+
   }
 
   const resetConfirm = () => {
@@ -330,7 +367,7 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
           全未印刷
         </a>
       </div>
-      <div>
+      <div className="order-print-vendor">
         <div>
           <Select
             className="store-select"
@@ -339,6 +376,18 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
             value={vendorSelect}
             onChange={handleVendorChange}
             options={VendorList}
+            menuPlacement="auto"
+            menuPortalTarget={document.body}
+          />
+        </div>
+        <div>
+          <Select
+            className="store-select"
+            placeholder="配送先選択"
+            isSearchable={false}
+            value={addressSelect}
+            onChange={handleAddressChange}
+            options={AddressList}
             menuPlacement="auto"
             menuPortalTarget={document.body}
           />

@@ -4,12 +4,12 @@ import * as jaconv from 'jaconv';
 
 export default function main(){}
 export const localStoreSet = async () => {
-  const storeData = await ListGet('A2:A');
+  const storeData = await ListGet('A2:A','その他一覧');
   localStorage.setItem('storeData', JSON.stringify(storeData))
 }
 
 export const localVendorSet = async () => {
-  const vendorData = await ListGet('D2:D');
+  const vendorData = await ListGet('D2:D','その他一覧');
   localStorage.setItem('vendorData', JSON.stringify(vendorData))
 };
 
@@ -53,11 +53,16 @@ export const searchStr = async (searchword: string) => {
 };
 
 export const SelectlocalStoreSet = async () => {
-  const storeData = await ListGet('A2:A');
+  const storeData = await ListGet('A2:A','その他一覧');
   const options = storeData.map((store: string, index: number) => ({
     value: store,
     label: store,
     id: index,
   }));
   localStorage.setItem('SelectstoreData', JSON.stringify(options))
+}
+
+export const ETCDATAGET = async () => {
+  const data = await ListGet('A2:H','その他データ');
+  sessionStorage.setItem('EtcData', JSON.stringify(data))
 }

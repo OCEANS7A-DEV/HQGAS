@@ -8,8 +8,18 @@
 .taiyotop {
   text-align: center;
 }
-.taiyoH1 {
+.taiyoH1,.taiyo-Data-name,.taiyo-Data-number {
   margin: 0;
+}
+
+.taiyo-Data-name {
+  padding-left: 20px;
+  text-align: left;
+}
+
+.taiyo-Data-number {
+  padding-right: 20px;
+  text-align: right;
 }
 
 .sub_top {
@@ -27,17 +37,17 @@
 
 .taiyo-tableArea {
   display: flex;
-  width: 100%;
 }
+
 .taiyo-table {
   flex: 1;
   border-collapse: collapse;
-  margin: 10px 20px;
+  margin: 15px;
 }
 
 .taiyo-table-header th, .etc, .taiyo-number-data,.taiyo-name-data,.taiyo-num-data {
   overflow: hidden;
-  height: 23px;
+  height: 26px;
   white-space: nowrap;
   border: 1px solid black; /* 境界線 */
   padding: 6px;           /* セルの内側に余白 */
@@ -75,9 +85,19 @@
   width: 80px;
 }
 
+.taiyo-num-data {
+  padding: 0px;
+  font-size: 20px;
+}
+
 .taiyo-number-data, .taiyo-name-data {
   text-align: left;
+  padding: 0px;
+  padding-left: 6px;
+  font-size: 20px;
 }
+
+
 .special-row {
   padding: 0;
   align-items: center;
@@ -123,6 +143,11 @@
 
 .taiyo-saron-table{
   justify-items: center;
+}
+
+.taiyo-saron-message {
+  border: 1px solid black;
+  height: 40px;
 }
 
 

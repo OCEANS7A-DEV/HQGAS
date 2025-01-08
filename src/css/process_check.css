@@ -33,3 +33,7 @@
   background-color: white;
 }
 
+.order-print-vendor,.order-print {
+  padding: 4px;
+  border: 1px solid black;
+}

@@ -19,26 +19,39 @@ const testData = [
 export default function TaiyoPrint({ setCurrentPage, printData, dataPages }: SettingProps) {
   const [taiyoData, settaiyoData] = useState([]);
   const sleep = (time) => new Promise((resolve) => setTimeout(resolve, time));
+  const [ShippingAddress, setShippingAddress] = useState([]);
+  const [VendorData, setVendorData] = useState([]);
+
   useEffect(() => {
-    let insertData = testData
+    const vendordata = JSON.parse(sessionStorage.getItem('EtcData') ?? '');
+    setVendorData(vendordata.find(row => row[0] == '大洋商会'))
+    setShippingAddress(vendordata.find(row => row[0] == sessionStorage.getItem('AddressSet')))
+    //console.log(ShippingAddress)
+    let insertData = sessionStorage.getItem('shortageSet');
+    //console.log(insertData)
     let returndata = []
-    for (let i = 0; i < insertData.length; i++){
-      let shortageNum = Number(insertData[i][9]);
-      let num = 0;
-      if (insertData[i][11] !== "" || Number(insertData[i][11]) > 0) {
-        while (shortageNum < 0) {
-          shortageNum += Number(insertData[i][11])
-          num += Number(insertData[i][11])
+    if (insertData){
+      insertData = JSON.parse(insertData)
+      for (let i = 0; i < insertData.length; i++){
+        let shortageNum = Number(insertData[i][9]);
+        let num = 0;
+        if (insertData[i][11] !== "" || Number(insertData[i][11]) > 0) {
+          while (shortageNum < 0) {
+            shortageNum += Number(insertData[i][11])
+            num += Number(insertData[i][11])
+          }
+          //insertData[i][9]
         }
-        //insertData[i][9]
+        returndata.push(['', insertData[i][2], num, '', '', ''])
       }
-      returndata.push(['', insertData[i][2], num, '', '', ''])
     }
-    let calcD = 11 - returndata.length
+    let calcD = 16 - returndata.length
     for (let i = 0; i < calcD; i ++){
       returndata.push(['','','','','',''])
     }
     settaiyoData(returndata)
+    console.log(taiyoData)
+
     const Print = async () => {
       await sleep(500);
       await new Promise<void>((resolve) => {
@@ -51,6 +64,7 @@ export default function TaiyoPrint({ setCurrentPage, printData, dataPages }: Set
       });
     }
     Print();
+    //setCurrentPage('HQPage')
   },[])
   return(
     <div className="taiyobackGround">
@@ -60,11 +74,11 @@ export default function TaiyoPrint({ setCurrentPage, printData, dataPages }: Set
       <div className="sub_top">
         <div className="sub_top2">
           <h2 className="taiyo-Data">　</h2>
-          <h2 className="taiyo-Data">㈱大洋商会　御中</h2>
+          <h2 className="taiyo-Data-name">㈱大洋商会　御中</h2>
         </div>
         <div className="sub_top2">
-          <h2 className="taiyo-Data">FAX(06)6713-9351</h2>
-          <h2 className="taiyo-Data">TAL(06)6713-4456</h2>
+          <h2 className="taiyo-Data-number">FAX{VendorData[2]}</h2>
+          <h2 className="taiyo-Data-number">TAL{VendorData[3]}</h2>
         </div>
       </div>
       <div className="taiyo-tableArea">
@@ -97,17 +111,22 @@ export default function TaiyoPrint({ setCurrentPage, printData, dataPages }: Set
                   <div className="taiyo-saron-table">
                     <tr className="saronname">
                       <td className="sarontitle">サロン名</td>
-                      <td className="saronData">有限会社　吉</td>
+                      <td className="saronData">{ShippingAddress[6]}</td>
                     </tr>
                     <tr className="saronname">
                       <td className="sarontitle">住所</td>
-                      <td className="saronData">〒730-0001　広島県広島市中区白島北町</td>
+                      <td className="saronData">〒{ShippingAddress[4]}　{ShippingAddress[5]}</td>
                     </tr>
                     <tr className="saronname">
                       <td className="sarontitle">電話</td>
-                      <td className="saronData">082-569-8401</td>
+                      <td className="saronData">{ShippingAddress[3]}</td>
                     </tr>
                   </div>
+                </td>
+              </tr>
+              <tr className="taiyo-saron-message">
+                <td colSpan="6" className="special-row">
+                  <h3 className="sarontop">お世話になります。<br/>ご注文よろしくお願いします</h3>
                 </td>
               </tr>
             </>

@@ -166,7 +166,7 @@ export const ProcessConfirmationGet = async (
   }
 };
 
-export const ListGet = async (Range: string) => {// Rangeは例'A2:B'のような形
+export const ListGet = async (Range: string, sheetname: string) => {// Rangeは例'A2:B'のような形
   try {
     const response = await fetch(Get_URL, {
       method: 'POST',
@@ -174,7 +174,7 @@ export const ListGet = async (Range: string) => {// Rangeは例'A2:B'のよう�
         "Content-Type" : "application/x-www-form-urlencoded",
       },
       body: JSON.stringify({
-        sheetName: 'その他一覧',
+        sheetName: sheetname,
         action: 'ListGet',
         ranges: Range,
       })
@@ -318,3 +318,4 @@ export const shortageGet = async () => {
     throw error;
   }
 };
+
