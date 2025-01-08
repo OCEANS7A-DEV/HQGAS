@@ -49,9 +49,9 @@ export default function TopBanner({ setCurrentPage }: SettingProps) {
         <a className="buttonUnderline" id="main_back" type="button" onClick={() => clickpage('HQPage')}>
           印刷関係
         </a>
-        {/* <a className="buttonUnderline" id="main_back" type="button" onClick={() => clickpage('TaiyoPrint')}>
+        <a className="buttonUnderline" id="main_back" type="button" onClick={() => clickpage('KinbatoPrintPage')}>
           print
-        </a> */}
+        </a>
       </div>
     </div>
   );

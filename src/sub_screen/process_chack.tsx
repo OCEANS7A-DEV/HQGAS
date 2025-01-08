@@ -277,10 +277,13 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
     const resultData = await shortageGet();
     const filterData = resultData.filter(row => row[9] < 0 && row[0] == vendorSelect.value)
     sessionStorage.setItem('shortageSet', filterData)
+    sessionStorage.setItem('shortageVender', vendorSelect.value)
     await sessionStorage.setItem('AddressSet', addressSelect.value)
     
     if (vendorSelect.value == '大洋商会') {
       setCurrentPage('TaiyoPrint');
+    }else if (vendorSelect.value == 'キンバト') {
+      setCurrentPage('KinbatoPrint');
     }
 
   }
