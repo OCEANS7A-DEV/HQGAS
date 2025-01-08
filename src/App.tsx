@@ -51,7 +51,7 @@ export default function App() {
 
   return (
     <TransitionGroup component={null}>
-      <div>{currentPage !== 'Printpage' || currentPage !== 'TaiyoPrint' && <TopBanner setCurrentPage={setCurrentPage} />}</div>
+      <div>{currentPage !== 'Printpage' && currentPage !== 'TaiyoPrint' && <TopBanner setCurrentPage={setCurrentPage} />}</div>
       <CSSTransition
         key={currentPage}
         timeout={{ enter: 500, exit: 300 }}

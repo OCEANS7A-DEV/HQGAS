@@ -35,7 +35,7 @@
   margin: 10px 20px;
 }
 
-.taiyo-table-header th, .taiyo-table td {
+.taiyo-table-header th, .etc, .taiyo-number-data,.taiyo-name-data,.taiyo-num-data {
   overflow: hidden;
   height: 23px;
   white-space: nowrap;
@@ -44,10 +44,13 @@
   /* text-align: left; */
 }
 
+
+
 .taiyo-table-header th {
-  font-size: 12px;
+  font-size: 14px;
   background-color: #f2f2f2; /* ヘッダーの背景色 */
   font-weight: bold;         /* ヘッダーの太字 */
+  padding: 2px 6px;
 }
 
 .taiyoData tr:nth-child(even) {
@@ -75,29 +78,52 @@
 .taiyo-number-data, .taiyo-name-data {
   text-align: left;
 }
-.taiyo-num-data 
 .special-row {
+  padding: 0;
+  align-items: center;
   text-align: center;
   border: none;
 }
 
+.sarontop {
+  text-align: center;
+  margin: 10px 0;
+}
+
+.taiyo-saron-last {
+  border: 1px solid black;
+}
+
+.sarontitle,.saronData {
+  padding: 5px 10px;
+  align-items: center;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
 .saronname {
   border: none;
-  padding: 10px;
+  padding: 5px 10px;
   font-size: 20px;
 }
 
 .saronData {
-  letter-spacing: 0.2em;
+  font-size: 30px;
+  text-align: left;
+  padding-left: 15px;
   width: 600px;
 }
 
 
 .sarontitle {
   width: 100px;
+  text-align-last: justify;
 }
 
 
+.taiyo-saron-table{
+  justify-items: center;
+}
 
 
 @media print {

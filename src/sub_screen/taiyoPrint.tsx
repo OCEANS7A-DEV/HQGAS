@@ -59,6 +59,7 @@ export default function TaiyoPrint({ setCurrentPage, printData, dataPages }: Set
       </div>
       <div className="sub_top">
         <div className="sub_top2">
+          <h2 className="taiyo-Data">　</h2>
           <h2 className="taiyo-Data">㈱大洋商会　御中</h2>
         </div>
         <div className="sub_top2">
@@ -84,16 +85,16 @@ export default function TaiyoPrint({ setCurrentPage, printData, dataPages }: Set
                 <td className="taiyo-number-data">{row[0]}</td>
                 <td className="taiyo-name-data">{row[1]}</td>
                 <td className="taiyo-num-data">{row[2]}</td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td className="etc"></td>
+                <td className="etc"></td>
+                <td className="etc"></td>
               </tr>
             ))}
             <>
-              <tr key="last-condition">
+              <tr className="taiyo-saron-last">
                 <td colSpan="6" className="special-row">
-                  <h2>サロン直送</h2>
-                  <div className="saron">
+                  <h2 className="sarontop">サロン直送</h2>
+                  <div className="taiyo-saron-table">
                     <tr className="saronname">
                       <td className="sarontitle">サロン名</td>
                       <td className="saronData">有限会社　吉</td>
@@ -107,9 +108,7 @@ export default function TaiyoPrint({ setCurrentPage, printData, dataPages }: Set
                       <td className="saronData">082-569-8401</td>
                     </tr>
                   </div>
-                  
                 </td>
-                
               </tr>
             </>
           </tbody>
