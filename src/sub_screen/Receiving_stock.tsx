@@ -111,7 +111,7 @@ export default function ReceivingPage() {
             ...obj,
             [fieldDataList[i]]: item,
           }), {}),
-          商品単価: ResultData[3],
+          商品単価: ResultData[4],
           業者: { value: ResultData[0], label: ResultData[0] },
         };
       }
