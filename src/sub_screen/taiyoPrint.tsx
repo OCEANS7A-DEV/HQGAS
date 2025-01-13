@@ -24,25 +24,33 @@ export default function TaiyoPrint({ setCurrentPage, printData, dataPages }: Set
 
   useEffect(() => {
     const vendordata = JSON.parse(sessionStorage.getItem('EtcData') ?? '');
+    //console.log(vendordata)
     setVendorData(vendordata.find(row => row[0] == '大洋商会'))
     setShippingAddress(vendordata.find(row => row[0] == sessionStorage.getItem('AddressSet')))
     //console.log(ShippingAddress)
     let insertData = sessionStorage.getItem('shortageSet');
-    //console.log(insertData)
+    console.log(insertData)
     let returndata = []
     if (insertData){
       insertData = JSON.parse(insertData)
+      
       for (let i = 0; i < insertData.length; i++){
-        let shortageNum = Number(insertData[i][9]);
+        
+        let shortageNum = Number(insertData[i][11]);
         let num = 0;
-        if (insertData[i][11] !== "" || Number(insertData[i][11]) > 0) {
+        if (insertData[i][11] !== "" && Number(insertData[i][13]) > 0) {
+          console.log(Number(insertData[i][13]))
           while (shortageNum < 0) {
-            shortageNum += Number(insertData[i][11])
-            num += Number(insertData[i][11])
+            shortageNum += Number(insertData[i][13]) //例 +55
+            num += Number(insertData[i][13]) //例 +55
           }
           //insertData[i][9]
+          console.log('ループ終了')
+          returndata.push(['', insertData[i][2], num, '', '', ''])
+        } else {
+          returndata.push(['', insertData[i][2], -(Number(insertData[i][11])), '', '', ''])
         }
-        returndata.push(['', insertData[i][2], num, '', '', ''])
+        
       }
     }
     let calcD = 16 - returndata.length

@@ -274,8 +274,9 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
       return
     }
     const resultData = await shortageGet();
-    const filterData = resultData.filter(row => row[9] < 0 && row[0] == vendorSelect.value)
-    sessionStorage.setItem('shortageSet', filterData)
+    //console.log(resultData)
+    const filterData = resultData.filter(row => row[11] < 0 && row[0] == vendorSelect.value)
+    sessionStorage.setItem('shortageSet', JSON.stringify(filterData))
     sessionStorage.setItem('shortageVender', vendorSelect.value)
     await sessionStorage.setItem('AddressSet', addressSelect.value)
     
