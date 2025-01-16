@@ -159,7 +159,7 @@ export const ProcessConfirmationGet = async (
         return formattedJapanDate === date;
       });
 
-    console.log(filteredData);
+    //console.log(filteredData);
     return filteredData; // フィルタリング結果を返す
   }catch(e){
     return (e);

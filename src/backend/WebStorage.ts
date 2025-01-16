@@ -54,10 +54,9 @@ export const searchStr = async (searchword: string) => {
 
 export const SelectlocalStoreSet = async () => {
   const storeData = await ListGet('A2:A','その他一覧');
-  const options = storeData.map((store: string, index: number) => ({
+  const options = storeData.map((store: string) => ({
     value: store,
     label: store,
-    id: index,
   }));
   localStorage.setItem('SelectstoreData', JSON.stringify(options))
 }

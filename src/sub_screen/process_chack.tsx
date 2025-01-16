@@ -154,7 +154,8 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
   useEffect(() => {
     //PrintProcessList();
     const getLocalStorageSize = async () => {
-      const cachedData = await JSON.parse(localStorage.getItem('storeData'));
+      const cachedData = await JSON.parse(localStorage.getItem('storeData') ?? '');
+      //console.log(cachedData)
       const storedatalist: SelectOption[] = [];
       for (let i = 0; i < cachedData.length; i++){
         storedatalist.push(
@@ -165,14 +166,19 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
         )
       }
       setSelectOptions(storedatalist);
-      await SelectlocalStoreSet(cachedData);
-      const cachedData2 = localStorage.getItem('storeData');
-      setSelectOptions(JSON.parse(cachedData2));
+      await SelectlocalStoreSet(storedatalist);
+      // const cachedData2 = localStorage.getItem('storeData');
+      // setSelectOptions(JSON.parse(cachedData2));
     }
     getLocalStorageSize();
     VendorListGet();
     OceanListGet();
   },[])
+
+
+  useEffect(() => {
+    console.log(selectOptions)
+  },[selectOptions])
 
   const handleStoreChange = (selectedOption: SelectOption | null) => {
     setStoreSelect(selectedOption);
