@@ -122,12 +122,12 @@ export default function TaiyoPrint({ setCurrentPage, printData, dataPages }: Set
                       <td className="saronData">{ShippingAddress[6]}</td>
                     </tr>
                     <tr className="saronname">
-                      <td className="sarontitle">住所</td>
+                      <td className="sarontitle">配送先</td>
                       <td className="saronData">〒{ShippingAddress[4]}　{ShippingAddress[5]}</td>
                     </tr>
                     <tr className="saronname">
                       <td className="sarontitle">電話</td>
-                      <td className="saronData">{ShippingAddress[3]}</td>
+                      <td className="saronData">082-569-8401</td>
                     </tr>
                   </div>
                 </td>
