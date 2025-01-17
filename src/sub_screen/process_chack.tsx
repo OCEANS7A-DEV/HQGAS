@@ -177,8 +177,8 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
 
 
   useEffect(() => {
-    console.log(selectOptions)
-  },[selectOptions])
+    console.log(getDate)
+  },[getDate])
 
   const handleStoreChange = (selectedOption: SelectOption | null) => {
     setStoreSelect(selectedOption);
@@ -210,6 +210,9 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
   const handletest = async () => {
     const storeprintname = storeSelect.value;
     const orderData = await JSON.parse(sessionStorage.getItem('ordersdata'));
+
+    const formattedDate = getDate.replace(/-/g, '/');
+    sessionStorage.setItem('printdate',formattedDate);
     var printData = orderData.filter(row => row[1] == storeprintname);
     const pages = Math.ceil(printData.length / rowNum);
     const EmptyRow = ['','','','','','','','','','','','']
@@ -235,6 +238,7 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
       window.print();
     });
     GASProcessUpdate('店舗へ',storeprintname);
+    setCurrentPage('HQPage');
   };
 
   const allPrint = async () => {

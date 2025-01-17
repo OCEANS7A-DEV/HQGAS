@@ -114,7 +114,7 @@ export default function TaiyoPrint({ setCurrentPage, printData, dataPages }: Set
             ))}
             <>
               <tr className="taiyo-saron-last">
-                <td colSpan="6" className="special-row">
+                <td colSpan="6" className="special-row-saron">
                   <h2 className="sarontop">サロン直送</h2>
                   <div className="taiyo-saron-table">
                     <tr className="saronname">

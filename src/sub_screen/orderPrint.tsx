@@ -22,13 +22,18 @@ const NowDate = () => {
 export default function PrintPage({ setCurrentPage, printData, storename, dataPages }: SettingProps) {
   const Date = NowDate();
   const sleep = (time) => new Promise((resolve) => setTimeout(resolve, time));
+  const [totalAmount, setTotalAmount] = useState(0);
+  const [date, setDate] = useState('');
 
-  // useEffect(() => {
-  //   (async() => {
-  //     await sleep(500);
-  //     await window.print();
-  //   })()
-  // },[]);
+  useEffect(() => {
+    let resultAmount = 0;
+    for (let i = 0; i < printData.length; i++){
+      resultAmount += printData[i][9];
+    }
+    const FormattedDate = sessionStorage.getItem('printdate')
+    setDate(FormattedDate)
+    setTotalAmount(resultAmount)
+  },[]);
 
 
   return (
@@ -38,7 +43,7 @@ export default function PrintPage({ setCurrentPage, printData, storename, dataPa
           <thead>
             <tr>
               <th colSpan="2">
-                {Date}
+                {date}
               </th>
             </tr>
             <tr className="storename">
@@ -62,7 +67,7 @@ export default function PrintPage({ setCurrentPage, printData, storename, dataPa
             <>
               {(index % 27 === 0 && index > 1) && (
                 <>
-                  <tr key={`condition-${index}`}>
+                  <tr key={`condition`}>
                     <td colSpan="9" className="special-row">
                       {index/27}/{dataPages}
                     </td>
@@ -89,6 +94,7 @@ export default function PrintPage({ setCurrentPage, printData, storename, dataPa
                 {dataPages}/{dataPages}
               </td>
             </tr>
+            <a className="total-row">合計金額: ¥{Number(totalAmount).toLocaleString('ja-JP')}</a>
           </>
           </tbody>
         </table>

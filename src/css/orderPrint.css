@@ -59,36 +59,36 @@
 
 .P-name {
   font-size: 12px;
-  width: 100px;
-  max-width: 230px;
-  min-width: 220px;
+  width: 90px;
+  max-width: 220px;
+  min-width: 210px;
   overflow: hidden;
   text-align: left;
 }
 
 .P-price {
- max-width: 60px;
+ width: 54px;
  font-size: 12px;
  text-align: right;
 }
 
 .P-detail {
   font-size: 14px;
-  width: 50px;
+  min-width: 68px;
   max-width: 50px;
-  text-align: left;
+  text-align: center;
 }
 
 .P-number {
   font-size: 14px;
-  width: 50px;
+  min-width: 30px;
   text-align: right;
 }
 
 .P-personal {
   font-size: 14px;
   width: 50px;
-  min-width: 50px;
+  min-width: 54px;
   max-width: 50px;
   text-align: left;
 }
@@ -106,9 +106,19 @@
   min-width: 35px;
 }
 
+.condition{
+  text-align: right;
+}
+
 .special-row{
   background-color: white;
-  text-align: right;
+  text-align: center;
+}
+
+.total-row {
+  position:  absolute;
+  top: 1088px;
+  left:  610px;  
 }
 
 @media print {
