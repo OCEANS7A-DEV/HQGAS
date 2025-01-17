@@ -82,7 +82,7 @@ a {
   background-color: #f9f9f9; /* 偶数行の背景色を変更 */
 }
 .search-table {
-  height: calc(100vh - 200px); /* 高さを固定 */
+  height: calc(100vh - 250px); /* 高さを固定 */
   overflow-y: scroll; /* 縦スクロールを追加 */
   width: 310px; /* 親要素の幅いっぱいに */
 }

@@ -14,7 +14,7 @@
   display: flex;
   width: auto;
   /* flex-grow: 1; 残りのスペースを占有するように */
-  height: calc(100vh - 160px);
+  height: calc(100vh - 200px);
   text-align: center;
 }
 .searcharea{
