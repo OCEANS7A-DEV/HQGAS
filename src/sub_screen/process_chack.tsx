@@ -296,7 +296,7 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
     }else if (vendorSelect.value == 'キンバト') {
       setCurrentPage('KinbatoPrint');
     }
-
+    setCurrentPage('HQPage');
   }
 
   const resetConfirm = () => {
