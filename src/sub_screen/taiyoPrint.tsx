@@ -38,17 +38,17 @@ export default function TaiyoPrint({ setCurrentPage, printData, dataPages }: Set
         
         let shortageNum = Number(insertData[i][11]);
         let num = 0;
-        if (insertData[i][11] !== "" && Number(insertData[i][13]) > 0) {
-          console.log(Number(insertData[i][13]))
+        if (insertData[i][12] !== "" && Number(insertData[i][11]) > 0) {
+          console.log(Number(insertData[i][11]))
           while (shortageNum < 0) {
-            shortageNum += Number(insertData[i][13]) //例 +55
-            num += Number(insertData[i][13]) //例 +55
+            shortageNum += Number(insertData[i][11]) //例 +55
+            num += Number(insertData[i][11]) //例 +55
           }
           //insertData[i][9]
           console.log('ループ終了')
           returndata.push(['', insertData[i][2], num, '', '', ''])
         } else {
-          returndata.push(['', insertData[i][2], -(Number(insertData[i][11])), '', '', ''])
+          returndata.push(['', insertData[i][2], -(Number(insertData[i][12])), '', '', ''])
         }
         
       }
