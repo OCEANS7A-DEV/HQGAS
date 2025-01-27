@@ -292,9 +292,9 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
     await sessionStorage.setItem('AddressSet', addressSelect.value)
     
     if (vendorSelect.value == '大洋商会') {
-      setCurrentPage('TaiyoPrint');
+      await setCurrentPage('TaiyoPrint');
     }else if (vendorSelect.value == 'キンバト') {
-      setCurrentPage('KinbatoPrint');
+      await setCurrentPage('KinbatoPrint');
     }
     setCurrentPage('HQPage');
   }

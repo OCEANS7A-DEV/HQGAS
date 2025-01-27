@@ -36,16 +36,17 @@ export default function TaiyoPrint({ setCurrentPage, printData, dataPages }: Set
       
       for (let i = 0; i < insertData.length; i++){
         
-        let shortageNum = Number(insertData[i][11]);
+        let shortageNum = Number(insertData[i][12]);
         let num = 0;
-        if (insertData[i][12] !== "" && Number(insertData[i][11]) > 0) {
-          console.log(Number(insertData[i][11]))
+        if (insertData[i][11] !== "" && Number(insertData[i][11]) > 0) {
+          //console.log(Number(insertData[i][11]))
           while (shortageNum < 0) {
             shortageNum += Number(insertData[i][11]) //例 +55
             num += Number(insertData[i][11]) //例 +55
+            //console.log(insertData[i][11])
           }
           //insertData[i][9]
-          console.log('ループ終了')
+          //console.log(num)
           returndata.push(['', insertData[i][2], num, '', '', ''])
         } else {
           returndata.push(['', insertData[i][2], -(Number(insertData[i][12])), '', '', ''])
@@ -58,7 +59,7 @@ export default function TaiyoPrint({ setCurrentPage, printData, dataPages }: Set
       returndata.push(['','','','','',''])
     }
     settaiyoData(returndata)
-    console.log(taiyoData)
+    //console.log(taiyoData)
 
     const Print = async () => {
       await sleep(500);
@@ -72,7 +73,8 @@ export default function TaiyoPrint({ setCurrentPage, printData, dataPages }: Set
       });
     }
     Print();
-    //setCurrentPage('HQPage')
+    // sleep(500);
+    // setCurrentPage('HQPage')
   },[])
   return(
     <div className="taiyobackGround">
