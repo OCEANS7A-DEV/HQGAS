@@ -78,7 +78,7 @@ const QRBuild = () => {
                     <td className="qr-vendor-td">{row[0]}</td>
                     <td className="qr-code-td">{row[1]}</td>
                     <td className="qr-name-td">{row[2]}</td>
-                    <td className="qr-price-td">{row[3]}</td>
+                    <td className="qr-price-td">{row[4].toLocaleString('ja-JP')}</td>
                   </tr>
                 ))}
               </tbody>
