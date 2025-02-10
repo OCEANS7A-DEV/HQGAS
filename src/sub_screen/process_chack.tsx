@@ -177,10 +177,6 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
   },[])
 
 
-  useEffect(() => {
-    console.log(getDate)
-  },[getDate])
-
   const handleStoreChange = (selectedOption: SelectOption | null) => {
     setStoreSelect(selectedOption);
   };
