@@ -168,6 +168,34 @@ export const ProcessConfirmationGet = async (
   }
 };
 
+export const kaigisituOrder = async () => {
+  try {
+    const response = await fetch(
+      URL_STRING,
+      {
+        method: 'POST',
+        headers: {
+          "Content-Type" : "application/x-www-form-urlencoded",
+        },
+        body: JSON.stringify({
+          action: 'kaigisituget',
+          sub_action: 'get',
+          sheetName: '店舗へ',
+        })
+      },
+    );
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+    const result = await response.json();
+    //console.log(result)
+    return result;
+  }catch(e){
+    return (e);
+  }
+};
+
+
 export const ListGet = async (Range: string, sheetname: string) => {// Rangeは例'A2:B'のような形
   try {
     const response = await fetch(Get_URL, {
