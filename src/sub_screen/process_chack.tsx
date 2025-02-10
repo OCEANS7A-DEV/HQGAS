@@ -225,7 +225,7 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
     };
     await dataSettings();
     await setCurrentPage('Printpage');
-    
+
     await sleep(500);
     await new Promise<void>((resolve) => {
       const onAfterPrint = () => {
@@ -236,7 +236,7 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
       window.print();
     });
     GASProcessUpdate('店舗へ',storeprintname);
-    setCurrentPage('HQPage');
+    //setCurrentPage('HQPage');
   };
 
   const allPrint = async () => {

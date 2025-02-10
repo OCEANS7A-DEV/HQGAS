@@ -42,12 +42,17 @@ export default function PrintPage({ setCurrentPage, printData, storename, dataPa
         <table className="printData">
           <thead>
             <tr>
-              <th colSpan="2">
-                {date}
+              <th colSpan="10">
+                <div className="printDate">
+                  <div className="print-date">発注日:　{date}</div>
+                  <div className="print-title">納品書</div>
+                </div>
               </th>
             </tr>
             <tr className="storename">
-              <th className="print-storename" colSpan="10">{storename}</th>
+              <th className="print-storename" colSpan="10">
+                <div>{storename}</div>
+              </th>
             </tr>
             <tr className="print-table-header">
               <th>業者</th>

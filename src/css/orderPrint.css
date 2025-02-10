@@ -12,6 +12,22 @@
 }
 
 
+
+.printDate {
+  display: flex;
+}
+
+.print-title {
+  width: 55%;
+  margin-left: 30px;
+  text-align: left;
+}
+
+.print-date {
+  width: 45%;
+  text-align: left;
+}
+
 .storename {
   background-color: white;
   text-align: center;
