@@ -225,6 +225,7 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
     };
     await dataSettings();
     await setCurrentPage('Printpage');
+    
     await sleep(500);
     await new Promise<void>((resolve) => {
       const onAfterPrint = () => {

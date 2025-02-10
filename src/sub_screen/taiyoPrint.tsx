@@ -9,29 +9,20 @@ interface SettingProps {
   dataPages: number;
 }
 
-const testData = [
-  ['2025-01-08T15:00:00.000Z', '会議室', '大洋商会', 2001, 'ｱﾝﾍｱｶﾗｰｴﾙ23E　赤箱', '', 720, '', 505, 30300, '', '', '未印刷', 'OCEAN_HQ_ID', '2025-02-04T23:21:02.000Z'],
-  ['2025-01-08T15:00:00.000Z', '会議室', '大洋商会', 2002, 'ｱﾝﾍｱｶﾗｰｴﾙ25E　赤箱', '', 240, '', 505, 121200, '', '', '未印刷', 'OCEAN_HQ_ID', '2025-02-04T23:21:02.000Z'],
-  ['2025-01-08T15:00:00.000Z', '会議室', '大洋商会', 2003, 'ｱﾝﾍｱｶﾗｰｴﾙ30E　赤箱', '', 120, '', 505, 60600, '', '', '未印刷', 'OCEAN_HQ_ID', '2025-02-04T23:21:02.000Z']
-]
-
 
 export default function TaiyoPrint({ setCurrentPage, printData, dataPages }: SettingProps) {
   const [taiyoData, settaiyoData] = useState([]);
   const [ShippingAddress, setShippingAddress] = useState([]);
   const [VendorData, setVendorData] = useState([]);
+  const sleep = (time) => new Promise((resolve) => setTimeout(resolve, time));
 
 
-  const HonbuSet = (vendordata) => {
-    setVendorData(vendordata.find(row => row[0] == '大洋商会'))
-    setShippingAddress(vendordata.find(row => row[0] == sessionStorage.getItem('AddressSet')))
-    let insertData = sessionStorage.getItem('shortageSet');
+  const HonbuSet = async() => {
+    let insertData = await JSON.parse(sessionStorage.getItem('shortageSet') ?? '');
     let returndata = []
+    await sleep(500)
     if (insertData){
-      insertData = JSON.parse(insertData)
-      
       for (let i = 0; i < insertData.length; i++){
-        
         let shortageNum = Number(insertData[i][12]);
         let num = 0;
         if (insertData[i][11] !== "" && Number(insertData[i][11]) > 0) {
@@ -39,7 +30,6 @@ export default function TaiyoPrint({ setCurrentPage, printData, dataPages }: Set
             shortageNum += Number(insertData[i][11])
             num += Number(insertData[i][11])
           }
-          
           returndata.push(['', insertData[i][2], num, '', '', ''])
         } else {
           returndata.push(['', insertData[i][2], -(Number(insertData[i][12])), '', '', ''])
@@ -58,7 +48,6 @@ export default function TaiyoPrint({ setCurrentPage, printData, dataPages }: Set
     const productdata = JSON.parse(localStorage.getItem('data'));
     let returndata = []
     const data = await kaigisituOrder();
-    //const data = testData
     const filter = data.filter(row => row[2] == '大洋商会' || row[2] == '大洋')
     for (let i = 0; i < data.length; i++){
       let matchdata = productdata.filter(row => row[1] == filter[i][3])
@@ -69,55 +58,47 @@ export default function TaiyoPrint({ setCurrentPage, printData, dataPages }: Set
         num += matchdata[0][11] + matchdata[0][10]
       }
       let serviceNum = count * matchdata[0][10]
-      // console.log(count)
-      // console.log(matchdata[0][10])
       returndata.push(['', filter[i][4], num - serviceNum, '', '', ''])
     }
     let calcD = 16 - returndata.length
     for (let i = 0; i < calcD; i ++){
       returndata.push(['','','','','',''])
     }
-    //console.log(returndata)
     settaiyoData(returndata)
   }
 
   useEffect(() => {
     const vendordata = JSON.parse(sessionStorage.getItem('EtcData') ?? '');
     const Address = vendordata.find(row => row[0] == sessionStorage.getItem('AddressSet'))
-
+    setVendorData(vendordata.find(row => row[0] == '大洋商会'))
     setShippingAddress(Address)
-    //console.log(vendordata)
-    //console.log(Address[0])
-
     if (Address[0] !== '会議室'){
-      HonbuSet(vendordata)
+      HonbuSet()
     } else {
       KaigisituSet()
     }
-    
-    
   },[])
 
   useEffect(() => {
+    console.log(taiyoData)
     if(taiyoData.length >= 1){
       const Print = async () => {
-      await new Promise<void>((resolve) => {
-        const onAfterPrint = () => {
-          window.removeEventListener('afterprint', onAfterPrint);
-          resolve();
-        };
-        window.addEventListener('afterprint', onAfterPrint);
-        window.print();
-      });
+        await new Promise<void>((resolve) => {
+          const onAfterPrint = () => {
+            window.removeEventListener('afterprint', onAfterPrint);
+            resolve();
+          };
+          window.addEventListener('afterprint', onAfterPrint);
+          window.print();
+        });
+      }
+      Print();
+      const pageReturn = async () => {
+        setCurrentPage('HQPage')
+      }
+      pageReturn()
     }
-    Print();
     
-    const pageReturn = async () => {
-      setCurrentPage('HQPage')
-    }
-    pageReturn()
-    }
-    return
     
   },[taiyoData])
   
