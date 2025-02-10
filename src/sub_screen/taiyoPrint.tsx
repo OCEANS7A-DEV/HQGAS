@@ -73,8 +73,12 @@ export default function TaiyoPrint({ setCurrentPage, printData, dataPages }: Set
       });
     }
     Print();
-    // sleep(500);
-    // setCurrentPage('HQPage')
+    
+    const pageReturn = async () => {
+      await sleep(500);
+      setCurrentPage('HQPage')
+    }
+    pageReturn()
   },[])
   return(
     <div className="taiyobackGround">
