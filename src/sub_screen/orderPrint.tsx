@@ -9,19 +9,19 @@ interface SettingProps {
   dataPages: number;
 }
 
-const NowDate = () => {
-  const today = new Date();
-  const todayDate = today.toLocaleDateString('ja-JP-u-ca-japanese', {
-    dateStyle: 'long'
-  })
-  return todayDate;
-};
+// const NowDate = () => {
+//   const today = new Date();
+//   const todayDate = today.toLocaleDateString('ja-JP-u-ca-japanese', {
+//     dateStyle: 'long'
+//   })
+//   return todayDate;
+// };
 
 
 
 export default function PrintPage({ setCurrentPage, printData, storename, dataPages }: SettingProps) {
-  const Date = NowDate();
-  const sleep = (time) => new Promise((resolve) => setTimeout(resolve, time));
+  //const Date = NowDate();
+  //const sleep = (time) => new Promise((resolve) => setTimeout(resolve, time));
   const [totalAmount, setTotalAmount] = useState(0);
   const [date, setDate] = useState('');
 
