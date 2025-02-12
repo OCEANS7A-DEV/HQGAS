@@ -41,11 +41,12 @@ const testData = [
 
 
 
-export default function MurakamiPrintPage({setCurrentPage}: SettingProps) {
+export default function ThankyouPrintPage({setCurrentPage}: SettingProps) {
   const [NowDay, setNowDay] = useState('');
   const [ShippingAddress, setShippingAddress] = useState([]);
   const [MurakamiData, setMurakamiData] = useState([]);
   const [VendorData, setVendorData] = useState([]);
+  const sleep = (time) => new Promise((resolve) => setTimeout(resolve, time));
 
 
   useEffect(() => {
@@ -54,15 +55,13 @@ export default function MurakamiPrintPage({setCurrentPage}: SettingProps) {
     const vendordata = JSON.parse(sessionStorage.getItem('EtcData') ?? '');
     const addressdata = sessionStorage.getItem('AddressSet') ?? '本部事務所'
     setShippingAddress(vendordata.find(row => row[0] == addressdata))
-    setVendorData(vendordata.find(row => row[0] == 'ムラカミ'))
-
-
+    setVendorData(vendordata.find(row => row[0] == '三久'))
     let insertData = sessionStorage.getItem('shortageSet');
     let returndata = []
     if (insertData){
       insertData = JSON.parse(insertData)
       for (let i = 0; i < insertData.length; i++){
-        let shortageNum = Number(insertData[i][9]);
+        let shortageNum = Number(insertData[i][11]);
         let num = 0;
         if (insertData[i][11] !== "" || Number(insertData[i][11]) > 0) {
           while (shortageNum < 0) {
@@ -71,15 +70,44 @@ export default function MurakamiPrintPage({setCurrentPage}: SettingProps) {
           }
           //insertData[i][9]
         }
-        returndata.push(['', insertData[i][2], num, '', '', ''])
+        returndata.push(['', insertData[i][2], -(Number(insertData[i][12])), '', '', ''])
       }
     }
+    //const resultdata = returndata.filter(row => !row[1].includes('ﾙﾍﾞﾙ'))
     let calcD = 22 - returndata.length
     for (let i = 0; i < calcD; i ++){
       returndata.push(['','','','','',''])
     }
-    setKinbatoData(returndata)
+    
+    setMurakamiData(returndata)
+    //console.log(resultdata)
   }, [])
+
+
+  useEffect(() => {
+    
+    if(MurakamiData.length >= 1){
+      //console.log(MurakamiData)
+      const Print = async () => {
+        await sleep(500)
+        await new Promise<void>((resolve) => {
+          const onAfterPrint = () => {
+            window.removeEventListener('afterprint', onAfterPrint);
+            resolve();
+          };
+          window.addEventListener('afterprint', onAfterPrint);
+          window.print();
+        });
+      }
+      Print();
+      const pageReturn = async () => {
+        await sleep(500)
+        setCurrentPage('HQPage')
+      }
+      pageReturn()
+    }
+  },[MurakamiData])
+
 
   return(
     <div className="PrintbackGround">
@@ -89,8 +117,9 @@ export default function MurakamiPrintPage({setCurrentPage}: SettingProps) {
         </h1>
         <div className="address-area">
           <div className="kinbato-left">
-            <h2 className="taiyo-Data-name">㈱ キンバト　御中</h2>
-            <div className="taiyo-Data-name"><div className="kinbato-date">{NowDay}</div></div>
+            <h2 className="taiyo-Data-name">株式会社　{VendorData[0]}　御中</h2>
+            {/* <div className="taiyo-Data-name"><div className="kinbato-date">{NowDay}</div></div> */}
+            <div className="taiyo-Data-name">TEL:{VendorData[3]}</div>
             <div className="taiyo-Data-name">FAX:{VendorData[2]}</div>
             <div className="taiyo-Data-name"><h3 className="order-message">お世話になります<br/>ご注文宜しくお願いします。</h3></div>
           </div>
@@ -111,11 +140,19 @@ export default function MurakamiPrintPage({setCurrentPage}: SettingProps) {
             <tr className="kinbato-header">
               <th className="taiyo-name-data">商品名</th>
               <th className="taiyo-num-data">個数</th>
-              <th className="taiyo-name-data">商品名</th>
-              <th className="taiyo-num-data">個数</th>
             </tr>
           </thead>
-          
+          <tbody>
+            {MurakamiData.map((row,index) => (
+              <tr key={index}>
+                <td className="murakami-name-data">{row[1]}</td>
+                <td className="murakami-num-data">{row[2]}</td>
+              </tr>
+            ))}
+            {/* <tr>
+              <td colSpan="2" className="murakami-last-data">プロステップは別紙です</td>
+            </tr> */}
+          </tbody>
         </table>
       </div>
     </div>

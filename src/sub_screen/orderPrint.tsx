@@ -20,8 +20,6 @@ interface SettingProps {
 
 
 export default function PrintPage({ setCurrentPage, printData, storename, dataPages }: SettingProps) {
-  //const Date = NowDate();
-  //const sleep = (time) => new Promise((resolve) => setTimeout(resolve, time));
   const [totalAmount, setTotalAmount] = useState(0);
   const [date, setDate] = useState('');
 

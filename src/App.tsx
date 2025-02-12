@@ -11,6 +11,8 @@ import PrintPage from './sub_screen/orderPrint.tsx';
 import ServicePage from './sub_screen/service_items.tsx';
 import TaiyoPrint from './sub_screen/taiyoPrint.tsx';
 import KinbatoPrintPage from './sub_screen/kinbatoPrint.tsx';
+import MurakamiPrintPage from './sub_screen/murakamiPrint';
+import ThankyouPrintPage from './sub_screen/ThankyouPrint';
 
 import TEST from './sub_screen/Print.tsx';
 
@@ -21,6 +23,7 @@ export default function App() {
   const [printData, setPrintData] = useState([]);
   const [storename, setStorename] = useState<string>('');
   const [dataPages, setdataPages] = useState<number>(0);
+
   const nodeRef = useRef(null);
   useEffect(() => {
     localStorageSet();
@@ -46,8 +49,12 @@ export default function App() {
         return <TEST/>;
       case 'TaiyoPrint':
         return <TaiyoPrint setCurrentPage={setCurrentPage} printData={printData} dataPages={dataPages}/>;
-        case 'KinbatoPrintPage':
-          return <KinbatoPrintPage setCurrentPage={setCurrentPage}/>;
+      case 'KinbatoPrint':
+        return <KinbatoPrintPage setCurrentPage={setCurrentPage}/>;
+      case 'MurakamiPrint':
+        return <MurakamiPrintPage setCurrentPage={setCurrentPage}/>;
+      case 'ThankyouPrint':
+        return <ThankyouPrintPage setCurrentPage={setCurrentPage}/>;
       default:
         return null;
     }
@@ -55,7 +62,7 @@ export default function App() {
 
   return (
     <TransitionGroup component={null}>
-      <div>{currentPage !== 'Printpage' && currentPage !== 'TaiyoPrint' && currentPage !== 'KinbatoPrintPage' && <TopBanner setCurrentPage={setCurrentPage} />}</div>
+      <div>{currentPage !== 'Printpage' && currentPage !== 'TaiyoPrint' && currentPage !== 'KinbatoPrint' && currentPage !== 'MurakamiPrint' && currentPage !== 'ThankyouPrint'&& <TopBanner setCurrentPage={setCurrentPage} />}</div>
       <CSSTransition
         key={currentPage}
         timeout={{ enter: 500, exit: 300 }}

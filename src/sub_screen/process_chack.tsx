@@ -212,8 +212,6 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
   const handletest = async () => {
     const storeprintname = storeSelect.value;
     const orderData = await JSON.parse(sessionStorage.getItem('ordersdata'));
-
-    //const formattedDate = getDate.replace(/-/g, '/');
     sessionStorage.setItem('printdate',getDate);
     var printData = orderData.filter(row => row[1] == storeprintname);
     const pages = Math.ceil(printData.length / rowNum);
@@ -292,11 +290,15 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
     sessionStorage.setItem('shortageSet', JSON.stringify(filterData))
     sessionStorage.setItem('shortageVender', vendorSelect.value)
     await sessionStorage.setItem('AddressSet', addressSelect.value)
-    //console.log(vendorSelect.value)
+    console.log(vendorSelect.value)
     if (vendorSelect.value == '大洋商会') {
       await setCurrentPage('TaiyoPrint');
     }else if (vendorSelect.value == 'キンバト') {
       await setCurrentPage('KinbatoPrint');
+    }else if (vendorSelect.value == 'ムラカミ') {
+      await setCurrentPage('MurakamiPrint');
+    }else if (vendorSelect.value == '三久') {
+      await setCurrentPage('ThankyouPrint');
     }
     //setCurrentPage('HQPage');
   }
