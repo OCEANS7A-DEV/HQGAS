@@ -188,3 +188,12 @@
   height: 34px;
   font-weight: bold;
 }
+
+
+.tamura-manager {
+  font-size: 25px;
+  margin-left: 20px;
+  padding: 2px 5px;
+  border: 1px solid black;
+}
+

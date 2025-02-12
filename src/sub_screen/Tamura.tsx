@@ -41,7 +41,7 @@ const testData = [
 
 
 
-export default function ThankyouPrintPage({setCurrentPage}: SettingProps) {
+export default function TamuraPrintPage({setCurrentPage}: SettingProps) {
   const [NowDay, setNowDay] = useState('');
   const [ShippingAddress, setShippingAddress] = useState([]);
   const [MurakamiData, setMurakamiData] = useState([]);
@@ -55,7 +55,7 @@ export default function ThankyouPrintPage({setCurrentPage}: SettingProps) {
     const vendordata = JSON.parse(sessionStorage.getItem('EtcData') ?? '');
     const addressdata = sessionStorage.getItem('AddressSet') ?? '本部事務所'
     setShippingAddress(vendordata.find(row => row[0] == addressdata))
-    setVendorData(vendordata.find(row => row[0] == '三久'))
+    setVendorData(vendordata.find(row => row[0] == 'タムラ'))
 
     let insertData = JSON.parse(sessionStorage.getItem('shortageSet') ?? '');
     let returndata = []
@@ -72,7 +72,6 @@ export default function ThankyouPrintPage({setCurrentPage}: SettingProps) {
           }
           returndata.push(['', insertData[i][2], num, '', '', ''])
         } else {
-          console.log('else')
           returndata.push(['', insertData[i][2], -(Number(insertData[i][12])), '', '', ''])
         }
       }
@@ -115,14 +114,14 @@ export default function ThankyouPrintPage({setCurrentPage}: SettingProps) {
     <div className="PrintbackGround">
       <div className="kinbato-top">
         <h1 className="taiyoH1">
-          注文書
+          FAX専用注文書
         </h1>
         <div className="address-area">
           <div className="kinbato-left">
-            <h2 className="taiyo-Data-name">株式会社　{VendorData[0]}　御中</h2>
+            <h2 className="taiyo-Data-name">株式会社　{VendorData[0]}　行</h2>
+            <div className="tamura-manager">タムラ担当者:　{VendorData[6]}</div>
             {/* <div className="taiyo-Data-name"><div className="kinbato-date">{NowDay}</div></div> */}
-            <div className="taiyo-Data-name">TEL:{VendorData[3]}</div>
-            <div className="taiyo-Data-name">FAX:{VendorData[2]}</div>
+            <div className="taiyo-Data-name">本社FAX:{VendorData[2]}</div>
             <div className="taiyo-Data-name"><h3 className="order-message">お世話になります<br/>ご注文宜しくお願いします。</h3></div>
           </div>
           <div className="kinbato-right">

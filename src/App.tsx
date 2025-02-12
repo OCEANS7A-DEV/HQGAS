@@ -13,6 +13,7 @@ import TaiyoPrint from './sub_screen/taiyoPrint.tsx';
 import KinbatoPrintPage from './sub_screen/kinbatoPrint.tsx';
 import MurakamiPrintPage from './sub_screen/murakamiPrint';
 import ThankyouPrintPage from './sub_screen/ThankyouPrint';
+import TamuraPrintPage from './sub_screen/Tamura.tsx';
 
 import TEST from './sub_screen/Print.tsx';
 
@@ -55,6 +56,8 @@ export default function App() {
         return <MurakamiPrintPage setCurrentPage={setCurrentPage}/>;
       case 'ThankyouPrint':
         return <ThankyouPrintPage setCurrentPage={setCurrentPage}/>;
+      case 'TamuraPrint':
+        return <TamuraPrintPage setCurrentPage={setCurrentPage}/>;
       default:
         return null;
     }
@@ -62,7 +65,7 @@ export default function App() {
 
   return (
     <TransitionGroup component={null}>
-      <div>{currentPage !== 'Printpage' && currentPage !== 'TaiyoPrint' && currentPage !== 'KinbatoPrint' && currentPage !== 'MurakamiPrint' && currentPage !== 'ThankyouPrint'&& <TopBanner setCurrentPage={setCurrentPage} />}</div>
+      <div>{currentPage !== 'Printpage' && currentPage !== 'TaiyoPrint' && currentPage !== 'KinbatoPrint' && currentPage !== 'MurakamiPrint' && currentPage !== 'ThankyouPrint' && currentPage !== 'TamuraPrint' && <TopBanner setCurrentPage={setCurrentPage} />}</div>
       <CSSTransition
         key={currentPage}
         timeout={{ enter: 500, exit: 300 }}

@@ -290,7 +290,7 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
     sessionStorage.setItem('shortageSet', JSON.stringify(filterData))
     sessionStorage.setItem('shortageVender', vendorSelect.value)
     await sessionStorage.setItem('AddressSet', addressSelect.value)
-    //console.log(vendorSelect.value)
+    console.log(vendorSelect.value)
     if (vendorSelect.value == '大洋商会') {
       await setCurrentPage('TaiyoPrint');
     }else if (vendorSelect.value == 'キンバト') {
@@ -299,7 +299,9 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
       await setCurrentPage('MurakamiPrint');
     }else if (vendorSelect.value == '三久') {
       await setCurrentPage('ThankyouPrint');
-    }
+    }else if (vendorSelect.value == 'タムラ'){
+      await setCurrentPage('TamuraPrint');
+    } 
     //setCurrentPage('HQPage');
   }
 
