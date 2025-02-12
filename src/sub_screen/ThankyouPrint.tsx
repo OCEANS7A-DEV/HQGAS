@@ -56,24 +56,27 @@ export default function ThankyouPrintPage({setCurrentPage}: SettingProps) {
     const addressdata = sessionStorage.getItem('AddressSet') ?? '本部事務所'
     setShippingAddress(vendordata.find(row => row[0] == addressdata))
     setVendorData(vendordata.find(row => row[0] == '三久'))
-    let insertData = sessionStorage.getItem('shortageSet');
+
+    let insertData = JSON.parse(sessionStorage.getItem('shortageSet') ?? '');
     let returndata = []
     if (insertData){
-      insertData = JSON.parse(insertData)
       for (let i = 0; i < insertData.length; i++){
-        let shortageNum = Number(insertData[i][11]);
+        let shortageNum = Number(insertData[i][12]);
         let num = 0;
-        if (insertData[i][11] !== "" || Number(insertData[i][11]) > 0) {
+        if (insertData[i][11] !== "" && Number(insertData[i][11]) > 0) {
+          console.log('true')
+          console.log(shortageNum)
           while (shortageNum < 0) {
             shortageNum += Number(insertData[i][11])
             num += Number(insertData[i][11])
           }
-          //insertData[i][9]
+          returndata.push(['', insertData[i][2], num, '', '', ''])
+        } else {
+          console.log('else')
+          returndata.push(['', insertData[i][2], -(Number(insertData[i][12])), '', '', ''])
         }
-        returndata.push(['', insertData[i][2], -(Number(insertData[i][12])), '', '', ''])
       }
     }
-    //const resultdata = returndata.filter(row => !row[1].includes('ﾙﾍﾞﾙ'))
     let calcD = 22 - returndata.length
     for (let i = 0; i < calcD; i ++){
       returndata.push(['','','','','',''])
@@ -85,7 +88,7 @@ export default function ThankyouPrintPage({setCurrentPage}: SettingProps) {
 
 
   useEffect(() => {
-    
+    return
     if(MurakamiData.length >= 1){
       //console.log(MurakamiData)
       const Print = async () => {
