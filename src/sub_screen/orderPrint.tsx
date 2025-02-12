@@ -73,7 +73,7 @@ export default function PrintPage({ setCurrentPage, printData, storename, dataPa
               {(index % 27 === 0 && index > 1) && (
                 <>
                   <tr key={`condition`}>
-                    <td colSpan="9" className="special-row">
+                    <td colSpan="10" className="special-row">
                       {index/27}/{dataPages}
                     </td>
                   </tr>
@@ -95,11 +95,13 @@ export default function PrintPage({ setCurrentPage, printData, storename, dataPa
           ))}
           <>
             <tr key="last-condition">
-              <td colSpan="10" className="special-row">
-                {dataPages}/{dataPages}
+              <td colSpan="11" className="special-row">
+                <div className="last-row">
+                  <div className="last-page-data">{dataPages}/{dataPages}</div>
+                  <div>合計金額: ¥{Number(totalAmount).toLocaleString('ja-JP')}</div>
+                </div>
               </td>
             </tr>
-            <a className="total-row">合計金額: ¥{Number(totalAmount).toLocaleString('ja-JP')}</a>
           </>
           </tbody>
         </table>

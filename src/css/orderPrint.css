@@ -11,6 +11,23 @@
   border-collapse: collapse;
 }
 
+.last-row {
+  display: flex;
+  align-items: center;
+  position: relative; /* 中央配置の基準点にする */
+  width: 100%;
+}
+
+.last-page-data {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap; /* 改行を防ぐ */
+}
+
+.last-row div:last-child {
+  margin-left: auto;
+}
 
 
 .printDate {

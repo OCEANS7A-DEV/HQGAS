@@ -85,11 +85,13 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
 
 
   const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    //console.log(event.target.value)
     setGetDate(event.target.value);
   };
 
-  const PrintProcessList = async () => {
-    const result = await ProcessConfirmationGet(getDate);
+  const PrintProcessList = async (getdate) => {
+    
+    const result = await ProcessConfirmationGet(getdate);
     sessionStorage.setItem('ordersdata',JSON.stringify(result));
     const storeList = JSON.parse(localStorage.getItem('storeData'));
     const processData = [];
@@ -176,6 +178,16 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
     OceanListGet();
   },[])
 
+  useEffect(() =>{
+    const resetDate = sessionStorage.getItem('printdate') ?? ''
+    //console.log(resetDate.replace(/\//g, '-'))
+    if(resetDate !== ''){
+      setGetDate(resetDate);
+      PrintProcessList(resetDate.replace(/\//g, '-'));
+    }
+  },[])
+
+
 
   const handleStoreChange = (selectedOption: SelectOption | null) => {
     setStoreSelect(selectedOption);
@@ -225,7 +237,7 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
     };
     await dataSettings();
     await setCurrentPage('Printpage');
-
+    //return
     await sleep(500);
     await new Promise<void>((resolve) => {
       const onAfterPrint = () => {
@@ -319,7 +331,7 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
     <div className='check_window'>
       <div className="check_area">
         <div>
-          <button type="button" onClick={PrintProcessList}>取得</button>
+          <button type="button" onClick={() => PrintProcessList(getDate)}>取得</button>
           <input
             type="date"
             className="insert_order_date"
