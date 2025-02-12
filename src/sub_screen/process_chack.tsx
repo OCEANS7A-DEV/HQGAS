@@ -90,7 +90,6 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
   };
 
   const PrintProcessList = async (getdate) => {
-    
     const result = await ProcessConfirmationGet(getdate);
     sessionStorage.setItem('ordersdata',JSON.stringify(result));
     const storeList = JSON.parse(localStorage.getItem('storeData'));
@@ -182,7 +181,7 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
     const resetDate = sessionStorage.getItem('printdate') ?? ''
     //console.log(resetDate.replace(/\//g, '-'))
     if(resetDate !== ''){
-      setGetDate(resetDate);
+      setGetDate(resetDate.replace(/\//g, '-'));
       PrintProcessList(resetDate.replace(/\//g, '-'));
     }
   },[])
