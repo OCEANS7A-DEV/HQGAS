@@ -88,7 +88,6 @@ export default function ThankyouPrintPage({setCurrentPage}: SettingProps) {
 
 
   useEffect(() => {
-    return
     if(MurakamiData.length >= 1){
       //console.log(MurakamiData)
       const Print = async () => {
