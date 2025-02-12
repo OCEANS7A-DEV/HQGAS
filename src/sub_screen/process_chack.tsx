@@ -85,7 +85,6 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
 
 
   const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    //console.log(event.target.value)
     setGetDate(event.target.value);
   };
 
@@ -154,10 +153,8 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
   };
 
   useEffect(() => {
-    //PrintProcessList();
     const getLocalStorageSize = async () => {
       const cachedData = await JSON.parse(localStorage.getItem('storeData') ?? '');
-      //console.log(cachedData)
       const storedatalist: SelectOption[] = [];
       for (let i = 0; i < cachedData.length; i++){
         storedatalist.push(
@@ -169,8 +166,6 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
       }
       setSelectOptions(storedatalist);
       await SelectlocalStoreSet(storedatalist);
-      // const cachedData2 = localStorage.getItem('storeData');
-      // setSelectOptions(JSON.parse(cachedData2));
     }
     getLocalStorageSize();
     VendorListGet();
@@ -179,10 +174,9 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
 
   useEffect(() =>{
     const resetDate = sessionStorage.getItem('printdate') ?? ''
-    //console.log(resetDate.replace(/\//g, '-'))
     if(resetDate !== ''){
-      setGetDate(resetDate.replace(/\//g, '-'));
-      PrintProcessList(resetDate.replace(/\//g, '-'));
+      setGetDate(resetDate);
+      PrintProcessList(resetDate);
     }
   },[])
 
@@ -219,8 +213,8 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
     const storeprintname = storeSelect.value;
     const orderData = await JSON.parse(sessionStorage.getItem('ordersdata'));
 
-    const formattedDate = getDate.replace(/-/g, '/');
-    sessionStorage.setItem('printdate',formattedDate);
+    //const formattedDate = getDate.replace(/-/g, '/');
+    sessionStorage.setItem('printdate',getDate);
     var printData = orderData.filter(row => row[1] == storeprintname);
     const pages = Math.ceil(printData.length / rowNum);
     const EmptyRow = ['','','','','','','','','','','','']

@@ -31,7 +31,7 @@ export default function PrintPage({ setCurrentPage, printData, storename, dataPa
       resultAmount += printData[i][9];
     }
     const FormattedDate = sessionStorage.getItem('printdate')
-    setDate(FormattedDate)
+    setDate(FormattedDate.replace(/-/g, '/'))
     setTotalAmount(resultAmount)
   },[]);
 
