@@ -89,7 +89,7 @@ export default function PrintPage({ setCurrentPage, printData, storename, dataPa
               {/* <th>商品ナンバー</th> */}
               <th>商品ナンバー・商品名</th>
               <th>商品詳細</th>
-              <th>数量</th>
+              <th>注文数</th>
               <th>単価</th>
               <th>合計金額</th>
               <th>個人購入</th>

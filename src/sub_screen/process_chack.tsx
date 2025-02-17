@@ -89,9 +89,10 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
   };
 
   const PrintProcessList = async (getdate) => {
+    
     const result = await ProcessConfirmationGet(getdate);
     sessionStorage.setItem('ordersdata',JSON.stringify(result));
-    const storeList = JSON.parse(localStorage.getItem('storeData'));
+    const storeList = await JSON.parse(localStorage.getItem('storeData'));
     const processData = [];
     const storeProcessMap = {};
     result.forEach(item => {
@@ -238,9 +239,8 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
       window.addEventListener('afterprint', onAfterPrint);
       window.print();
     });
-    return
+    //return
     GASProcessUpdate('店舗へ',storeprintname);
-    
     setCurrentPage('HQPage');
   };
 

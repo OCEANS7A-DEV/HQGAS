@@ -101,28 +101,32 @@
 .P-name {
   font-size: 13px;
   width: 90px;
-  max-width: 300px;
-  min-width: 300px;
+  max-width: 290px;
+  min-width: 298px;
   overflow: hidden;
   text-align: left;
 }
 
 .P-price {
- width: 54px;
- font-size: 12px;
- text-align: right;
+  width: 54px;
+  min-width: 54px;
+  max-width: 54px;
+  font-size: 12px;
+  text-align: right;
 }
 
 .P-totalprice {
   width: 63px;
+  min-width: 63px;
+  max-width: 63px;
   font-size: 12px;
   text-align: right;
 }
 
 .P-detail {
   font-size: 12px;
-  min-width: 58px;
-  max-width: 58px;
+  min-width: 56px;
+  max-width: 56px;
   text-align: left;
 }
 
@@ -151,15 +155,11 @@
 .P-remarks {
   font-size: 12px;
   width: 65px;
-  min-width: 65px;
-  max-width: 65px;
+  min-width: 64px;
+  max-width: 64px;
   text-align: left;
 }
 
-.chack-cell {
-  width: 30px;
-  min-width: 35px;
-}
 
 .condition{
   text-align: right;
