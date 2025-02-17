@@ -78,7 +78,7 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
   const [selectOptions, setSelectOptions] = useState<SelectOption[]>([]);
   const message = `今回の店舗からの注文を${DateNow}で締め切りますか？`;
   const resetmessage = '在庫一覧の現物数のデータをすべて空にします\nよろしいですか？';
-  const rowNum = 27;
+  const rowNum = 19;
   const [getDate, setGetDate] = useState('');
   const [addressSelect, setAdoressSelect] = useState<SelectOption | null>(null);
   const [vendorSelect, setVendorSelect] = useState<SelectOption | null>(null);
@@ -238,7 +238,9 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
       window.addEventListener('afterprint', onAfterPrint);
       window.print();
     });
+    return
     GASProcessUpdate('店舗へ',storeprintname);
+    
     setCurrentPage('HQPage');
   };
 

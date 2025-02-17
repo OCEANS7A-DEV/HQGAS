@@ -40,7 +40,6 @@ const testData = [
 
 
 
-
 export default function ThankyouPrintPage({setCurrentPage}: SettingProps) {
   const [NowDay, setNowDay] = useState('');
   const [ShippingAddress, setShippingAddress] = useState([]);
@@ -83,13 +82,11 @@ export default function ThankyouPrintPage({setCurrentPage}: SettingProps) {
     }
     
     setMurakamiData(returndata)
-    //console.log(resultdata)
   }, [])
 
 
   useEffect(() => {
     if(MurakamiData.length >= 1){
-      //console.log(MurakamiData)
       const Print = async () => {
         await sleep(500)
         await new Promise<void>((resolve) => {
