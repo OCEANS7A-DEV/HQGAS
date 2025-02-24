@@ -103,7 +103,7 @@ export default function TaiyoPrint({ setCurrentPage, printData, dataPages }: Set
   },[taiyoData])
   
   return(
-    <div className="taiyobackGround">
+    <div className="PrintbackGround">
       <div className="taiyotop">
         <h1 className="taiyoH1">FAX注文書</h1>
       </div>

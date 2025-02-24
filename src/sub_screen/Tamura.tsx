@@ -103,7 +103,7 @@ export default function TamuraPrintPage({setCurrentPage}: SettingProps) {
       Print();
       const pageReturn = async () => {
         await sleep(500)
-        setCurrentPage('HQPage')
+        //setCurrentPage('HQPage')
       }
       pageReturn()
     }
@@ -135,27 +135,30 @@ export default function TamuraPrintPage({setCurrentPage}: SettingProps) {
           </div>
         </div>
       </div>
-      <div className="taiyo-tableArea">
-        <table className="taiyo-table">
-          <thead>
-            <tr className="kinbato-header">
-              <th className="taiyo-name-data">商品名</th>
-              <th className="taiyo-num-data">個数</th>
-            </tr>
-          </thead>
-          <tbody>
-            {MurakamiData.map((row,index) => (
-              <tr key={index}>
-                <td className="murakami-name-data">{row[1]}</td>
-                <td className="murakami-num-data">{row[2]}</td>
+      <div className="tamuratable">
+        <div className="taiyo-tableArea">
+          <table className="taiyo-table">
+            <thead>
+              <tr className="kinbato-header">
+                <th className="taiyo-name-data">商品名</th>
+                <th className="taiyo-num-data">個数</th>
               </tr>
-            ))}
-            {/* <tr>
-              <td colSpan="2" className="murakami-last-data">プロステップは別紙です</td>
-            </tr> */}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {MurakamiData.map((row,index) => (
+                <tr key={index}>
+                  <td className="murakami-name-data">{row[1]}</td>
+                  <td className="murakami-num-data">{row[2]}</td>
+                </tr>
+              ))}
+              {/* <tr>
+                <td colSpan="2" className="murakami-last-data">プロステップは別紙です</td>
+              </tr> */}
+            </tbody>
+          </table>
+        </div>
       </div>
+      
     </div>
   );  
 }

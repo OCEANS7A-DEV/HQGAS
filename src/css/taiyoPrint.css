@@ -1,13 +1,14 @@
 .taiyobackGround {
   background-color: white;
-  width: 210mm;
-  height: 297mm;
+  max-width: 210mm;
+  max-height: 297mm;
 }
 
 
 .taiyotop {
   text-align: center;
 }
+
 .taiyoH1,.taiyo-Data-name,.taiyo-Data-number {
   margin: 0;
 }
@@ -36,11 +37,16 @@
 }
 
 .taiyo-tableArea {
+  width: 100%;
+}
+
+.tamuratable{
   display: flex;
+  justify-content: center;
 }
 
 .taiyo-table {
-  flex: 1;
+  width: 200mm;
   border-collapse: collapse;
   margin: 15px;
 }
@@ -153,6 +159,7 @@
 
 @media print {
   @page {
+    size: A4 portrait;
     margin: 0; /* ページの余白をゼロに設定 */
   }
   body {

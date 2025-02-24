@@ -1,7 +1,8 @@
 .PrintbackGround {
   background-color: white;
-  width: 210mm;
-  height: 297mm;
+  padding-top: 10px;
+  max-width: 210mm;
+  max-height: 297mm;
 }
 
 .kinbato-left {
