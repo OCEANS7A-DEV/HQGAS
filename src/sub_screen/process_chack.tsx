@@ -206,8 +206,7 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
     setDialogOpen(false);
   };
 
-  const handletest = async () => {
-    const storeprintname = storeSelect.value;
+  const handleOrderPrint = async (storeprintname: string) => {
     const orderData = await JSON.parse(sessionStorage.getItem('ordersdata'));
     sessionStorage.setItem('printdate',getDate);
     var printData = orderData.filter(row => row[1] == storeprintname);
@@ -241,40 +240,13 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
   };
 
   const allPrint = async () => {
-    const orderData = await JSON.parse(sessionStorage.getItem('ordersdata'));
-    for (let i = 0; i < checkresult.length; i++){
-      if (checkresult[i].process == '未印刷') {
-        var printData = orderData.filter(row => row[1] == checkresult[i].storeName);
-        const pages = Math.ceil(printData.length / rowNum);
-        const EmptyRow = ['','','','','','','','','','','','']
-        const restrows = (pages * rowNum) - printData.length;
-
-        for (let i = 0; i < restrows; i++) {
-          printData.push(EmptyRow);
-        }
-        const dataPages = printData.length / rowNum;
-        const dataSettings = async () => {
-          setdataPages(dataPages)
-          setPrintData(printData);
-          setStorename(checkresult[i].storeName);
-        };
-        await dataSettings();
-        await setCurrentPage('Printpage');
-        await sleep(500);
-        await new Promise<void>((resolve) => {
-          const onAfterPrint = () => {
-            window.removeEventListener('afterprint', onAfterPrint);
-            resolve();
-          };
-          window.addEventListener('afterprint', onAfterPrint);
-          window.print();
-        });
-        GASProcessUpdate('店舗へ',checkresult[i].storeName);
-        await sleep(500);
-      }
+    const printstoreList = checkresult.filter(row => row.process == '未印刷' || row.process == '一部未印刷')
+    for (let i = 0; i < printstoreList.length; i++){
+      handleOrderPrint(printstoreList[i].storeName[0])
+      return
     }
-    setCurrentPage('HQPage');
-    PrintProcessList();
+
+    return
   };
 
   const VendorPrint = async () => {
@@ -360,7 +332,7 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
             options={selectOptions}
           />
         </div>
-        <a className="buttonUnderline" type="button" onClick={handletest}>
+        <a className="buttonUnderline" type="button" onClick={() => handleOrderPrint(storeSelect.value)}>
           個別印刷
         </a>
         <a className="buttonUnderline" type="button" onClick={allPrint}>
