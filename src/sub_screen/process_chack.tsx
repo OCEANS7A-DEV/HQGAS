@@ -56,9 +56,7 @@ const OceanListGet = async () => {
 };
 
 
-function findStore(storeList, targetStore) {
-  return storeList.find(item => item.storeName === targetStore);
-}
+
 
 const CurrentDate = () => {
   const today = new Date()
@@ -73,11 +71,9 @@ const DateNow = CurrentDate();
 export default function HQPage({ setCurrentPage, setPrintData, setStorename, setdataPages }: SettingProps) {
   const [checkresult, setCheckResult] = useState([]); // 処理結果を管理する状態
   const [isDialogOpen, setDialogOpen] = useState(false);
-  const [isQuantityDialogOpen, setQuantityDialogOpen] = useState(false);
   const [storeSelect, setStoreSelect] = useState<SelectOption | null>(null);
   const [selectOptions, setSelectOptions] = useState<SelectOption[]>([]);
   const message = `今回の店舗からの注文を${DateNow}で締め切りますか？`;
-  const resetmessage = '在庫一覧の現物数のデータをすべて空にします\nよろしいですか？';
   const rowNum = 19;
   const [getDate, setGetDate] = useState('');
   const [addressSelect, setAdoressSelect] = useState<SelectOption | null>(null);
@@ -307,24 +303,6 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
     //setCurrentPage('HQPage');
   }
 
-  const resetConfirm = () => {
-    setQuantityDialogOpen(true);
-  };
-
-  const handleResetConfirm = () => {
-    actualQuantityReset();
-    alert('リセットが完了しました');
-    setQuantityDialogOpen(false);
-  };
-
-  const handleResetCancel = () => {
-    alert('キャンセルされました');
-    setQuantityDialogOpen(false);
-  };
-
-  const actualQuantityReset = async () => {
-    QuantityReset('在庫一覧');
-  };
 
   return (
     <div className='check_window'>
