@@ -9,6 +9,13 @@
   align-items: center;
   justify-content: center;
 }
+.Printwarning {
+  color: red;
+  font-size: 24px;
+  position:absolute;
+  top: 50px;
+  left: 20px;
+}
 
 
 .printData{
@@ -144,7 +151,7 @@
 }
 
 .P-personal {
-  font-size: 14px;
+  font-size: 12px;
   width: 50px;
   min-width: 54px;
   max-width: 50px;

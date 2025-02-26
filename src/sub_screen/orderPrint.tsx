@@ -18,8 +18,11 @@ export default function PrintPage({ setCurrentPage, printData, storename, dataPa
   const [date, setDate] = useState('');
   const SetRows = 19;
   const [parsonaltext, setParsonaltext] = useState('');
+  const defaultText = '警告 単価が¥0の商品があります';
+  const [WarningText, setWarningText] = useState(defaultText);
 
   useEffect(() => {
+    warningSet()
     let resultAmount = 0;
     //let parsonalCount = 0
     for (let i = 0; i < printData.length; i++){
@@ -33,8 +36,6 @@ export default function PrintPage({ setCurrentPage, printData, storename, dataPa
     const FormattedDate = sessionStorage.getItem('printdate')
     setDate(FormattedDate.replace(/-/g, '/'))
     setTotalAmount(resultAmount)
-    //console.log(220*1.1)
-    //console.log(Math.ceil(220*1.1))
   },[]);
 
   const totalResult = (num, price) => {
@@ -77,9 +78,17 @@ export default function PrintPage({ setCurrentPage, printData, storename, dataPa
     return result
   };
 
+  const warningSet = () => {
+    let NonPriceData = printData.filter(row => row[8] == 0 && row[0] !== '');
+    if(NonPriceData.length === 0){
+      setWarningText('')
+    }
+  }
+
 
   return (
     <div className="print-area">
+      <div className="Printwarning">{WarningText}</div>
       <div className="printData">
         <table className="printData">
           <thead>
@@ -94,6 +103,7 @@ export default function PrintPage({ setCurrentPage, printData, storename, dataPa
             <tr className="storename">
               <th className="print-storename" colSpan="10">
                 <div>{storename}</div>
+                
               </th>
             </tr>
             <tr className="print-table-header">
