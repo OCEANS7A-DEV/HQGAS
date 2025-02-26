@@ -36,6 +36,7 @@
 
 
 .printDate {
+  margin-top: 10px;
   display: flex;
 }
 
@@ -72,8 +73,8 @@
 
 .printData td {
   height: 36px;
-  min-height: 38px;
-  max-height: 38px;
+  min-height: 36px;
+  max-height: 36px;
   padding: 6px;
   border: 1px solid black;
 }
@@ -105,7 +106,7 @@
 }
 
 .P-name {
-  font-size: 13px;
+  font-size: 12px;
   width: 90px;
   max-width: 280px;
   min-width: 280px;

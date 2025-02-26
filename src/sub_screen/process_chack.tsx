@@ -236,7 +236,7 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
     });
     //return
     GASProcessUpdate('店舗へ',storeprintname);
-    setCurrentPage('HQPage');
+    //setCurrentPage('HQPage');
   };
 
   const allPrint = async () => {
