@@ -33,8 +33,8 @@ export default function PrintPage({ setCurrentPage, printData, storename, dataPa
     const FormattedDate = sessionStorage.getItem('printdate')
     setDate(FormattedDate.replace(/-/g, '/'))
     setTotalAmount(resultAmount)
-    console.log(220*1.1)
-    console.log(Math.ceil(220*1.1))
+    //console.log(220*1.1)
+    //console.log(Math.ceil(220*1.1))
   },[]);
 
   const totalResult = (num, price) => {
@@ -48,11 +48,23 @@ export default function PrintPage({ setCurrentPage, printData, storename, dataPa
     return result
   };
 
+  const hasDecimal = (num: number): boolean => {
+    return !Number.isInteger(num);
+  }
+
   const personalTotalAmount = (num, price, personal) => {
     let result = '';
     if(personal !== '') {
       let personalAmount = (num * price) * 1.1
-      result = `税込¥${personalAmount.toLocaleString('ja-JP')}`
+      let calcError = Math.floor(personalAmount * 10) / 10;
+      let roundUp = 0;
+      if (hasDecimal(calcError)){
+        roundUp = Math.ceil(calcError);
+      }else{
+        roundUp = calcError
+      }
+      
+      result = `税込¥${roundUp.toLocaleString('ja-JP')}`
     }
     return result
   };
