@@ -12,6 +12,7 @@
 
 
 .printData{
+  margin: auto;
   border-collapse: collapse;
 }
 
@@ -100,6 +101,7 @@
   min-width: 38px;
   max-width: 38px;
   text-align: right;
+  white-space: nowrap;
 }
 
 .P-name {
