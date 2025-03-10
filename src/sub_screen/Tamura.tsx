@@ -134,7 +134,7 @@ export default function TamuraPrintPage({setCurrentPage}: SettingProps) {
         </h1>
         <div className="address-area">
           <div className="kinbato-left">
-            <h2 className="taiyo-Data-name">株式会社　{VendorData[0]}　行</h2>
+            <h2 className="taiyo-Data-name">株式会社　{VendorData[0]}　御中</h2>
             <div className="tamura-manager">タムラ担当者:　{VendorData[6]}</div>
             {/* <div className="taiyo-Data-name"><div className="kinbato-date">{NowDay}</div></div> */}
             <div className="taiyo-Data-name">本社FAX:{VendorData[2]}</div>
