@@ -223,6 +223,32 @@ export const taiyoOrder = async () => {
 };
 
 
+export const murakamiOrder = async () => {
+  try {
+    const response = await fetch(
+      URL_STRING,
+      {
+        method: 'POST',
+        headers: {
+          "Content-Type" : "application/x-www-form-urlencoded",
+        },
+        body: JSON.stringify({
+          action: 'murakami',
+          sub_action: 'get',
+          sheetName: '店舗へ',
+        })
+      },
+    );
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+    const result = await response.json();
+    return result;
+  }catch(e){
+    return (e);
+  }
+};
+
 export const tamuraOrder = async () => {
   try {
     const response = await fetch(

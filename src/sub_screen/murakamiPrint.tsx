@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../css/kinbatoPrint.css';
 import '../css/taiyoPrint.css';
+import { murakamiOrder } from '../backend/Server_end.ts';
 
 
 interface SettingProps {
@@ -47,9 +48,21 @@ export default function MurakamiPrintPage({setCurrentPage}: SettingProps) {
   const [MurakamiData, setMurakamiData] = useState([]);
   const [VendorData, setVendorData] = useState([]);
   const sleep = (time) => new Promise((resolve) => setTimeout(resolve, time));
+  const [prostepData, setProStepdata] = useState([]);
+  const [storeData, setStoreData] = useState([])
 
+
+  const prostepGet = async () => {
+    const data = await murakamiOrder()
+    setProStepdata(data)
+    const storedata = [...new Set(data.map(row => row[1]))]
+    setStoreData(storedata)
+
+    console.log(storedata)
+  };
 
   useEffect(() => {
+    prostepGet()
     const Now = getMonthString();
     setNowDay(Now)
     const vendordata = JSON.parse(sessionStorage.getItem('EtcData') ?? '');
@@ -96,13 +109,13 @@ export default function MurakamiPrintPage({setCurrentPage}: SettingProps) {
             resolve();
           };
           window.addEventListener('afterprint', onAfterPrint);
-          window.print();
+          //window.print();
         });
       }
       Print();
       const pageReturn = async () => {
         await sleep(500)
-        setCurrentPage('HQPage')
+        //setCurrentPage('HQPage')
       }
       pageReturn()
     }
@@ -152,6 +165,14 @@ export default function MurakamiPrintPage({setCurrentPage}: SettingProps) {
             <tr>
               <td colSpan="2" className="murakami-last-data">プロステップは別紙です</td>
             </tr>
+          </tbody>
+          <tbody>
+            {storeData.map((row, index) => (
+              <th key={index}>
+                
+              </th>
+            ))}
+            
           </tbody>
         </table>
       </div>
