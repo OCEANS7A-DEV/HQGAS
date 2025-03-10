@@ -45,25 +45,33 @@ export default function TaiyoPrint({ setCurrentPage, printData, dataPages }: Set
   }
 
   const KaigisituSet = async() => {
-    const productdata = JSON.parse(localStorage.getItem('data'));
+    const productdata = await JSON.parse(localStorage.getItem('data') ?? '');
     let returndata = []
     const data = await kaigisituOrder();
+    //console.log(productdata)
     const filter = data.filter(row => row[2] == '大洋商会' || row[2] == '大洋')
-    for (let i = 0; i < data.length; i++){
+    //console.log(filter)
+    for (let i = 0; i < filter.length; i++){
       let matchdata = productdata.filter(row => row[1] == filter[i][3])
+      //console.log(matchdata)
       let count = 0;
       let num = 0;
       while (num < filter[i][6]) {
         count++
         num += matchdata[0][11] + matchdata[0][10]
       }
+      
       let serviceNum = count * matchdata[0][10]
+      //console.log(num - serviceNum)
       returndata.push(['', filter[i][4], num - serviceNum, '', '', ''])
     }
+    //console.log(returndata)
     let calcD = 16 - returndata.length
     for (let i = 0; i < calcD; i ++){
       returndata.push(['','','','','',''])
     }
+
+    
     settaiyoData(returndata)
   }
 
@@ -72,6 +80,7 @@ export default function TaiyoPrint({ setCurrentPage, printData, dataPages }: Set
     const Address = vendordata.find(row => row[0] == sessionStorage.getItem('AddressSet'))
     setVendorData(vendordata.find(row => row[0] == '大洋商会'))
     setShippingAddress(Address)
+    //console.log(Address)
     if (Address[0] !== '会議室'){
       HonbuSet()
     } else {
@@ -80,7 +89,7 @@ export default function TaiyoPrint({ setCurrentPage, printData, dataPages }: Set
   },[])
 
   useEffect(() => {
-    console.log(taiyoData)
+    //console.log(taiyoData)
     if(taiyoData.length >= 1){
       const Print = async () => {
         await new Promise<void>((resolve) => {
