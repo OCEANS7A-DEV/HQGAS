@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { kaigisituOrder } from '../backend/Server_end.ts';
+import { kaigisituOrder, taiyoOrder } from '../backend/Server_end.ts';
 import '../css/taiyoPrint.css';
 
 
@@ -19,8 +19,12 @@ export default function TaiyoPrint({ setCurrentPage, printData, dataPages }: Set
 
   const HonbuSet = async() => {
     let insertData = await JSON.parse(sessionStorage.getItem('shortageSet') ?? '');
+    
+    const data = await taiyoOrder()
+    const filter = data.filter(row => typeof row[3] === 'string' && row[11] === '')
+    console.log(filter)
     let returndata = []
-    await sleep(500)
+    //await sleep(500)
     if (insertData){
       for (let i = 0; i < insertData.length; i++){
         let shortageNum = Number(insertData[i][12]);
@@ -34,7 +38,11 @@ export default function TaiyoPrint({ setCurrentPage, printData, dataPages }: Set
         } else {
           returndata.push(['', insertData[i][2], -(Number(insertData[i][12])), '', '', ''])
         }
-        
+      }
+    }
+    if(filter.length >= 1) {
+      for(let i = 0; i < filter.length; i++){
+        returndata.push([filter[i][3],filter[i][4],filter[i][6]])
       }
     }
     let calcD = 16 - returndata.length

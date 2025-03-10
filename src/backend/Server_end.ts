@@ -196,6 +196,61 @@ export const kaigisituOrder = async () => {
 };
 
 
+export const taiyoOrder = async () => {
+  try {
+    const response = await fetch(
+      URL_STRING,
+      {
+        method: 'POST',
+        headers: {
+          "Content-Type" : "application/x-www-form-urlencoded",
+        },
+        body: JSON.stringify({
+          action: 'taiyo',
+          sub_action: 'get',
+          sheetName: '店舗へ',
+        })
+      },
+    );
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+    const result = await response.json();
+    return result;
+  }catch(e){
+    return (e);
+  }
+};
+
+
+export const tamuraOrder = async () => {
+  try {
+    const response = await fetch(
+      URL_STRING,
+      {
+        method: 'POST',
+        headers: {
+          "Content-Type" : "application/x-www-form-urlencoded",
+        },
+        body: JSON.stringify({
+          action: 'tamura',
+          sub_action: 'get',
+          sheetName: '商品詳細集計',
+        })
+      },
+    );
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+    const result = await response.json();
+    //console.log(result)
+    return result;
+  }catch(e){
+    return (e);
+  }
+};
+
+
 export const ListGet = async (Range: string, sheetname: string) => {// Rangeは例'A2:B'のような形
   try {
     const response = await fetch(Get_URL, {

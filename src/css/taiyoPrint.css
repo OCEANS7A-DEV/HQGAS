@@ -12,6 +12,9 @@
 .taiyoH1,.taiyo-Data-name,.taiyo-Data-number {
   margin: 0;
 }
+.taiyoH1 {
+  padding-top: 10px;
+}
 
 .taiyo-Data-name {
   padding-left: 20px;

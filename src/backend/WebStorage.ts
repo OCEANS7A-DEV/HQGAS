@@ -65,3 +65,29 @@ export const ETCDATAGET = async () => {
   const data = await ListGet('A2:H','その他データ');
   sessionStorage.setItem('EtcData', JSON.stringify(data))
 }
+
+
+export const search = async (searchword: string, searchdata: any) => {
+  const swKZ = jaconv.toKatakana(searchword);
+  const swHZ = jaconv.toHiragana(swKZ);
+  const swKH = jaconv.toHan(swKZ);
+  const data = searchdata;
+  if (!data || data.length === 0) {
+    console.log('データが存在しません。');
+    return [];
+  }
+  const resultdata = data.filter((item: any[]) => {
+    const productName = item[2];
+    if (typeof productName !== 'string') {
+      console.log('商品名が文字列ではありません:', productName);
+      return false;
+    }
+    return (
+      productName.indexOf(swKZ) !== -1 ||
+      productName.indexOf(swKH) !== -1 ||
+      productName.indexOf(swHZ) !== -1
+    );
+  });
+
+  return resultdata.length > 0;
+};

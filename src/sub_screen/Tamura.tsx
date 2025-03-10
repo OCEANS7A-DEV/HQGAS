@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../css/kinbatoPrint.css';
 import '../css/taiyoPrint.css';
+import { tamuraOrder } from '../backend/Server_end.ts';
 
 
 interface SettingProps {
@@ -48,6 +49,20 @@ export default function TamuraPrintPage({setCurrentPage}: SettingProps) {
   const [VendorData, setVendorData] = useState([]);
   const sleep = (time) => new Promise((resolve) => setTimeout(resolve, time));
 
+  const tamuraData = async (tamuradata) => {
+    const data = await tamuraOrder()
+    const result = await data.filter(row => row[4] >= 1)
+    const newMurakamiData = [...tamuradata]
+    for (let i = 0; i < result.length; i++){
+      newMurakamiData.push(['',`${result[i][1]} ${result[i][2]}`,result[i][4], '', '', ''])
+    }
+    let calcD = 24 - newMurakamiData.length
+    for (let i = 0; i < calcD; i ++){
+      newMurakamiData.push(['','','','','',''])
+    }
+    setMurakamiData(newMurakamiData)
+  }
+
 
   useEffect(() => {
     const Now = getMonthString();
@@ -57,33 +72,34 @@ export default function TamuraPrintPage({setCurrentPage}: SettingProps) {
     setShippingAddress(vendordata.find(row => row[0] == addressdata))
     setVendorData(vendordata.find(row => row[0] == 'タムラ'))
 
+    
+    //const filter = data.filter(row => typeof row[3] === 'string' && row[11] === '')
     let insertData = JSON.parse(sessionStorage.getItem('shortageSet') ?? '');
+    const etcdata = insertData.filter(row => row[2].indexOf('eco') == -1)
+    
     let returndata = []
-    if (insertData){
-      for (let i = 0; i < insertData.length; i++){
-        let shortageNum = Number(insertData[i][12]);
+    if (etcdata){
+      for (let i = 0; i < etcdata.length; i++){
+        let shortageNum = Number(etcdata[i][12]);
         let num = 0;
-        if (insertData[i][11] !== "" && Number(insertData[i][11]) > 0) {
+        if (etcdata[i][11] !== "" && Number(etcdata[i][11]) > 0) {
           console.log('true')
           console.log(shortageNum)
           while (shortageNum < 0) {
-            shortageNum += Number(insertData[i][11])
-            num += Number(insertData[i][11])
+            shortageNum += Number(etcdata[i][11])
+            num += Number(etcdata[i][11])
           }
-          returndata.push(['', insertData[i][2], num, '', '', ''])
+          returndata.push(['', etcdata[i][2], num, '', '', ''])
         } else {
-          returndata.push(['', insertData[i][2], -(Number(insertData[i][12])), '', '', ''])
+          returndata.push(['', etcdata[i][2], -(Number(etcdata[i][12])), '', '', ''])
         }
       }
     }
-    let calcD = 24 - returndata.length
-    for (let i = 0; i < calcD; i ++){
-      returndata.push(['','','','','',''])
-    }
-    
-    setMurakamiData(returndata)
+    tamuraData(returndata)
     //console.log(resultdata)
   }, [])
+
+
 
 
   useEffect(() => {
@@ -103,7 +119,7 @@ export default function TamuraPrintPage({setCurrentPage}: SettingProps) {
       Print();
       const pageReturn = async () => {
         await sleep(500)
-        //setCurrentPage('HQPage')
+        setCurrentPage('HQPage')
       }
       pageReturn()
     }

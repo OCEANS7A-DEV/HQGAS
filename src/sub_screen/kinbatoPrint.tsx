@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../css/kinbatoPrint.css';
 import '../css/taiyoPrint.css';
+import { search } from '../backend/WebStorage';
 
 
 interface SettingProps {
@@ -46,6 +47,7 @@ export default function KinbatoPrintPage({setCurrentPage}: SettingProps) {
   const [ShippingAddress, setShippingAddress] = useState([]);
   const [KinbatoData, setKinbatoData] = useState([]);
   const [VendorData, setVendorData] = useState([]);
+  const sleep = (time) => new Promise((resolve) => setTimeout(resolve, time));
 
 
   useEffect(() => {
@@ -57,29 +59,67 @@ export default function KinbatoPrintPage({setCurrentPage}: SettingProps) {
     setVendorData(vendordata.find(row => row[0] == 'キンバト'))
 
 
-    let insertData = sessionStorage.getItem('shortageSet');
+    let insertData = JSON.parse(sessionStorage.getItem('shortageSet') ?? '');
     let returndata = []
     if (insertData){
-      insertData = JSON.parse(insertData)
-      for (let i = 0; i < insertData.length; i++){
-        let shortageNum = Number(insertData[i][9]);
+      const aminofil = insertData.filter(row => row[2].indexOf('ｱﾐﾉ') !== -1)
+      const tiofil = insertData.filter(row => row[2].indexOf('ﾁｵﾊｰﾄﾞ') !== -1)
+      const etcData = insertData.filter(row => row[2].indexOf('ｱﾐﾉ') == -1 && row[2].indexOf('ﾁｵﾊｰﾄﾞ') == -1)
+
+      if(aminofil.length !== 0)  {
+        returndata.push(['', 'アミノアシッド', 20+'本', '', '', ''])
+      }
+      console.log(matome(insertData, 'チオハード'))
+      if(tiofil.length !== 0){
+        
+        returndata.push(['', 'チオハード', 20+'本', '', '', ''])
+      }
+      for (let i = 0; i < etcData.length; i++){
+        let shortageNum = Number(etcData[i][9]);
         let num = 0;
-        if (insertData[i][11] !== "" || Number(insertData[i][11]) > 0) {
+        if (etcData[i][11] !== "" || Number(etcData[i][11]) > 0) {
           while (shortageNum < 0) {
-            shortageNum += Number(insertData[i][11])
-            num += Number(insertData[i][11])
+            shortageNum += Number(etcData[i][11])
+            num += Number(etcData[i][11])
           }
-          //insertData[i][9]
         }
-        returndata.push(['', insertData[i][2], num, '', '', ''])
+        returndata.push(['', etcData[i][2], num, '', '', ''])
       }
     }
-    let calcD = 22 - returndata.length
+    let calcD = 21 - returndata.length
     for (let i = 0; i < calcD; i ++){
       returndata.push(['','','','','',''])
     }
     setKinbatoData(returndata)
   }, [])
+
+  const matome = async (data:any, word: string) => {
+    const resultc = await search(word, data)
+    console.log(resultc)
+    return resultc
+  }
+
+  useEffect(() => {
+    if(KinbatoData.length >= 1){
+      const Print = async () => {
+        await sleep(500)
+        await new Promise<void>((resolve) => {
+          const onAfterPrint = () => {
+            window.removeEventListener('afterprint', onAfterPrint);
+            resolve();
+          };
+          window.addEventListener('afterprint', onAfterPrint);
+          window.print();
+        });
+      }
+      Print();
+      const pageReturn = async () => {
+        await sleep(500)
+        setCurrentPage('HQPage')
+      }
+      pageReturn()
+    }
+  },[KinbatoData])
 
   return(
     <div className="PrintbackGround">
