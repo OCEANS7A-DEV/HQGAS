@@ -54,7 +54,13 @@
   margin: 15px;
 }
 
-.taiyo-table-header th, .etc, .taiyo-number-data,.taiyo-name-data,.taiyo-num-data, .murakami-num-data, .murakami-name-data, .murakami-last-data {
+.taiyo-table-header th,
+.etc, .taiyo-number-data,
+.taiyo-name-data,.taiyo-num-data,
+.murakami-num-data,
+.murakami-name-data,
+.murakami-last-data,
+.murakami-store-data {
   overflow: hidden;
   height: 26px;
   white-space: nowrap;
@@ -163,16 +169,19 @@
 @media print {
   @page {
     size: A4 portrait;
-    margin: 0; /* ページの余白をゼロに設定 */
   }
   body {
     zoom: 1;
-    margin: 0; /* ページ全体の余白をゼロに設定 */
-    padding: 0;
   }
 }
 
-
+.murakami-store-data {
+  text-align: center;
+  padding: 0px;
+  padding-left: 6px;
+  font-size: 20px;
+  height: 34px;
+}
 
 .murakami-num-data {
   text-align: center;

@@ -54,6 +54,7 @@ export default function MurakamiPrintPage({setCurrentPage}: SettingProps) {
 
   const prostepGet = async () => {
     const data = await murakamiOrder()
+    console.log(data)
     setProStepdata(data)
     const storedata = [...new Set(data.map(row => row[1]))]
     setStoreData(storedata)
@@ -87,7 +88,7 @@ export default function MurakamiPrintPage({setCurrentPage}: SettingProps) {
       }
     }
     const resultdata = returndata.filter(row => !row[1].includes('ﾙﾍﾞﾙ'))
-    let calcD = 22 - resultdata.length
+    let calcD = 23 - resultdata.length
     for (let i = 0; i < calcD; i ++){
       resultdata.push(['','','','','',''])
     }
@@ -109,7 +110,7 @@ export default function MurakamiPrintPage({setCurrentPage}: SettingProps) {
             resolve();
           };
           window.addEventListener('afterprint', onAfterPrint);
-          //window.print();
+          window.print();
         });
       }
       Print();
@@ -119,7 +120,7 @@ export default function MurakamiPrintPage({setCurrentPage}: SettingProps) {
       }
       pageReturn()
     }
-  },[MurakamiData])
+  },[MurakamiData,prostepData])
 
 
   return(
@@ -167,12 +168,22 @@ export default function MurakamiPrintPage({setCurrentPage}: SettingProps) {
             </tr>
           </tbody>
           <tbody>
-            {storeData.map((row, index) => (
-              <th key={index}>
-                
-              </th>
-            ))}
-            
+            {storeData.map((row, index) => {
+              const matchdata = prostepData.filter(rowdata => rowdata[1] === row);
+              return (
+                <React.Fragment key={index}>
+                  <tr>
+                    <td colSpan="2" className="murakami-store-data">{row}</td>
+                  </tr>
+                  {matchdata.map((datarow, dataindex) => (
+                    <tr key={dataindex}>
+                      <td className="murakami-name-data">{datarow[5]}</td>
+                      <td className="murakami-num-data">{datarow[6]}</td>
+                    </tr>
+                  ))}
+                </React.Fragment>
+              );
+            })}
           </tbody>
         </table>
       </div>
