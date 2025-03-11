@@ -17,7 +17,6 @@ export default function PrintPage({ setCurrentPage, printData, storename, dataPa
   const [totalAmount, setTotalAmount] = useState(0);
   const [date, setDate] = useState('');
   const SetRows = 19;
-  const [parsonaltext, setParsonaltext] = useState('');
   const defaultText = '警告 単価が¥0の商品があります';
   const [WarningText, setWarningText] = useState(defaultText);
   const sleep = (time) => new Promise((resolve) => setTimeout(resolve, time));
@@ -91,7 +90,7 @@ export default function PrintPage({ setCurrentPage, printData, storename, dataPa
         window.addEventListener('afterprint', onAfterPrint);
         window.print();
       });
-      //setCurrentPage('HQPage');
+      setCurrentPage('HQPage');
     }
     Print()
     GASProcessUpdate('店舗へ', storename);

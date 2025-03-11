@@ -61,6 +61,7 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
     setVendorList(result)
   };
 
+
   const OceanListGet = async () => {
     const alllist = await JSON.parse(sessionStorage.getItem('EtcData') ?? '');
     const list = alllist.filter(row => row[7] === 'オーシャン');
@@ -72,9 +73,6 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
     setAddressList(result)
   };
 
-  const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setGetDate(event.target.value);
-  };
 
   const PrintProcessList = async (getdate) => {
     const ordersGet = await ProcessConfirmationGet(getdate);
@@ -168,7 +166,7 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
       setStorename(storeprintname);
     };
     await dataSettings();
-    await setCurrentPage('Printpage');
+    setCurrentPage('Printpage');
   };
 
   const allPrint = async () => {
@@ -185,12 +183,10 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
       return
     }
     const resultData = await shortageGet();
-    //console.log(resultData)
     const filterData = resultData.filter(row => row[12] < 0 && row[0] == vendorSelect.value)
     sessionStorage.setItem('shortageSet', JSON.stringify(filterData))
     sessionStorage.setItem('shortageVender', vendorSelect.value)
     await sessionStorage.setItem('AddressSet', addressSelect.value)
-    //console.log(vendorSelect.value)
     if (vendorSelect.value == '大洋商会') {
       await setCurrentPage('TaiyoPrint');
     }else if (vendorSelect.value == 'キンバト') {
@@ -201,8 +197,7 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
       await setCurrentPage('ThankyouPrint');
     }else if (vendorSelect.value == 'タムラ'){
       await setCurrentPage('TamuraPrint');
-    } 
-    //setCurrentPage('HQPage');
+    }
   }
 
 
@@ -216,7 +211,7 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
             className="insert_order_date"
             max="9999-12-31"
             value={getDate}
-            onChange={(e) => {handleDateChange(e)}}
+            onChange={(e) => setGetDate(e.target.value)}
           />
         </div>
         {/* テーブルを表示 */}
@@ -306,9 +301,7 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
             </a>
           </div>
         </div>
-        
       </div>
-      
     </div>
   );
 }

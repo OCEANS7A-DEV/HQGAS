@@ -66,7 +66,6 @@ export default function App() {
     <>
       <TopBanner setCurrentPage={setCurrentPage} />
       <TransitionGroup component={null}>
-        {/* <div>{currentPage !== 'Printpage' && currentPage !== 'TaiyoPrint' && currentPage !== 'KinbatoPrint' && currentPage !== 'MurakamiPrint' && currentPage !== 'ThankyouPrint' && currentPage !== 'TamuraPrint' && <TopBanner setCurrentPage={setCurrentPage} />}</div> */}
         <CSSTransition
           key={currentPage}
           timeout={{ enter: 500, exit: 300 }}
