@@ -68,11 +68,10 @@
 
 @media print {
   @page {
-    margin: 0; /* ページの余白をゼロに設定 */
+    margin: 20px;
   }
   body {
     zoom: 1;
-    margin: 0; /* ページ全体の余白をゼロに設定 */
-    padding: 0;
+
   }
 }

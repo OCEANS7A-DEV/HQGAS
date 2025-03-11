@@ -175,8 +175,25 @@
   }
 }
 
-.murakami-store-data {
+.murakami-header th {
+  text-align: left;
+  overflow: hidden;
+  height: 24px;
+  white-space: nowrap;
+  border: 2px solid black; /* 境界線 */
+  padding: 6px;
+}
+
+.murakami-top-data {
   text-align: center;
+  padding: 0px;
+  padding-left: 6px;
+  font-size: 20px;
+  height: 34px;
+}
+
+.murakami-store-data {
+  text-align: left;
   padding: 0px;
   padding-left: 6px;
   font-size: 20px;
@@ -192,6 +209,7 @@
 }
 
 .murakami-name-data {
+  width: 623px;
   text-align: left;
   padding: 0px;
   padding-left: 6px;

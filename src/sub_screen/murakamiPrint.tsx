@@ -54,16 +54,17 @@ export default function MurakamiPrintPage({setCurrentPage}: SettingProps) {
 
   const prostepGet = async () => {
     const data = await murakamiOrder()
-    console.log(data)
     setProStepdata(data)
     const storedata = [...new Set(data.map(row => row[1]))]
     setStoreData(storedata)
-
-    console.log(storedata)
   };
 
   useEffect(() => {
     prostepGet()
+  },[])
+
+  useEffect(() => {
+    
     const Now = getMonthString();
     setNowDay(Now)
     const vendordata = JSON.parse(sessionStorage.getItem('EtcData') ?? '');
@@ -120,7 +121,7 @@ export default function MurakamiPrintPage({setCurrentPage}: SettingProps) {
       }
       pageReturn()
     }
-  },[MurakamiData,prostepData])
+  },[prostepData])
 
 
   return(
@@ -167,25 +168,34 @@ export default function MurakamiPrintPage({setCurrentPage}: SettingProps) {
               <td colSpan="2" className="murakami-last-data">プロステップは別紙です</td>
             </tr>
           </tbody>
-          <tbody>
-            {storeData.map((row, index) => {
-              const matchdata = prostepData.filter(rowdata => rowdata[1] === row);
-              return (
-                <React.Fragment key={index}>
-                  <tr>
-                    <td colSpan="2" className="murakami-store-data">{row}</td>
-                  </tr>
-                  {matchdata.map((datarow, dataindex) => (
-                    <tr key={dataindex}>
-                      <td className="murakami-name-data">{datarow[5]}</td>
-                      <td className="murakami-num-data">{datarow[6]}</td>
-                    </tr>
-                  ))}
-                </React.Fragment>
-              );
-            })}
-          </tbody>
         </table>
+        <table className="taiyo-table">
+          <thead>
+            <tr className="kinbato-header">
+              <th colSpan="2" className="murakami-top-data">プロステップヘアカラー</th>
+            </tr>
+          </thead>
+        </table>
+        {storeData.map((row, index) => {
+          const matchdata = prostepData.filter(rowdata => rowdata[1] === row);
+          return (
+            <table className="taiyo-table">
+              <thead>
+                <tr className="murakami-header">
+                  <th colSpan="2" className="murakami-store-data">{row}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {matchdata.map((Idata, Iindex) => (
+                  <tr key={Iindex}>
+                    <td className="murakami-name-data">{Idata[5]}</td>
+                    <td className="murakami-num-data">{Idata[6]}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          );
+        })}
       </div>
     </div>
   );  
