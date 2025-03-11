@@ -24,36 +24,7 @@ interface SelectOption {
 }
 
 
-const VendorList: SelectOption[] = [];
 
-const VendorListGet = async () => {
-  VendorList.length = 0
-  const list = await JSON.parse(localStorage.getItem('vendorData') ?? '');
-  for (let i = 0; i < list.length; i++){
-    VendorList.push(
-      {
-        value: list[i][0],
-        label: list[i][0]
-      }
-    );
-  };
-};
-
-const AddressList: SelectOption[] = [];
-const OceanListGet = async () => {
-  AddressList.length = 0
-  const alllist = await JSON.parse(sessionStorage.getItem('EtcData') ?? '');
-  const list = alllist.filter(row => row[7] === 'オーシャン');
-  //console.log(list)
-  for (let i = 0; i < list.length; i++){
-    AddressList.push(
-      {
-        value: list[i][0],
-        label: list[i][0]
-      }
-    );
-  };
-};
 
 
 
@@ -78,7 +49,30 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
   const [getDate, setGetDate] = useState('');
   const [addressSelect, setAdoressSelect] = useState<SelectOption | null>(null);
   const [vendorSelect, setVendorSelect] = useState<SelectOption | null>(null);
+  const [VendorList, setVendorList] = useState<SelectOption | null>(null);
+  const [AddressList, setAddressList] = useState<SelectOption | null>(null);
 
+  const VendorListGet = async () => {
+    const vendordata = JSON.parse(sessionStorage.getItem('EtcData') ?? '');
+    const list = vendordata.filter(row => row[1] === "FAX");
+    const result = list.map((row) => ({
+      value: row[0],
+      label: row[0]
+    }))
+    //console.log(result)
+    setVendorList(result)
+  };
+
+  const OceanListGet = async () => {
+    const alllist = await JSON.parse(sessionStorage.getItem('EtcData') ?? '');
+    const list = alllist.filter(row => row[7] === 'オーシャン');
+    const result = list.map((row) => ({
+      value: row[0],
+      label: row[0]
+    }))
+    //console.log(result)
+    setAddressList(result)
+  };
 
   const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setGetDate(event.target.value);
@@ -87,6 +81,7 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
   const PrintProcessList = async (getdate) => {
     
     const result = await ProcessConfirmationGet(getdate);
+    console.log(result)
     sessionStorage.setItem('ordersdata',JSON.stringify(result));
     const storeList = await JSON.parse(localStorage.getItem('storeData'));
     const processData = [];
@@ -320,53 +315,61 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
           isOpen={isDialogOpen}
         />
       </div>
-      <div className="order-print">
-        <div>
-          <Select
-            className="store-select"
-            placeholder="店舗選択"
-            isSearchable={false}
-            value={storeSelect}
-            onChange={handleStoreChange}
-            options={selectOptions}
-          />
+      <div>
+        <div className="print-select-area">
+          <div className="order-print">
+            <div>
+              <div className="title-explanation">納品書印刷</div>
+              <Select
+                className="store-select"
+                placeholder="店舗選択"
+                isSearchable={false}
+                value={storeSelect}
+                onChange={handleStoreChange}
+                options={selectOptions}
+              />
+            </div>
+            <a className="buttonUnderline" type="button" onClick={() => handleOrderPrint(storeSelect.value)}>
+              個別印刷
+            </a>
+            <a className="buttonUnderline" type="button" onClick={allPrint}>
+              全未印刷
+            </a>
+          </div>
+          <div className="order-print-vendor">
+            <div>
+              <div className="title-explanation">業者への発注書印刷</div>
+              <Select
+                className="store-select"
+                placeholder="業者選択"
+                isSearchable={false}
+                value={vendorSelect}
+                onChange={handleVendorChange}
+                options={VendorList}
+                menuPlacement="auto"
+                menuPortalTarget={document.body}
+              />
+            </div>
+            <div>
+              <Select
+                className="store-select"
+                placeholder="配送先選択"
+                isSearchable={false}
+                value={addressSelect}
+                onChange={handleAddressChange}
+                options={AddressList}
+                menuPlacement="auto"
+                menuPortalTarget={document.body}
+              />
+            </div>
+            <a className="buttonUnderline" type="button" onClick={VendorPrint}>
+              業者発注印刷
+            </a>
+          </div>
         </div>
-        <a className="buttonUnderline" type="button" onClick={() => handleOrderPrint(storeSelect.value)}>
-          個別印刷
-        </a>
-        <a className="buttonUnderline" type="button" onClick={allPrint}>
-          全未印刷
-        </a>
+        
       </div>
-      <div className="order-print-vendor">
-        <div>
-          <Select
-            className="store-select"
-            placeholder="業者選択"
-            isSearchable={false}
-            value={vendorSelect}
-            onChange={handleVendorChange}
-            options={VendorList}
-            menuPlacement="auto"
-            menuPortalTarget={document.body}
-          />
-        </div>
-        <div>
-          <Select
-            className="store-select"
-            placeholder="配送先選択"
-            isSearchable={false}
-            value={addressSelect}
-            onChange={handleAddressChange}
-            options={AddressList}
-            menuPlacement="auto"
-            menuPortalTarget={document.body}
-          />
-        </div>
-        <a className="buttonUnderline" type="button" onClick={VendorPrint}>
-          業者発注印刷
-        </a>
-      </div>
+      
     </div>
   );
 }

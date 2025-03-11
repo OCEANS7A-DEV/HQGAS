@@ -37,3 +37,7 @@
   padding: 4px;
   border: 1px solid black;
 }
+
+.print-select-area {
+  display: flex;
+}

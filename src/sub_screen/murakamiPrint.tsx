@@ -117,7 +117,7 @@ export default function MurakamiPrintPage({setCurrentPage}: SettingProps) {
       Print();
       const pageReturn = async () => {
         await sleep(500)
-        //setCurrentPage('HQPage')
+        setCurrentPage('HQPage')
       }
       pageReturn()
     }
