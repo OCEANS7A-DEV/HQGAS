@@ -17,7 +17,7 @@ export default function PrintPage({ setCurrentPage, printData, storename, dataPa
   const [totalAmount, setTotalAmount] = useState(0);
   const [date, setDate] = useState('');
   const SetRows = 19;
-  const defaultText = '警告 単価が¥0の商品があります';
+  const defaultText = '警告 単価の入力がない商品があります';
   const [WarningText, setWarningText] = useState(defaultText);
   const sleep = (time) => new Promise((resolve) => setTimeout(resolve, time));
 
@@ -73,7 +73,7 @@ export default function PrintPage({ setCurrentPage, printData, storename, dataPa
   };
 
   const warningSet = () => {
-    let NonPriceData = printData.filter(row => row[8] == 0 && row[0] !== '');
+    let NonPriceData = printData.filter(row => row[8] === '' && row[0] !== '');
     if(NonPriceData.length === 0){
       setWarningText('')
     }
