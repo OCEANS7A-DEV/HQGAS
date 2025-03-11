@@ -5,7 +5,8 @@ import * as jaconv from 'jaconv';
 export default function main(){}
 export const localStoreSet = async () => {
   const storeData = await ListGet('A2:A','その他一覧');
-  localStorage.setItem('storeData', JSON.stringify(storeData))
+  const filter = storeData.flat(1).filter(row => row !== "本部")
+  localStorage.setItem('storeData', JSON.stringify(filter))
 }
 
 export const localVendorSet = async () => {

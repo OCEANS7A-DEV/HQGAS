@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-
+import { ProcessConfirmationGet, OrderDeadline, orderGet, GASProcessUpdate, QuantityReset, shortageGet } from '../backend/Server_end.ts';
 import '../css/orderPrint.css';
 
 interface SettingProps {
@@ -20,18 +20,13 @@ export default function PrintPage({ setCurrentPage, printData, storename, dataPa
   const [parsonaltext, setParsonaltext] = useState('');
   const defaultText = '警告 単価が¥0の商品があります';
   const [WarningText, setWarningText] = useState(defaultText);
+  const sleep = (time) => new Promise((resolve) => setTimeout(resolve, time));
 
   useEffect(() => {
     warningSet()
     let resultAmount = 0;
-    //let parsonalCount = 0
     for (let i = 0; i < printData.length; i++){
       resultAmount += printData[i][9];
-      // if(printData[i][10] === '') {
-      //   resultAmount += printData[i][9];
-      // }else {
-      //   parsonalCount++
-      // }
     }
     const FormattedDate = sessionStorage.getItem('printdate')
     setDate(FormattedDate.replace(/-/g, '/'))
@@ -85,6 +80,24 @@ export default function PrintPage({ setCurrentPage, printData, storename, dataPa
     }
   }
 
+  useEffect(() => {
+    const Print = async () => {
+      await sleep(500);
+      await new Promise<void>((resolve) => {
+        const onAfterPrint = () => {
+          window.removeEventListener('afterprint', onAfterPrint);
+          resolve();
+        };
+        window.addEventListener('afterprint', onAfterPrint);
+        window.print();
+      });
+      //setCurrentPage('HQPage');
+    }
+    Print()
+    GASProcessUpdate('店舗へ', storename);
+    
+  },[printData])
+
 
   return (
     <div className="print-area">
@@ -124,6 +137,7 @@ export default function PrintPage({ setCurrentPage, printData, storename, dataPa
           <tbody>
             {printData.map((row, index) => (
               <>
+                
                 {(index % SetRows === 0 && index > 1) && (
                   <>
                     <tr key={`condition`}>

@@ -2,7 +2,7 @@
 
 .print-area {
   background-color: white;
-  width: calc(210mm);
+  width: 210mm;
   height: 297mm;
   display: flex;
   text-align: center;
@@ -79,9 +79,9 @@
 }
 
 .printData td {
-  height: 36px;
-  min-height: 36px;
-  max-height: 36px;
+  height: 37px;
+  min-height: 37px;
+  max-height: 37px;
   padding: 6px;
   border: 1px solid black;
 }
@@ -195,12 +195,12 @@
   font-size: 14px;
 }
 
+
 @media print {
   @page {
+    size: A4 portrait;
   }
   body {
     zoom: 1;
-    margin: 0; /* ページ全体の余白をゼロに設定 */
-    padding: 0;
   }
 }

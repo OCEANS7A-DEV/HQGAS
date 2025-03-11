@@ -41,3 +41,14 @@
 .print-select-area {
   display: flex;
 }
+
+
+.print-set-area {
+  margin: 0px 10px;
+}
+
+.explanation {
+  margin: 10px 10px 10px 0px;
+  color: red;
+  font-size: 16px;
+}

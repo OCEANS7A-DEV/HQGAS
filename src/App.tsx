@@ -19,8 +19,7 @@ import TEST from './sub_screen/Print.tsx';
 
 
 export default function App() {
-  const [currentPage, setCurrentPage] = useState('ReceivingPage');
-  //const [currentPage, setCurrentPage] = useState('TEST');
+  const [currentPage, setCurrentPage] = useState<string>('ReceivingPage');
   const [printData, setPrintData] = useState([]);
   const [storename, setStorename] = useState<string>('');
   const [dataPages, setdataPages] = useState<number>(0);
@@ -64,20 +63,24 @@ export default function App() {
   };
 
   return (
-    <TransitionGroup component={null}>
-      <div>{currentPage !== 'Printpage' && currentPage !== 'TaiyoPrint' && currentPage !== 'KinbatoPrint' && currentPage !== 'MurakamiPrint' && currentPage !== 'ThankyouPrint' && currentPage !== 'TamuraPrint' && <TopBanner setCurrentPage={setCurrentPage} />}</div>
-      <CSSTransition
-        key={currentPage}
-        timeout={{ enter: 500, exit: 300 }}
-        classNames="fade"
-        nodeRef={nodeRef}
-        unmountOnExit
-      >
-        <div ref={nodeRef} className="page">
-          {getPageComponent(currentPage)}
-        </div>
-      </CSSTransition>
-    </TransitionGroup>
+    <>
+      <TopBanner setCurrentPage={setCurrentPage} />
+      <TransitionGroup component={null}>
+        {/* <div>{currentPage !== 'Printpage' && currentPage !== 'TaiyoPrint' && currentPage !== 'KinbatoPrint' && currentPage !== 'MurakamiPrint' && currentPage !== 'ThankyouPrint' && currentPage !== 'TamuraPrint' && <TopBanner setCurrentPage={setCurrentPage} />}</div> */}
+        <CSSTransition
+          key={currentPage}
+          timeout={{ enter: 500, exit: 300 }}
+          classNames="fade"
+          nodeRef={nodeRef}
+          unmountOnExit
+        >
+          <div ref={nodeRef} className="page">
+            {getPageComponent(currentPage)}
+          </div>
+        </CSSTransition>
+      </TransitionGroup>
+    </>
+    
   );
 }
 

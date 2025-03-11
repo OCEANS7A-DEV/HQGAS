@@ -7,8 +7,6 @@ import DeadLineDialog from './DeadLineDialog.tsx';
 import QuantityResetDialog from './QuantityResetDialog.tsx';
 import toast from 'react-hot-toast';
 
-const sleep = (time) => new Promise((resolve) => setTimeout(resolve, time));
-
 
 interface SettingProps {
   setCurrentPage: (page: string) => void;
@@ -79,70 +77,37 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
   };
 
   const PrintProcessList = async (getdate) => {
-    
-    const result = await ProcessConfirmationGet(getdate);
-    console.log(result)
-    sessionStorage.setItem('ordersdata',JSON.stringify(result));
-    const storeList = await JSON.parse(localStorage.getItem('storeData'));
-    const processData = [];
-    const storeProcessMap = {};
-    result.forEach(item => {
-      const store = item[1];
-      const process = item[12];
-      if (!storeProcessMap[store]) {
-        storeProcessMap[store] = [];
+    const ordersGet = await ProcessConfirmationGet(getdate);
+    const storeList = await JSON.parse(localStorage.getItem('storeData') ?? '').flat(1);
+    sessionStorage.setItem('ordersdata',JSON.stringify(ordersGet));
+    const store = [...new Set(ordersGet.map(row => row[1]))]
+    store.sort((a,b) => {
+      return storeList.indexOf(a) - storeList.indexOf(b);
+    })
+    let resultData = []
+    storeList.map((row) => {
+      const storefilter = ordersGet.filter((rowData) => rowData[1] === row)
+      const processlist = storefilter.map(process => process[12])
+      let resultdata = {storeName: row, process: ''}
+      const donere = processlist.includes('印刷済')
+      const notre = processlist.includes('未印刷')
+      const nonere = processlist.includes('注文無')
+      if(donere && !notre && !nonere){
+        resultdata.process = '印刷済';
+      }else if(!donere && notre && !nonere){
+        resultdata.process = '未印刷';
+      }else if(donere && notre && !nonere){
+        resultdata.process = '一部未印刷';
+      }else if(!donere && !notre && !nonere){
+        resultdata.process = '未注文';
+      }else if(nonere && !donere && !notre){
+        resultdata.process = '注文無';
       }
-      storeProcessMap[store].push(process);
-    });
-    for (let store in storeProcessMap) {
-      processData.push({ storeName: store, process: storeProcessMap[store][0] });
-    }
-    const checkresult = [];
-    for (let i = 0; i < storeList.length; i++) {
-      var storeData = [];
-      var storename = storeList[i];
-      var datajudgement = storeProcessMap[storename];
-      if (datajudgement !== void 0) {
-        storeData = storeProcessMap[storename];
-      }else{
-        storeData = [];
-      }
-      
-      var completedCount = 0;
-      var pendingCount = 0;
-      var receivingCount = 0;
-      var nonOrderCount = 0;
-      
-      if (storeData.length > 0) {
-        for (let i = 0; i < storeData.length; i++) {
-          var Process = storeData[i];
-          if (Process == '印刷済') {
-            completedCount += 1;
-          }else if (Process == '未印刷') {
-            pendingCount += 1;
-          }else if (Process == '入庫済'){
-            receivingCount += 1;
-          }else if (Process == '注文無'){
-            nonOrderCount += 1;
-          }
-        }
-        if (completedCount === 0 && pendingCount === 0 && receivingCount === 0 && nonOrderCount >= 1) {
-          checkresult.push({ storeName: storename, process: "注文無"});
-        }else if (completedCount === 0 && pendingCount >= 1 && receivingCount === 0 && nonOrderCount >= 0) {
-          checkresult.push({ storeName: storename, process: "未印刷"});
-        }else if (pendingCount === 0 && completedCount >= 1 && receivingCount === 0 && nonOrderCount >= 0) {
-          checkresult.push({ storeName: storename, process: "印刷済"});
-        }else if (completedCount >= 1 && pendingCount >= 1 && receivingCount === 0 && nonOrderCount >= 0) {
-          checkresult.push({ storeName: storename, process: "一部未印刷"});
-        }else if (receivingCount >= 1 && nonOrderCount >= 0){
-          checkresult.push({ storeName: storename, process: "入庫済"});
-        }
-      } else {
-        checkresult.push({ storeName: storename, process: "未注文"});
-      }
-    }
-    setCheckResult(checkresult);
+      resultData.push(resultdata)
+    })
+    setCheckResult(resultData);
   };
+
 
   useEffect(() => {
     const getLocalStorageSize = async () => {
@@ -151,8 +116,8 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
       for (let i = 0; i < cachedData.length; i++){
         storedatalist.push(
           {
-            value: cachedData[i][0],
-            label: cachedData[i][0],
+            value: cachedData[i],
+            label: cachedData[i],
           }
         )
       }
@@ -174,21 +139,6 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
 
 
 
-  const handleStoreChange = (selectedOption: SelectOption | null) => {
-    setStoreSelect(selectedOption);
-  };
-
-  const handleVendorChange = (selectedOption: SelectOption | null) => {
-    setVendorSelect(selectedOption);
-  };
-
-  const handleAddressChange = (selectedOption: SelectOption | null) => {
-    setAdoressSelect(selectedOption);
-  };
-
-  const handleOpenDialog = () => {
-    setDialogOpen(true);
-  };
 
   const handleConfirm = () => {
     OrderDeadline();
@@ -202,7 +152,7 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
   };
 
   const handleOrderPrint = async (storeprintname: string) => {
-    const orderData = await JSON.parse(sessionStorage.getItem('ordersdata'));
+    const orderData = await JSON.parse(sessionStorage.getItem('ordersdata') ?? '');
     sessionStorage.setItem('printdate',getDate);
     var printData = orderData.filter(row => row[1] == storeprintname);
     const pages = Math.ceil(printData.length / rowNum);
@@ -219,27 +169,13 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
     };
     await dataSettings();
     await setCurrentPage('Printpage');
-    await sleep(500);
-    await new Promise<void>((resolve) => {
-      const onAfterPrint = () => {
-        window.removeEventListener('afterprint', onAfterPrint);
-        resolve();
-      };
-      window.addEventListener('afterprint', onAfterPrint);
-      window.print();
-    });
-
-    GASProcessUpdate('店舗へ',storeprintname);
-    setCurrentPage('HQPage');
   };
 
   const allPrint = async () => {
     const printstoreList = checkresult.filter(row => row.process == '未印刷' || row.process == '一部未印刷')
-    for (let i = 0; i < printstoreList.length; i++){
-      handleOrderPrint(printstoreList[i].storeName[0])
-      return
-    }
-
+    printstoreList.map((row) => {
+      handleOrderPrint(row.storeName)
+    })
     return
   };
 
@@ -254,7 +190,7 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
     sessionStorage.setItem('shortageSet', JSON.stringify(filterData))
     sessionStorage.setItem('shortageVender', vendorSelect.value)
     await sessionStorage.setItem('AddressSet', addressSelect.value)
-    console.log(vendorSelect.value)
+    //console.log(vendorSelect.value)
     if (vendorSelect.value == '大洋商会') {
       await setCurrentPage('TaiyoPrint');
     }else if (vendorSelect.value == 'キンバト') {
@@ -304,7 +240,7 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
         </div>
       </div>
       <div className='operation_area'>
-        <a className="buttonUnderline" type="button" onClick={handleOpenDialog}>
+        <a className="buttonUnderline" type="button" onClick={() => setDialogOpen(true)}>
           発注区切
         </a>
         <DeadLineDialog
@@ -315,7 +251,10 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
           isOpen={isDialogOpen}
         />
       </div>
-      <div>
+      <div className="print-set-area">
+        <div className="explanation">
+          印刷の際は余白をデフォルトにしてください
+        </div>
         <div className="print-select-area">
           <div className="order-print">
             <div>
@@ -325,7 +264,7 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
                 placeholder="店舗選択"
                 isSearchable={false}
                 value={storeSelect}
-                onChange={handleStoreChange}
+                onChange={(e) => setStoreSelect(e)}
                 options={selectOptions}
               />
             </div>
@@ -344,7 +283,7 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
                 placeholder="業者選択"
                 isSearchable={false}
                 value={vendorSelect}
-                onChange={handleVendorChange}
+                onChange={(e) => setVendorSelect(e)}
                 options={VendorList}
                 menuPlacement="auto"
                 menuPortalTarget={document.body}
@@ -356,7 +295,7 @@ export default function HQPage({ setCurrentPage, setPrintData, setStorename, set
                 placeholder="配送先選択"
                 isSearchable={false}
                 value={addressSelect}
-                onChange={handleAddressChange}
+                onChange={(e) => setAdoressSelect(e)}
                 options={AddressList}
                 menuPlacement="auto"
                 menuPortalTarget={document.body}
