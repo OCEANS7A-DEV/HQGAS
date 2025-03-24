@@ -97,6 +97,10 @@ export default function PrintPage({ setCurrentPage, printData, storename, dataPa
     
   },[printData])
 
+  const test = (value) => {
+    return value
+  }
+
 
   return (
     <div className="print-area">
@@ -151,7 +155,7 @@ export default function PrintPage({ setCurrentPage, printData, storename, dataPa
                     <div className="P-code">{row[3]}</div>
                     <div className="P-name">{row[4]}</div>
                   </td>
-                  <td className="P-detail">{row[5]}</td>
+                  <td className="P-detail">{test(row[5])}</td>
                   <td className="P-number">{row[6]}</td>
                   <td className="P-price">{row[8].toLocaleString('ja-JP')}</td>
                   <td className="P-totalprice">{totalResult(row[6],row[8])}</td>

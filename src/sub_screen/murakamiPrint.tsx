@@ -75,17 +75,21 @@ export default function MurakamiPrintPage({setCurrentPage}: SettingProps) {
     let returndata = []
     if (insertData){
       insertData = JSON.parse(insertData)
+      
+      
       for (let i = 0; i < insertData.length; i++){
-        let shortageNum = Number(insertData[i][11]);
-        let num = 0;
-        if (insertData[i][11] !== "" || Number(insertData[i][11]) > 0) {
-          while (shortageNum < 0) {
-            shortageNum += Number(insertData[i][11])
-            num += Number(insertData[i][11])
+        if(insertData[i][1] !== 100001){
+          let shortageNum = Number(insertData[i][11]);
+          let num = 0;
+          if (insertData[i][11] !== "" || Number(insertData[i][11]) > 0) {
+            while (shortageNum < 0) {
+              shortageNum += Number(insertData[i][11])
+              num += Number(insertData[i][11])
+            }
+            //insertData[i][9]
           }
-          //insertData[i][9]
+          returndata.push(['', insertData[i][2], -(Number(insertData[i][12])), '', '', ''])
         }
-        returndata.push(['', insertData[i][2], -(Number(insertData[i][12])), '', '', ''])
       }
     }
     const resultdata = returndata.filter(row => !row[1].includes('ﾙﾍﾞﾙ'))

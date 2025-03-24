@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../css/kinbatoPrint.css';
 import '../css/taiyoPrint.css';
-import { tamuraOrder } from '../backend/Server_end.ts';
+import { tamuraOrder, orderGet } from '../backend/Server_end.ts';
 
 
 interface SettingProps {
@@ -47,14 +47,36 @@ export default function TamuraPrintPage({setCurrentPage}: SettingProps) {
   const [ShippingAddress, setShippingAddress] = useState([]);
   const [MurakamiData, setMurakamiData] = useState([]);
   const [VendorData, setVendorData] = useState([]);
+  const [ecoData, setEcoData] = useState([]);
   const sleep = (time) => new Promise((resolve) => setTimeout(resolve, time));
 
-  const tamuraData = async (tamuradata) => {
-    const data = await tamuraOrder()
-    const result = await data.filter(row => row[4] >= 1)
+  const tamuraData = async (tamuradata,ecodata) => {
     const newMurakamiData = [...tamuradata]
-    for (let i = 0; i < result.length; i++){
-      newMurakamiData.push(['',`${result[i][1]} ${result[i][2]}`,result[i][4], '', '', ''])
+    const order = await orderGet()
+    //console.log(order)
+    const date = sessionStorage.getItem('printdate') ?? '';
+    const filteredData = order
+      .filter((row: any) => {
+        const utcDate = new Date(row[0]); // UTC 時間で Date オブジェクトを作成
+        // 日本時間に変換
+        const japanTime = new Date(utcDate.getTime() + 9 * 60 * 60 * 1000); // UTC+9 時間を加算
+        // yyyy-mm-dd 形式に変換
+        const formattedJapanDate = japanTime.toISOString().split('T')[0];
+        // 'date' との比較
+        return formattedJapanDate === date;
+      });
+    const tamurastoreorder = filteredData.filter(row => row[2] == 'タムラ' || row[2] == 'ﾀﾑﾗ')
+    const tamurastring = tamurastoreorder.filter(row => typeof row[3] === 'string')
+    const push = ['',tamurastring[0][4],tamurastring[0][6], '', '', '']
+    newMurakamiData.push(push)
+
+    if(ecodata.length !== 0){
+      const data = await tamuraOrder()
+      const result = await data.filter(row => row[4] >= 1)
+      //const newMurakamiData = [...tamuradata]
+      for (let i = 0; i < result.length; i++){
+        newMurakamiData.push(['',`${result[i][1]} ${result[i][2]}`,result[i][4], '', '', ''])
+      }
     }
     let calcD = 24 - newMurakamiData.length
     for (let i = 0; i < calcD; i ++){
@@ -76,6 +98,9 @@ export default function TamuraPrintPage({setCurrentPage}: SettingProps) {
     //const filter = data.filter(row => typeof row[3] === 'string' && row[11] === '')
     let insertData = JSON.parse(sessionStorage.getItem('shortageSet') ?? '');
     const etcdata = insertData.filter(row => row[2].indexOf('eco') == -1)
+    const ecoData = insertData.filter(row => row[2].indexOf('eco') !== -1)
+    //console.log(ecoData)
+    setEcoData(ecoData)
     
     let returndata = []
     if (etcdata){
@@ -95,8 +120,8 @@ export default function TamuraPrintPage({setCurrentPage}: SettingProps) {
         }
       }
     }
-    tamuraData(returndata)
-    //console.log(resultdata)
+    tamuraData(returndata,ecoData)
+    //console.log(returndata)
   }, [])
 
 

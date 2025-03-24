@@ -4,6 +4,7 @@ import ConfirmDialog from './orderDialog';
 import { InventorySearch, GASPostInsert } from '../backend/Server_end.ts';
 import WordSearch from './ProductSearchWord';
 import '../css/Receiving.css';
+import { LinearProgress } from '@mui/material';
 
 interface InsertData {
   業者: { value: string; label: string }[];
@@ -240,6 +241,7 @@ export default function ReceivingPage() {
 
   return (
     <div className="window_area">
+      {/* <LinearProgress/> */}
       <div className="insertDate">
         <h2>入庫日付</h2>
         <input

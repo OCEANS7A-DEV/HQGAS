@@ -216,6 +216,7 @@ export const taiyoOrder = async () => {
       throw new Error(`HTTP error! status: ${response.status}`)
     }
     const result = await response.json();
+    console.log(result)
     return result;
   }catch(e){
     return (e);
@@ -356,8 +357,6 @@ export const GASProcessUpdate = async (
   sheet: string,
   StoreName: string,
 ) => {
-  console.log(sheet)
-  console.log(StoreName)
   try {
     const response = await fetch(
       URL_STRING,
